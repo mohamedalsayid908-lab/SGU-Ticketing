@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>صفحة التقارير</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+body{
+font-family:Tahoma;
+direction:rtl;
+background:#f4f6f9;
+margin:0;
+}
+
+.header{
+background:#34495e;
+color:white;
+padding:15px;
+text-align:center;
+font-size:22px;
+}
+
+.container{
+width:1200px;
+margin:30px auto;
+}
+
+.card{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:8px;
+box-shadow:0 0 8px rgba(0,0,0,0.1);
+}
+
+button{
+padding:8px 15px;
+margin:5px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+color:white;
+}
+
+.view{background:#2980b9}
+.pdf{background:#27ae60}
+.excel{background:#e67e22}
+
+table {
+  page-break-inside: auto;
+}
+
+tr {
+  page-break-inside: avoid;
+  page-break-after: auto;
+}
+
+td, th {
+  page-break-inside: avoid;
+}
+
+.report-box {
+  page-break-after: always;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+font-size:13px;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:6px;
+text-align:center;
+}
+
+th{
+background:#2c3e50;
+color:white;
+}
+
+.report-box{
+border:2px solid #000;
+padding:15px;
+margin-bottom:30px;
+page-break-after: always;
+}
+
+.header-flex{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.center-title{
+text-align:center;
+width:100%;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+صفحة التقارير
+</div>
+
+<div class="container">
+
+<div class="card">
+
+من <input type="date" id="fromDate">
+إلى <input type="date" id="toDate">
+
+<select id="engineerFilter"></select>
+
+<select id="facultyFilter">
+<option value="">كل الكليات</option>
+<option value="pharmacy">pharmacy</option>
+<option value="physical_therapy">physical therapy</option>
+<option value="dentistry">dentistry</option>
+<option value="computer_science">computer science</option>
+<option value="management">management</option>
+</select>
+
+<br><br>
+
+<button class="view" onclick="viewReport()">عرض التقرير</button>
+<button class="pdf" onclick="generatePDF()">تحميل PDF</button>
+<button class="excel" onclick="generateExcel()">تحميل Excel</button>
+
+</div>
+
+<div class="card">
+<h3>التقرير</h3>
+<div id="reportView"></div>
+</div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL="https://cqmhpvaaaduqbhjtyrgk.supabase.co/rest/v1/"
+const SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxbWhwdmFhYWR1cWJoanR5cmdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MTA3OTUsImV4cCI6MjA5NDE4Njc5NX0.eqZ69jTSRFvPhjSVx2KZe9-3LSw0cw8uAQ6D06ZkQFg"
+
+async function fetchAPI(url){
+let res=await fetch(url,{
+headers:{
+apikey:SUPABASE_KEY,
+Authorization:"Bearer "+SUPABASE_KEY
+}
+})
+return await res.json()
+}
+
+// تحميل المهندسين
+async function loadEngineers(){
+let engineers=await fetchAPI(SUPABASE_URL+"users?role=eq.it")
+
+let opt="<option value=''>كل المهندسين</option>"
+
+for(let e of engineers){
+opt+=`<option value="${e.id}">${e.name}</option>`
+}
+
+engineerFilter.innerHTML=opt
+}
+loadEngineers()
+
+// ترتيب الحالات
+function sortTickets(tickets){
+const order={open:1,in_progress:2,resolved:3,closed:4}
+return tickets.sort((a,b)=>order[a.status]-order[b.status])
+}
+
+// تحميل البيانات
+async function loadReportData(){
+
+let from=fromDate.value
+let to=toDate.value
+let engineerId=engineerFilter.value
+let faculty=facultyFilter.value
+
+let url=SUPABASE_URL+
+"tickets?select=*,creator:users!tickets_created_by_fkey(name,phone,faculty),engineer:users!tickets_assigned_to_fkey(name,faculty)&order=created_at.desc"
+
+let filters=[]
+
+if(from) filters.push("created_at=gte."+from)
+if(to) filters.push("created_at=lte."+to)
+if(engineerId) filters.push("assigned_to=eq."+engineerId)
+if(faculty) filters.push("faculty=eq."+faculty)
+
+if(filters.length) url+="&"+filters.join("&")
+
+let tickets=await fetchAPI(url)
+
+let solutions=await fetchAPI(SUPABASE_URL+"ticket_solution")
+let ratings=await fetchAPI(SUPABASE_URL+"ratings")
+let engineers=await fetchAPI(SUPABASE_URL+"users?role=eq.it")
+
+for(let t of tickets){
+t.solution = solutions.find(s=>s.ticket_id==t.id)
+t.rating = ratings.find(r=>r.ticket_id==t.id)
+}
+
+return {tickets,engineers}
+}
+
+// حساب التقييم
+function getRatingText(list){
+
+let totalRatings=0
+let count=0
+
+for(let t of list){
+if(t.rating?.rating){
+totalRatings+=t.rating.rating
+count++
+}
+}
+
+if(count===0) return "لا يوجد تقييم"
+
+let max = list.length * 5
+let ratio = totalRatings / max
+
+if(ratio >= 0.75) return "ممتاز"
+if(ratio >= 0.5) return "جيد جداً"
+if(ratio >= 0.25) return "جيد"
+return "سيئ"
+}
+
+// عرض التقرير
+async function viewReport(){
+
+let {tickets,engineers}=await loadReportData()
+
+let from=fromDate.value
+let to=toDate.value
+
+let html=""
+
+for(let e of engineers){
+
+let list=tickets.filter(t=>t.assigned_to==e.id)
+if(!list.length) continue
+
+list=sortTickets(list)
+
+html+=`
+<div class="report-box">
+
+<div class="header-flex">
+<img src="photo/logo.png" width="100">
+<div class="center-title">
+<h2>تقرير المهام</h2>
+<div>من: ${from||"-"} إلى: ${to||"-"}</div>
+</div>
+</div>
+
+<h3>بيانات المهندس</h3>
+<table>
+<tr><th>الاسم</th><th>الهاتف</th><th>الكلية</th></tr>
+<tr>
+<td>${e.name}</td>
+<td>${e.phone||""}</td>
+<td>${e.faculty||""}</td>
+</tr>
+</table>
+
+<h3>بيانات التيكتات</h3>
+<table>
+<tr>
+<th>الموظف</th>
+<th>الكلية</th>
+<th>الهاتف</th>
+<th>العنوان</th>
+<th>الوصف</th>
+<th>اللوكيشن</th>
+<th>المهندس</th>
+<th>السبب الفني</th>
+<th>التقييم</th>
+<th>الحالة</th>
+</tr>
+`
+
+for(let t of list){
+html+=`
+<tr>
+<td>${t.creator?.name||""}</td>
+<td>${t.creator?.faculty||""}</td>
+<td>${t.creator?.phone||""}</td>
+<td>${t.title}</td>
+<td>${t.description||""}</td>
+<td>${t.location||""}</td>
+<td>${e.name}</td>
+<td>${t.solution?.solution_text||""}</td>
+<td>${t.rating?.rating||""}</td>
+<td>${t.status}</td>
+</tr>
+`
+}
+
+let open=list.filter(t=>t.status=="open").length
+let progress=list.filter(t=>t.status=="in_progress").length
+let resolved=list.filter(t=>t.status=="resolved").length
+let closed=list.filter(t=>t.status=="closed").length
+
+html+=`
+</table>
+
+<h3>الإجمالي</h3>
+<table>
+<tr>
+<th>عدد التيكتات</th>
+<th>مفتوحة</th>
+<th>جاري العمل</th>
+<th>تم الحل</th>
+<th>مغلقة</th>
+<th>متوسط التقييم</th>
+</tr>
+<tr>
+<td>${list.length}</td>
+<td>${open}</td>
+<td>${progress}</td>
+<td>${resolved}</td>
+<td>${closed}</td>
+<td>${getRatingText(list)}</td>
+</tr>
+</table>
+
+</div>
+`
+}
+
+reportView.innerHTML=html
+}
+
+// PDF عرض (Landscape)
+function generatePDF(){
+
+let element = document.getElementById("reportView")
+
+let opt = {
+  margin: 0.3,
+  filename: 'report.pdf',
+  image: { type: 'jpeg', quality: 1 },
+  html2canvas: { 
+    scale: 2,
+    useCORS: true
+  },
+  jsPDF: { 
+    unit: 'in', 
+    format: 'a4', 
+    orientation: 'landscape' 
+  },
+  pagebreak: {
+    mode: ['avoid-all', 'css', 'legacy']
+  }
+};
+
+html2pdf().set(opt).from(element).save();
+
+}
+
+// Excel
+async function generateExcel(){
+
+let {tickets}=await loadReportData()
+
+let csv="\ufeffالموظف,الكلية,الهاتف,العنوان,الوصف,اللوكيشن,المهندس,السبب الفني,التقييم,الحالة\n"
+
+for(let t of tickets){
+csv+=`${t.creator?.name||""},${t.creator?.faculty||""},${t.creator?.phone||""},${t.title},${t.description||""},${t.location||""},${t.engineer?.name||""},${t.solution?.solution_text||""},${t.rating?.rating||""},${t.status}\n`
+}
+
+let blob=new Blob([csv],{type:"text/csv;charset=utf-8;"})
+let link=document.createElement("a")
+link.href=URL.createObjectURL(blob)
+link.download="report.csv"
+link.click()
+}
+
+</script>
+
+</body>
+</html>

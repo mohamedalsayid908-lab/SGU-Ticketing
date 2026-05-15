@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Employee Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+/* =======================================================
+====================== ROOT START ========================
+======================================================= */
+:root{
+
+    --primary:#071739;
+    --secondary:#b7c0cc;
+    --gold:#ffd369;
+
+    --white:#ffffff;
+
+    --glass:rgba(255,255,255,0.08);
+    --glass-border:rgba(255,255,255,0.10);
+
+    --shadow:
+    0 10px 35px rgba(0,0,0,0.25);
+
+}
+/* =======================================================
+======================= ROOT END =========================
+======================================================= */
+
+
+/* =======================================================
+====================== GLOBAL START ======================
+======================================================= */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    font-family:'Cairo',sans-serif;
+
+    background:
+    radial-gradient(circle at top left,#123d91 0%,transparent 25%),
+    radial-gradient(circle at bottom right,#0f3460 0%,transparent 30%),
+    linear-gradient(135deg,#020814,#071739,#0f3460);
+
+    color:white;
+
+    overflow-x:hidden;
+
+    min-height:100vh;
+
+    position:relative;
+
+    padding-top:95px;
+
+    direction:rtl;
+}
+
+/* خلفيات احترافية متحركة */
+body::before{
+    content:"";
+    position:fixed;
+
+    width:500px;
+    height:500px;
+
+    background:rgba(255,211,105,0.08);
+
+    border-radius:50%;
+
+    top:-150px;
+    left:-150px;
+
+    filter:blur(120px);
+
+    z-index:-1;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+
+    width:450px;
+    height:450px;
+
+    background:rgba(15,52,96,0.40);
+
+    border-radius:50%;
+
+    bottom:-150px;
+    right:-150px;
+
+    filter:blur(120px);
+
+    z-index:-1;
+}
+/* =======================================================
+======================= GLOBAL END =======================
+======================================================= */
+
+
+/* =======================================================
+====================== MAIN HEADER START =================
+======================================================= */
+.main-header{
+
+    width:100%;
+
+    min-height:85px;
+
+    padding:18px 5%;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    position:fixed;
+
+    top:0;
+    right:0;
+
+    gap:20px;
+
+    z-index:2000;
+
+    backdrop-filter:blur(18px);
+
+    background:rgba(255,255,255,0.05);
+
+    border-bottom:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.logo{
+    height:55px;
+}
+
+.brand{
+
+    font-size:28px;
+    font-weight:800;
+
+    background:
+    linear-gradient(to right,#fff,#ffd369);
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.about-link{
+
+    color:white;
+    text-decoration:none;
+
+    padding:12px 24px;
+
+    border-radius:50px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,255,255,0.15),
+        rgba(255,255,255,0.05)
+    );
+
+    border:
+    1px solid rgba(255,255,255,0.12);
+
+    transition:0.4s;
+
+    font-weight:700;
+}
+
+.about-link:hover{
+
+    transform:translateY(-3px);
+
+    background:
+    linear-gradient(
+        135deg,
+        #ffd369,
+        #ffb703
+    );
+
+    color:#071739;
+}
+/* =======================================================
+======================= MAIN HEADER END ==================
+======================================================= */
+
+
+/* =======================================================
+====================== PAGE HEADER START =================
+======================================================= */
+
+header{
+
+    position:relative;
+
+    margin-top:25px;
+
+    margin-right:auto;
+    margin-left:auto;
+
+    width:calc(100% - 60px);
+
+    min-height:90px;
+
+    padding:22px 28px;
+
+    border-radius:30px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:20px;
+
+    backdrop-filter:blur(18px);
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,255,255,0.08),
+        rgba(255,255,255,0.03)
+    );
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,0.25);
+}
+
+header h1{
+
+    font-size:32px;
+    font-weight:800;
+}
+
+header p{
+
+    color:rgba(255,255,255,0.65);
+
+    margin-top:6px;
+}
+/* =======================================================
+======================= PAGE HEADER END ==================
+======================================================= */
+
+
+/* =======================================================
+====================== CONTAINER START ===================
+======================================================= */
+.container{
+
+    width:100%;
+
+    max-width:1500px;
+
+    margin:auto;
+
+    padding:
+    40px
+    30px
+    120px;
+}
+/* =======================================================
+======================= CONTAINER END ====================
+======================================================= */
+
+
+/* =======================================================
+====================== SECTION START =====================
+======================================================= */
+.section{
+
+    margin-top:45px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+/* شكل عظمة احترافي للعناوين */
+.section h3{
+
+    position:relative;
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:
+    18px
+    38px;
+
+    min-width:320px;
+
+    max-width:100%;
+
+    border-radius:999px;
+
+    font-size:22px;
+    font-weight:800;
+
+    color:white;
+
+    text-align:center;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,211,105,0.18),
+        rgba(255,255,255,0.08)
+    );
+
+    border:
+    1px solid rgba(255,211,105,0.28);
+
+    backdrop-filter:blur(18px);
+
+    box-shadow:
+    0 12px 35px rgba(0,0,0,0.22);
+
+    margin-bottom:30px;
+
+    overflow:hidden;
+}
+
+/* أطراف العظمة */
+.section h3::before,
+.section h3::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:28px;
+    height:28px;
+
+    border-radius:50%;
+
+    background:
+    radial-gradient(
+        circle,
+        #ffd369,
+        #ffb703
+    );
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    box-shadow:
+    0 0 15px rgba(255,211,105,0.5);
+}
+
+.section h3::before{
+    right:-10px;
+}
+
+.section h3::after{
+    left:-10px;
+}
+/* =======================================================
+======================= SECTION END ======================
+======================================================= */
+
+
+/* =======================================================
+====================== CARD START ========================
+======================================================= */
+.card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    backdrop-filter:blur(18px);
+
+    background:
+    linear-gradient(
+        145deg,
+        rgba(255,255,255,0.10),
+        rgba(255,255,255,0.04)
+    );
+
+    border:
+    1px solid rgba(255,255,255,0.10);
+
+    border-radius:28px;
+
+    padding:28px;
+
+    margin-bottom:25px;
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,0.25);
+
+    transition:0.4s;
+}
+
+.card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    right:0;
+
+    width:100%;
+    height:4px;
+
+    background:
+    linear-gradient(
+        to left,
+        #ffd369,
+        #ffb703,
+        transparent
+    );
+}
+
+.card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:
+    0 20px 45px rgba(0,0,0,0.30);
+}
+/* =======================================================
+======================= CARD END =========================
+======================================================= */
+
+
+/* =======================================================
+====================== TICKET START ======================
+======================================================= */
+
+.section div[id$="Tickets"]{
+
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(320px,1fr));
+
+    gap:22px;
+
+    align-items:stretch;
+}
+
+.ticket{
+
+    position:relative;
+
+    min-height:220px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+    backdrop-filter:blur(18px);
+
+    background:
+    linear-gradient(
+        145deg,
+        rgba(255,255,255,0.10),
+        rgba(255,255,255,0.04)
+    );
+
+    border:
+    1px solid rgba(255,255,255,0.10);
+
+    border-radius:30px;
+
+    padding:24px;
+
+    overflow:hidden;
+
+    transition:0.45s;
+
+    box-shadow:
+    0 15px 35px rgba(0,0,0,0.22);
+}
+
+.ticket::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    right:0;
+
+    width:100%;
+    height:5px;
+
+    background:
+    linear-gradient(
+        to left,
+        #ffd369,
+        #ffb703,
+        transparent
+    );
+}
+
+.ticket:hover{
+
+    transform:
+    translateY(-8px)
+    scale(1.01);
+
+    box-shadow:
+    0 20px 45px rgba(0,0,0,0.35);
+}
+
+.ticket h3{
+
+    margin-bottom:12px;
+
+    font-size:22px;
+}
+
+.ticket p{
+
+    color:rgba(255,255,255,0.78);
+
+    line-height:2;
+}
+/* =======================================================
+======================= TICKET END =======================
+======================================================= */
+
+
+/* =======================================================
+====================== INPUTS START ======================
+======================================================= */
+input,
+textarea,
+select{
+
+    width:100%;
+
+    padding:16px;
+
+    margin-top:10px;
+    margin-bottom:18px;
+
+    border:none;
+    outline:none;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,0.08);
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    color:white;
+
+    font-size:15px;
+
+    font-family:'Cairo',sans-serif;
+
+    text-align:right;
+
+    transition:0.35s;
+}
+
+textarea{
+    resize:none;
+    min-height:130px;
+}
+
+input::placeholder,
+textarea::placeholder{
+
+    color:rgba(255,255,255,0.45);
+}
+
+select{
+    color:white;
+}
+
+option{
+    color:black;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+
+    transform:scale(1.01);
+
+    border:
+    1px solid rgba(255,211,105,0.45);
+
+    box-shadow:
+    0 0 18px rgba(255,211,105,0.18);
+}
+/* =======================================================
+======================= INPUTS END =======================
+======================================================= */
+
+
+/* =======================================================
+====================== BUTTONS START =====================
+======================================================= */
+button{
+
+    border:none;
+
+    cursor:pointer;
+
+    transition:0.35s;
+
+    font-weight:700;
+
+    font-family:'Cairo',sans-serif;
+}
+
+.btn-create{
+
+    width:100%;
+
+    margin-top:10px;
+
+    padding:15px 28px;
+
+    border-radius:18px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #ffd369,
+        #ffb703
+    );
+
+    color:#071739;
+
+    font-size:16px;
+}
+
+.btn-create:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:
+    0 10px 25px rgba(255,211,105,0.30);
+}
+/* =======================================================
+======================= BUTTONS END ======================
+======================================================= */
+
+
+/* =======================================================
+====================== FOOTER START ======================
+======================================================= */
+.main-footer{
+
+    margin-top:60px;
+
+    width:100%;
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    backdrop-filter:blur(15px);
+
+    background:rgba(255,255,255,0.04);
+
+    border-top:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.social{
+    margin-bottom:16px;
+}
+
+.social a{
+
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+
+    width:45px;
+    height:45px;
+
+    margin:6px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,0.08);
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:bold;
+
+    transition:0.4s;
+}
+
+.social a:hover{
+
+    transform:translateY(-6px);
+
+    background:#ffd369;
+
+    color:#071739;
+
+    box-shadow:
+    0 8px 20px rgba(255,211,105,0.35);
+}
+
+.footer-text{
+
+    color:rgba(255,255,255,0.7);
+
+    font-size:14px;
+}
+/* =======================================================
+======================= FOOTER END =======================
+======================================================= */
+
+
+/* =======================================================
+====================== RESPONSIVE START ==================
+======================================================= */
+@media(max-width:992px){
+
+    header{
+
+        margin-top:20px;
+    }
+
+    header h1{
+
+        font-size:26px;
+    }
+
+}
+
+@media(max-width:768px){
+
+    body{
+        padding-top:140px;
+    }
+
+    .main-header{
+
+        flex-direction:column;
+
+        gap:15px;
+
+        padding:18px;
+    }
+
+    .brand{
+
+        font-size:23px;
+    }
+
+    .about-link{
+
+        width:100%;
+
+        text-align:center;
+    }
+
+    header{
+
+        width:calc(100% - 30px);
+
+        margin-top:20px;
+
+        padding:20px;
+    }
+
+    .container{
+
+        padding:
+        25px
+        15px
+        100px;
+    }
+
+    .section h3{
+
+        width:100%;
+
+        min-width:auto;
+
+        font-size:18px;
+
+        padding:16px 22px;
+    }
+
+    .section div[id$="Tickets"]{
+
+        grid-template-columns:1fr;
+    }
+
+    .card{
+
+        padding:22px;
+    }
+
+    .ticket{
+
+        min-height:auto;
+    }
+
+}
+
+@media(max-width:480px){
+
+    .logo{
+        height:48px;
+    }
+
+    header h1{
+
+        font-size:22px;
+    }
+
+    .ticket h3{
+
+        font-size:19px;
+    }
+
+    input,
+    textarea,
+    select{
+
+        padding:14px;
+    }
+
+    .btn-create{
+
+        width:100%;
+    }
+
+}
+/* =======================================================
+======================= RESPONSIVE END ===================
+======================================================= */
+/* =======================================================
+====================== TICKET DETAILS ====================
+======================================================= */
+
+.ticket{
+
+    direction:rtl;
+
+    text-align:right;
+}
+
+/* رأس التيكت */
+.ticket-top{
+
+    display:flex;
+
+    justify-content:space-between;
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:20px;
+
+    flex-wrap:wrap;
+}
+
+/* عنوان التيكت */
+.ticket-title{
+
+    font-size:24px;
+
+    font-weight:800;
+
+    color:#ffffff;
+
+    line-height:1.7;
+}
+
+/* حالة التيكت */
+.ticket-status{
+
+    padding:10px 18px;
+
+    border-radius:50px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    backdrop-filter:blur(10px);
+
+    border:
+    1px solid rgba(255,255,255,0.15);
+
+    box-shadow:
+    0 8px 18px rgba(0,0,0,0.15);
+}
+
+/* مفتوحة */
+.status-open{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(0,255,170,0.18),
+        rgba(0,255,170,0.08)
+    );
+
+    color:#7dffd3;
+}
+
+/* مغلقة */
+.status-closed{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,80,80,0.18),
+        rgba(255,80,80,0.08)
+    );
+
+    color:#ffb0b0;
+}
+
+/* جاري العمل */
+.status-progress{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,211,105,0.20),
+        rgba(255,211,105,0.08)
+    );
+
+    color:#ffe08a;
+}
+
+/* تم الحل */
+.status-resolved{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(80,180,255,0.20),
+        rgba(80,180,255,0.08)
+    );
+
+    color:#9fd6ff;
+}
+
+/* جسم التيكت */
+.ticket-body{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+}
+
+/* كل سطر بيانات */
+.ticket-item{
+
+    background:
+    rgba(255,255,255,0.05);
+
+    border:
+    1px solid rgba(255,255,255,0.06);
+
+    border-radius:18px;
+
+    padding:16px 18px;
+
+    line-height:2;
+}
+
+/* العنوان */
+.ticket-item .label,
+.ticket-solution .label{
+
+    font-weight:800;
+
+    color:#ffd369;
+
+    margin-left:8px;
+}
+
+/* القيمة */
+.ticket-item .value{
+
+    color:rgba(255,255,255,0.85);
+}
+
+/* صندوق الحل */
+.ticket-solution{
+
+    margin-top:8px;
+
+    padding:20px;
+
+    border-radius:22px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,211,105,0.10),
+        rgba(255,255,255,0.04)
+    );
+
+    border:
+    1px solid rgba(255,211,105,0.18);
+}
+
+/* نص الحل */
+.solution-text{
+
+    margin-top:12px;
+
+    line-height:2.1;
+
+    color:rgba(255,255,255,0.88);
+}
+
+/* التقييم */
+.ticket-rating{
+
+    width:fit-content;
+
+    padding:12px 18px;
+
+    border-radius:50px;
+
+    background:
+    rgba(255,255,255,0.08);
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    font-weight:700;
+
+    margin-top:10px;
+}
+
+/* أزرار التحكم */
+.ticket-actions{
+
+    margin-top:28px;
+
+    display:flex;
+
+    justify-content:flex-end;
+}
+
+/* select */
+.ticket-actions select{
+
+    min-width:220px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,255,255,0.10),
+        rgba(255,255,255,0.04)
+    );
+
+    color:white;
+
+    border-radius:18px;
+
+    border:
+    1px solid rgba(255,255,255,0.10);
+
+    padding:14px 18px;
+
+    cursor:pointer;
+
+    font-weight:700;
+
+    transition:0.35s;
+}
+
+.ticket-actions select:hover{
+
+    transform:translateY(-2px);
+
+    border:
+    1px solid rgba(255,211,105,0.30);
+}
+
+.ticket-actions option{
+
+    color:black;
+}
+
+/* =======================================================
+====================== RESPONSIVE ========================
+======================================================= */
+
+@media(max-width:768px){
+
+    .ticket-top{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+    .ticket-title{
+
+        font-size:21px;
+    }
+
+    .ticket-actions{
+
+        justify-content:center;
+    }
+
+    .ticket-actions select{
+
+        width:75%;
+    }
+
+}
+
+/* =======================================================
+====================== WELCOME BOX =======================
+======================================================= */
+
+.welcome-box{
+
+    position:relative;
+
+    overflow:hidden;
+
+    display:flex;
+    align-items:center;
+
+    padding:18px 24px;
+
+    min-width:320px;
+
+    border-radius:24px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,211,105,0.15),
+        rgba(255,255,255,0.05)
+    );
+
+    border:
+    1px solid rgba(255,211,105,0.20);
+
+    backdrop-filter:blur(18px);
+
+    box-shadow:
+    0 12px 35px rgba(0,0,0,0.20);
+}
+
+/* إضاءة */
+.welcome-glow{
+
+    position:absolute;
+
+    width:120px;
+    height:120px;
+
+    background:
+    rgba(255,211,105,0.15);
+
+    border-radius:50%;
+
+    top:-40px;
+    left:-40px;
+
+    filter:blur(25px);
+}
+
+/* المحتوى */
+.welcome-content{
+
+    position:relative;
+
+    z-index:2;
+}
+
+/* النص */
+.welcome-title{
+
+    font-size:15px;
+
+    color:rgba(255,255,255,0.70);
+
+    margin-bottom:6px;
+}
+
+.welcome-name{
+
+    font-size:24px;
+
+    font-weight:800;
+
+    color:#ffffff;
+}
+
+/* =======================================================
+====================== PROFILE CARD ======================
+======================================================= */
+
+.profile-card{
+
+    margin-top:10px;
+}
+
+/* رأس البطاقة */
+.profile-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    margin-bottom:22px;
+}
+
+/* الأيقونة */
+.profile-icon{
+
+    width:58px;
+    height:58px;
+
+    border-radius:18px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:26px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,211,105,0.18),
+        rgba(255,255,255,0.06)
+    );
+
+    border:
+    1px solid rgba(255,211,105,0.18);
+}
+
+/* العنوان */
+.profile-title{
+
+    font-size:24px;
+
+    font-weight:800;
+
+    color:#ffffff;
+}
+
+/* شبكة البيانات */
+.profile-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+    gap:18px;
+}
+
+/* عنصر البيانات */
+.profile-item{
+
+    position:relative;
+
+    overflow:hidden;
+
+    padding:18px;
+
+    border-radius:22px;
+
+    background:
+    linear-gradient(
+        145deg,
+        rgba(255,255,255,0.08),
+        rgba(255,255,255,0.03)
+    );
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    transition:0.35s;
+}
+
+/* خط علوي */
+.profile-item::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    right:0;
+
+    width:100%;
+    height:4px;
+
+    background:
+    linear-gradient(
+        to left,
+        #ffd369,
+        transparent
+    );
+}
+
+.profile-item:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:
+    0 12px 30px rgba(0,0,0,0.20);
+}
+
+/* اسم الحقل */
+.profile-label{
+
+    font-size:14px;
+
+    color:#ffd369;
+
+    font-weight:700;
+
+    margin-bottom:10px;
+}
+
+/* القيمة */
+.profile-value{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    color:#ffffff;
+
+    line-height:1.8;
+}
+
+/* =======================================================
+====================== MOBILE ============================
+======================================================= */
+
+@media(max-width:768px){
+
+    .welcome-box{
+
+        width:100%;
+
+        min-width:auto;
+    }
+
+    .welcome-name{
+
+        font-size:20px;
+    }
+
+    .profile-title{
+
+        font-size:21px;
+    }
+
+    .profile-grid{
+
+        grid-template-columns:1fr;
+    }
+
+}
+</style>
+
+</head>
+
+<body>
+
+<header class="main-header">
+
+    <img src="photo/logo.png" class="logo">
+
+    <div class="brand">
+        SGU Ticketing
+    </div>
+
+    <a href="about.html" class="about-link">
+        من نحن
+    </a>
+
+</header>
+
+<header>
+    <div id="welcome"></div>
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <div id="profile"></div>
+
+    </div>
+
+    <div class="card">
+
+        <h3>إنشاء تيكت جديد</h3>
+
+        <div id="engineerBox" style="margin-bottom:10px;color:#ffffff"></div>
+
+        <input id="title" placeholder="عنوان المشكلة">
+
+        <textarea id="description" placeholder="وصف المشكلة"></textarea>
+
+        <input id="location" placeholder="الموقع">
+
+        <button class="btn-create" onclick="createTicket()">
+            إنشاء تيكت
+        </button>
+
+    </div>
+
+    <div class="section">
+
+        <h3>تيكتاتي المفتوحة</h3>
+
+        <div id="openTickets"></div>
+
+    </div>
+
+    <div class="section">
+
+        <h3>تيكتاتي جاري العمل عليها</h3>
+
+        <div id="progressTickets"></div>
+
+    </div>
+
+    <div class="section">
+
+        <h3>تيكتات تم الرد عليها بالحل</h3>
+
+        <div id="resolvedTickets"></div>
+
+    </div>
+
+    <div class="section">
+
+        <h3>تيكتات تم إغلاقها</h3>
+
+        <div id="closedTickets"></div>
+
+    </div>
+
+</div>
+
+<!-- =======================================================
+====================== FOOTER START =======================
+======================================================= -->
+<footer class="main-footer">
+
+    <div class="social">
+
+        <a href="#">F</a>
+        <a href="#">Y</a>
+        <a href="#">L</a>
+        <a href="#">W</a>
+        <a href="#">E</a>
+
+    </div>
+
+    <div class="footer-text">
+        جميع الحقوق محفوظة © M.H.D
+    </div>
+
+</footer>
+<!-- =======================================================
+======================= FOOTER END ========================
+======================================================= -->
+<script>
+
+const SUPABASE_URL="https://cqmhpvaaaduqbhjtyrgk.supabase.co"
+const SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxbWhwdmFhYWR1cWJoanR5cmdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MTA3OTUsImV4cCI6MjA5NDE4Njc5NX0.eqZ69jTSRFvPhjSVx2KZe9-3LSw0cw8uAQ6D06ZkQFg"
+
+const supabaseClient = supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+)
+
+let user = JSON.parse(localStorage.getItem("user"))
+
+if(!user){
+location="login.html"
+}
+
+document.getElementById("welcome").innerHTML =
+
+`
+<div class="welcome-box">
+
+    <div class="welcome-glow"></div>
+
+    <div class="welcome-content">
+
+        <div class="welcome-title">
+            أهلاً بك
+        </div>
+
+        <div class="welcome-name">
+            ${user.name}
+        </div>
+
+    </div>
+
+</div>
+`
+
+
+document.getElementById("profile").innerHTML =
+
+`
+<div class="profile-card">
+
+    <div class="profile-header">
+
+        <div class="profile-icon">
+            👤
+        </div>
+
+        <div class="profile-title">
+            بيانات المستخدم
+        </div>
+
+    </div>
+
+    <div class="profile-grid">
+
+        <div class="profile-item">
+
+            <div class="profile-label">
+                الاسم
+            </div>
+
+            <div class="profile-value">
+                ${user.name}
+            </div>
+
+        </div>
+
+        <div class="profile-item">
+
+            <div class="profile-label">
+                رقم الهاتف
+            </div>
+
+            <div class="profile-value">
+                ${user.phone}
+            </div>
+
+        </div>
+
+        <div class="profile-item">
+
+            <div class="profile-label">
+                الوظيفة
+            </div>
+
+            <div class="profile-value">
+                ${user.job_title}
+            </div>
+
+        </div>
+
+        <div class="profile-item">
+
+            <div class="profile-label">
+                الكلية
+            </div>
+
+            <div class="profile-value">
+                ${user.faculty}
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+`
+
+function logout(){
+
+    localStorage.removeItem("user")
+
+    location = "login.html"
+}
+
+
+let usersMap={}
+
+async function loadUsers(){
+
+let {data} = await supabaseClient
+.from("users")
+.select("id,name")
+
+data.forEach(u=>{
+usersMap[u.id]=u.name
+})
+
+}
+
+
+let engineer=null
+
+async function loadEngineer(){
+
+let {data} = await supabaseClient
+.from("users")
+.select("*")
+.eq("role","it")
+.eq("faculty",user.faculty)
+
+if(data.length){
+
+engineer=data[0]
+
+document.getElementById("engineerBox").innerHTML=
+" المهندس المسؤل: <b>"+engineer.name+"</b>"
+
+}else{
+
+document.getElementById("engineerBox").innerHTML=
+"No IT Engineer found"
+
+}
+
+}
+
+
+async function createTicket(){
+
+let title=document.getElementById("title").value
+let description=document.getElementById("description").value
+let location=document.getElementById("location").value
+
+await supabaseClient
+.from("tickets")
+.insert({
+title:title,
+description:description,
+location:location,
+created_by:user.id,
+faculty:user.faculty,
+assigned_to:engineer?engineer.id:null
+})
+
+document.getElementById("title").value=""
+document.getElementById("description").value=""
+document.getElementById("location").value=""
+
+}
+
+
+async function changeStatus(ticket,status){
+
+if(status=="closed"){
+
+let rating=prompt("Rate service 1-5")
+
+if(rating){
+
+await supabaseClient
+.from("ratings")
+.insert({
+ticket_id:ticket,
+rating:rating
+})
+
+}
+
+}
+
+await supabaseClient
+.from("tickets")
+.update({status:status})
+.eq("id",ticket)
+
+}
+
+
+async function loadTickets(){
+
+await loadUsers()
+
+let {data} = await supabaseClient
+.from("tickets")
+.select("*")
+.eq("created_by",user.id)
+.order("created_at",{ascending:false})
+
+
+let open=""
+let progress=""
+let resolved=""
+let closed=""
+
+for(let t of data){
+
+let engineerName=usersMap[t.assigned_to] || "Unassigned"
+
+let solution=""
+let rating=""
+
+if(t.status=="resolved" || t.status=="waiting_confirmation" || t.status=="closed"){
+
+let {data:sol}=await supabaseClient
+.from("ticket_solution")
+.select("*")
+.eq("ticket_id",t.id)
+
+if(sol.length){
+solution=sol[0].solution_text
+}
+
+}
+
+if(t.status=="closed"){
+
+let {data:r}=await supabaseClient
+.from("ratings")
+.select("*")
+.eq("ticket_id",t.id)
+
+if(r.length){
+rating="Rating: "+r[0].rating
+}
+
+}
+
+let html =
+
+`
+<div class="ticket">
+
+    <div class="ticket-top">
+
+        <div class="ticket-title">
+            ${t.title}
+        </div>
+
+        <div class="ticket-status status-${t.status}">
+            ${t.status === "open" ? "مفتوحة" : "مغلقة"}
+        </div>
+
+    </div>
+
+    <div class="ticket-body">
+
+        <div class="ticket-item">
+            <span class="label">وصف المشكلة :</span>
+            <span class="value">
+                ${t.description || "لا يوجد وصف للمشكلة"}
+            </span>
+        </div>
+
+        <div class="ticket-item">
+            <span class="label">مكان المشكلة :</span>
+            <span class="value">
+                ${t.location || "لم يتم تحديد الموقع"}
+            </span>
+        </div>
+
+        <div class="ticket-item">
+            <span class="label">حالة التيكت :</span>
+            <span class="value">
+                ${
+                    t.status === "open"
+                    ? "مفتوحة"
+                    : t.status === "progress"
+                    ? "جاري العمل عليها"
+                    : t.status === "resolved"
+                    ? "تم الرد بالحل"
+                    : "مغلقة"
+                }
+            </span>
+        </div>
+
+        <div class="ticket-item">
+            <span class="label">مهندس الدعم :</span>
+            <span class="value">
+                ${engineerName || "غير محدد"}
+            </span>
+        </div>
+
+        ${
+            solution
+            ?
+            `
+            <div class="ticket-solution">
+                <span class="label">
+                    السبب الفني للمشكلة :
+                </span>
+
+                <div class="solution-text">
+                    ${solution}
+                </div>
+            </div>
+            `
+            :
+            ""
+        }
+
+        ${
+            rating
+            ?
+            `
+            <div class="ticket-rating">
+                ⭐ ${rating}
+            </div>
+            `
+            :
+            ""
+        }
+
+    </div>
+
+    <div class="ticket-actions">
+
+        <select onchange="changeStatus(${t.id},this.value)">
+
+            <option value="">
+                تغيير حالة التيكت
+            </option>
+
+            <option value="open">
+                فتح التيكت
+            </option>
+
+            <option value="closed">
+                إغلاق التيكت
+            </option>
+
+        </select>
+
+    </div>
+
+</div>
+`
+
+if(t.status=="open" || t.status=="assigned")
+open+=html
+
+else if(t.status=="in_progress")
+progress+=html
+
+else if(t.status=="resolved" || t.status=="waiting_confirmation")
+resolved+=html
+
+else if(t.status=="closed")
+closed+=html
+
+}
+
+document.getElementById("openTickets").innerHTML=open
+document.getElementById("progressTickets").innerHTML=progress
+document.getElementById("resolvedTickets").innerHTML=resolved
+document.getElementById("closedTickets").innerHTML=closed
+
+}
+
+
+function realtime(){
+
+supabaseClient
+.channel("tickets-channel")
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"tickets"
+},
+payload=>{
+loadTickets()
+}
+)
+.subscribe()
+
+}
+
+
+async function init(){
+
+await loadEngineer()
+await loadTickets()
+realtime()
+
+}
+
+init()
+
+</script>
+
+</body>
+</html>

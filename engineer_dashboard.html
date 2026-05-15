@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+
+<meta charset="UTF-8">
+<title>IT Engineer Dashboard</title>
+
+<style>
+
+/* =======================================================
+PAGE BASE
+======================================================= */
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Tahoma;
+    direction:rtl;
+    margin:0;
+    padding-top:110px;
+
+    background:
+    radial-gradient(circle at top,#0f2742,#071739);
+
+    color:white;
+}
+
+/* =======================================================
+MAIN HEADER
+======================================================= */
+
+.main-header{
+
+    width:100%;
+
+    height:85px;
+
+    padding:0 5%;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    position:fixed;
+
+    top:0;
+    right:0;
+    left:0;
+
+    z-index:2000;
+
+    backdrop-filter:blur(18px);
+
+    background:rgba(255,255,255,0.05);
+
+    border-bottom:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.logo{
+    height:50px;
+}
+
+.brand{
+
+    font-size:26px;
+
+    font-weight:800;
+
+    background:
+    linear-gradient(to right,#fff,#ffd369);
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+}
+
+.about-link{
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:10px 22px;
+
+    border-radius:40px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,255,255,0.15),
+        rgba(255,255,255,0.05)
+    );
+
+    border:
+    1px solid rgba(255,255,255,0.12);
+
+    transition:0.3s;
+
+    font-weight:700;
+}
+
+.about-link:hover{
+
+    transform:translateY(-2px);
+
+    background:
+    linear-gradient(
+        135deg,
+        #ffd369,
+        #ffb703
+    );
+
+    color:#071739;
+}
+
+/* =======================================================
+PAGE TITLE
+======================================================= */
+
+.header{
+
+    text-align:center;
+
+    font-size:28px;
+
+    font-weight:800;
+
+    margin-top:20px;
+
+    margin-bottom:30px;
+
+    color:#ffd369;
+}
+
+/* =======================================================
+CONTAINER
+======================================================= */
+
+.container{
+
+    width:90%;
+
+    max-width:1200px;
+
+    margin:auto;
+}
+
+/* =======================================================
+SECTION
+======================================================= */
+
+.section{
+
+    margin-bottom:50px;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    backdrop-filter:blur(10px);
+
+    background:
+    rgba(255,255,255,0.03);
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.section h2{
+
+    font-size:22px;
+
+    margin-bottom:20px;
+
+    padding-bottom:8px;
+
+    border-bottom:
+    1px solid rgba(255,255,255,0.12);
+
+    color:#ffd369;
+}
+
+/* =======================================================
+TICKETS GRID
+======================================================= */
+
+.tickets-container{
+
+    display:grid;
+
+    grid-template-columns:1fr;
+
+    gap:18px;
+}
+
+@media(min-width:900px){
+
+.tickets-container{
+
+    grid-template-columns:1fr 1fr;
+}
+
+}
+
+/* =======================================================
+BUTTONS
+======================================================= */
+
+button{
+
+    padding:10px 14px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    margin:4px;
+
+    font-weight:bold;
+
+    transition:0.25s;
+}
+
+button:hover{
+
+    transform:translateY(-2px);
+}
+
+.inprogress{
+
+    background:#f39c12;
+
+    color:white;
+}
+
+.resolved{
+
+    background:#27ae60;
+
+    color:white;
+}
+
+/* =======================================================
+TEXTAREA
+======================================================= */
+
+textarea{
+
+    width:100%;
+
+    margin-top:10px;
+
+    padding:10px;
+
+    border-radius:8px;
+
+    border:none;
+
+    resize:vertical;
+
+    font-family:Tahoma;
+}
+
+/* =======================================================
+SOLUTION BOX
+======================================================= */
+
+.solution{
+
+    background:
+    rgba(255,255,255,0.05);
+
+    padding:10px;
+
+    margin-top:8px;
+
+    border-radius:8px;
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+}
+
+/* =======================================================
+FOOTER
+======================================================= */
+
+.main-footer{
+
+    margin-top:60px;
+
+    width:100%;
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    backdrop-filter:blur(15px);
+
+    background:rgba(255,255,255,0.04);
+
+    border-top:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.social{
+    margin-bottom:16px;
+}
+
+.social a{
+
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+
+    width:45px;
+    height:45px;
+
+    margin:6px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,0.08);
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:bold;
+
+    transition:0.3s;
+}
+
+.social a:hover{
+
+    transform:translateY(-5px);
+
+    background:#ffd369;
+
+    color:#071739;
+
+    box-shadow:
+    0 8px 20px rgba(255,211,105,0.35);
+}
+
+.footer-text{
+
+    color:rgba(255,255,255,0.7);
+
+    font-size:14px;
+}
+/* =======================================================
+====================== TICKET DETAILS ====================
+======================================================= */
+
+.ticket{
+
+    direction:rtl;
+    text-align:right;
+
+    margin-bottom:22px;
+
+    padding:22px;
+
+    border-radius:24px;
+
+    background:
+    linear-gradient(
+        145deg,
+        rgba(255,255,255,0.08),
+        rgba(255,255,255,0.03)
+    );
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(18px);
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.20);
+
+    transition:0.35s;
+
+    position:relative;
+}
+
+/* Hover */
+.ticket:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:
+    0 18px 40px rgba(0,0,0,0.30);
+}
+
+/* خط علوي */
+.ticket::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    right:0;
+
+    width:100%;
+    height:4px;
+
+    border-radius:24px 24px 0 0;
+
+    background:
+    linear-gradient(
+        to left,
+        #ffd369,
+        transparent
+    );
+}
+
+/* رأس التيكت */
+.ticket-top{
+
+    display:flex;
+
+    justify-content:space-between;
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:20px;
+
+    flex-wrap:wrap;
+}
+
+/* عنوان التيكت */
+.ticket-title{
+
+    font-size:24px;
+
+    font-weight:800;
+
+    color:#ffffff;
+
+    line-height:1.7;
+}
+
+/* حالة التيكت */
+.ticket-status{
+
+    padding:10px 18px;
+
+    border-radius:50px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    backdrop-filter:blur(10px);
+
+    border:
+    1px solid rgba(255,255,255,0.15);
+
+    box-shadow:
+    0 8px 18px rgba(0,0,0,0.15);
+}
+
+/* مفتوحة */
+.status-open{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(0,255,170,0.18),
+        rgba(0,255,170,0.08)
+    );
+
+    color:#7dffd3;
+}
+
+/* مغلقة */
+.status-closed{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,80,80,0.18),
+        rgba(255,80,80,0.08)
+    );
+
+    color:#ffb0b0;
+}
+
+/* جاري العمل */
+.status-progress{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,211,105,0.20),
+        rgba(255,211,105,0.08)
+    );
+
+    color:#ffe08a;
+}
+
+/* تم الحل */
+.status-resolved{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(80,180,255,0.20),
+        rgba(80,180,255,0.08)
+    );
+
+    color:#9fd6ff;
+}
+
+/* جسم التيكت */
+.ticket-body{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+}
+
+/* كل سطر بيانات */
+.ticket-item{
+
+    background:
+    rgba(255,255,255,0.05);
+
+    border:
+    1px solid rgba(255,255,255,0.06);
+
+    border-radius:18px;
+
+    padding:16px 18px;
+
+    line-height:2;
+}
+
+/* العنوان */
+.ticket-item .label,
+.ticket-solution .label{
+
+    font-weight:800;
+
+    color:#ffd369;
+
+    margin-left:8px;
+}
+
+/* القيمة */
+.ticket-item .value{
+
+    color:rgba(255,255,255,0.85);
+}
+
+/* صندوق الحل */
+.ticket-solution{
+
+    margin-top:8px;
+
+    padding:20px;
+
+    border-radius:22px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,211,105,0.10),
+        rgba(255,255,255,0.04)
+    );
+
+    border:
+    1px solid rgba(255,211,105,0.18);
+}
+
+/* نص الحل */
+.solution-text{
+
+    margin-top:12px;
+
+    line-height:2.1;
+
+    color:rgba(255,255,255,0.88);
+}
+
+/* التقييم */
+.ticket-rating{
+
+    width:fit-content;
+
+    padding:12px 18px;
+
+    border-radius:50px;
+
+    background:
+    rgba(255,255,255,0.08);
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    font-weight:700;
+
+    margin-top:10px;
+}
+
+/* أزرار التحكم */
+.ticket-actions{
+
+    margin-top:28px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+}
+
+/* textarea */
+.ticket-actions textarea{
+
+    width:100%;
+
+    border-radius:14px;
+
+    padding:12px;
+
+    border:
+    1px solid rgba(255,255,255,0.1);
+
+    background:
+    rgba(255,255,255,0.05);
+
+    color:white;
+}
+
+/* select */
+.ticket-actions select{
+
+    min-width:220px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,255,255,0.10),
+        rgba(255,255,255,0.04)
+    );
+
+    color:white;
+
+    border-radius:18px;
+
+    border:
+    1px solid rgba(255,255,255,0.10);
+
+    padding:14px 18px;
+
+    cursor:pointer;
+
+    font-weight:700;
+
+    transition:0.35s;
+}
+
+.ticket-actions select:hover{
+
+    transform:translateY(-2px);
+
+    border:
+    1px solid rgba(255,211,105,0.30);
+}
+
+.ticket-actions option{
+
+    color:black;
+}
+
+/* =======================================================
+====================== RESPONSIVE ========================
+======================================================= */
+
+@media(max-width:768px){
+
+    .ticket-top{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+    .ticket-title{
+
+        font-size:21px;
+    }
+
+    .ticket-actions{
+
+        justify-content:center;
+    }
+
+    .ticket-actions select{
+
+        width:75%;
+    }
+
+}
+</style>
+
+
+</head>
+
+<body>
+
+
+<header class="main-header">
+
+    <img src="photo/logo.png" class="logo">
+
+    <div class="brand">
+        SGU Ticketing
+    </div>
+
+    <a href="about.html" class="about-link">
+        من نحن
+    </a>
+
+</header>
+
+
+<div class="header">
+لوحة مهندس IT
+</div>
+
+
+<div class="container">
+
+
+<div class="section">
+<h2>التذاكر المفتوحة</h2>
+<div id="openTickets" class="tickets-container"></div>
+</div>
+
+
+<div class="section">
+<h2>التذاكر تحت العمل</h2>
+<div id="progressTickets" class="tickets-container"></div>
+</div>
+
+
+<div class="section">
+<h2>التذاكر التي تم حلها</h2>
+<div id="resolvedTickets" class="tickets-container"></div>
+</div>
+
+
+<div class="section">
+<h2>التذاكر المغلقة</h2>
+<div id="closedTickets" class="tickets-container"></div>
+</div>
+
+
+</div>
+
+
+<footer class="main-footer">
+
+    <div class="social">
+
+        <a href="#">F</a>
+        <a href="#">Y</a>
+        <a href="#">L</a>
+        <a href="#">W</a>
+        <a href="#">E</a>
+
+    </div>
+
+    <div class="footer-text">
+        جميع الحقوق محفوظة © M.H.D
+    </div>
+
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL="https://cqmhpvaaaduqbhjtyrgk.supabase.co"
+const SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxbWhwdmFhYWR1cWJoanR5cmdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MTA3OTUsImV4cCI6MjA5NDE4Njc5NX0.eqZ69jTSRFvPhjSVx2KZe9-3LSw0cw8uAQ6D06ZkQFg"
+
+const supabaseClient=supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+)
+
+let user=JSON.parse(localStorage.getItem("user"))
+
+if(!user || user.role!=="it"){
+window.location="index.html"
+}
+
+async function loadTickets(){
+
+let {data:tickets}=await supabaseClient
+.from("tickets")
+.select(`
+*,
+employee:created_by(name,phone)
+`)
+.eq("assigned_to",user.id)
+.order("created_at",{ascending:false})
+
+let openHTML=""
+let progressHTML=""
+let resolvedHTML=""
+let closedHTML=""
+
+for(let t of tickets){
+
+let name=t.employee?.name || "غير معروف"
+let phone=t.employee?.phone || "---"
+
+let {data:sol}=await supabaseClient
+.from("ticket_solution")
+.select("solution_text")
+.eq("ticket_id",t.id)
+.single()
+
+let solutionsHTML=""
+
+if(sol && sol.solution_text){
+
+let reasons=sol.solution_text.split("\n-\n")
+
+for(let r of reasons){
+solutionsHTML+=`<div>${r}</div>`
+}
+
+}
+
+let statusClass="status-open"
+if(t.status==="closed") statusClass="status-closed"
+else if(t.status==="in_progress") statusClass="status-progress"
+else if(t.status==="resolved") statusClass="status-resolved"
+
+/* ✅ الكارد مقفول لوحده */
+let card=`
+
+<div class="ticket">
+
+<div class="ticket-top">
+
+<div class="ticket-title">
+${t.title}
+</div>
+
+<div class="ticket-status ${statusClass}">
+${t.status}
+</div>
+
+</div>
+
+<div class="ticket-body">
+
+<div class="ticket-item">
+<span class="label">الوصف:</span>
+<span class="value">${t.description || ""}</span>
+</div>
+
+<div class="ticket-item">
+<span class="label">المكان:</span>
+<span class="value">${t.location || ""}</span>
+</div>
+
+<div class="ticket-item">
+<span class="label">الموظف:</span>
+<span class="value">${name}</span>
+</div>
+
+<div class="ticket-item">
+<span class="label">الهاتف:</span>
+<span class="value">${phone}</span>
+</div>
+
+</div>
+
+${solutionsHTML ? `
+<div class="ticket-solution">
+<div class="label">الحلول:</div>
+<div class="solution-text">
+${solutionsHTML}
+</div>
+</div>
+` : ""}
+
+`
+
+/* ✅ الأزرار أصبحت داخل الكارد */
+if(t.status==="open" || t.status==="assigned"){
+
+openHTML+=card+`
+
+<div class="ticket-actions">
+
+<textarea id="solution-${t.id}" placeholder="اكتب السبب الفني"></textarea>
+
+<button class="inprogress" onclick="updateStatus(${t.id},'in_progress')">
+تحت العمل
+</button>
+
+<button class="resolved" onclick="resolveTicket(${t.id})">
+تم الحل
+</button>
+
+</div>
+
+</div> <!-- قفل الكارد -->
+
+`
+
+}
+
+else if(t.status==="in_progress"){
+
+progressHTML+=card+`
+
+<div class="ticket-actions">
+
+<textarea id="solution-${t.id}" placeholder="إضافة سبب فني"></textarea>
+
+<button class="resolved" onclick="resolveTicket(${t.id})">
+تم الحل
+</button>
+
+</div>
+
+</div>
+
+`
+
+}
+
+else if(t.status==="resolved"){
+
+resolvedHTML+=card+`</div>`
+
+}
+
+else if(t.status==="closed"){
+
+let {data:ratingData}=await supabaseClient
+.from("ratings")
+.select("*")
+.eq("ticket_id",t.id)
+
+let rating=ratingData?.length ? ratingData[0].rating : "لا يوجد"
+
+closedHTML+=card+`
+
+<p class="ticket-rating"><b>التقييم:</b> ${rating}</p>
+
+</div>
+
+`
+
+}
+
+}
+
+document.getElementById("openTickets").innerHTML=openHTML
+document.getElementById("progressTickets").innerHTML=progressHTML
+document.getElementById("resolvedTickets").innerHTML=resolvedHTML
+document.getElementById("closedTickets").innerHTML=closedHTML
+
+}
+
+async function updateStatus(id,status){
+
+await supabaseClient
+.from("tickets")
+.update({status:status})
+.eq("id",id)
+
+loadTickets()
+
+}
+
+async function resolveTicket(id){
+
+let newReason=document.getElementById("solution-"+id).value
+
+if(!newReason){
+alert("اكتب السبب الفني")
+return
+}
+
+let {data:old}=await supabaseClient
+.from("ticket_solution")
+.select("solution_text")
+.eq("ticket_id",id)
+.single()
+
+let finalText=""
+
+if(old){
+
+finalText=newReason+"\n-\n"+old.solution_text
+
+await supabaseClient
+.from("ticket_solution")
+.update({solution_text:finalText})
+.eq("ticket_id",id)
+
+}
+else{
+
+await supabaseClient
+.from("ticket_solution")
+.insert({
+ticket_id:id,
+engineer_id:user.id,
+solution_text:newReason
+})
+
+}
+
+await supabaseClient
+.from("tickets")
+.update({status:"resolved"})
+.eq("id",id)
+
+loadTickets()
+
+}
+
+loadTickets()
+
+supabaseClient
+.channel("tickets-live")
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"tickets"
+},
+payload=>{
+loadTickets()
+}
+)
+.subscribe()
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>لوحة تحكم الموظف</title>
+
+<style>
+
+body{
+font-family: Tahoma;
+background:#f5f5f5;
+direction:rtl;
+margin:0;
+}
+
+.header{
+background:#5d4037;
+color:white;
+padding:15px;
+font-size:22px;
+text-align:center;
+}
+
+.container{
+width:600px;
+margin:40px auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h2{
+color:#5d4037;
+margin-bottom:20px;
+}
+
+input,select,textarea{
+width:100%;
+padding:10px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:5px;
+font-size:14px;
+}
+
+button{
+background:#6d4c41;
+color:white;
+border:none;
+padding:12px;
+width:100%;
+font-size:16px;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#4e342e;
+}
+
+.ticket-list{
+margin-top:40px;
+}
+
+.ticket{
+background:#f9f9f9;
+border-right:5px solid #6d4c41;
+padding:10px;
+margin-bottom:10px;
+border-radius:5px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+نظام دعم الأعطال - لوحة الموظف
+</div>
+
+<div class="container">
+
+<h2>إنشاء تذكرة جديدة</h2>
+
+<input type="text" id="title" placeholder="عنوان المشكلة">
+
+<textarea id="description" placeholder="وصف المشكلة"></textarea>
+
+<select id="college">
+<option value="">اختر الكلية</option>
+<option value="صيدله">صيدله</option>
+<option value="علاج">علاج</option>
+<option value="اسنان">اسنان</option>
+<option value="حاسبات">حاسبات</option>
+<option value="ادارة">ادارة</option>
+</select>
+
+<select id="engineer">
+<option value="">اختر المهندس</option>
+</select>
+
+<button onclick="createTicket()">إرسال التذكرة</button>
+
+<div class="ticket-list">
+<h2>تذاكري</h2>
+<div id="tickets"></div>
+</div>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL = "https://cqmhpvaaaduqbhjtyrgk.supabase.co/rest/v1/";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxbWhwdmFhYWR1cWJoanR5cmdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MTA3OTUsImV4cCI6MjA5NDE4Njc5NX0.eqZ69jTSRFvPhjSVx2KZe9-3LSw0cw8uAQ6D06ZkQFg";
+
+
+const user = JSON.parse(localStorage.getItem("user"))
+
+
+async function loadEngineers(){
+
+const college = document.getElementById("college").value
+
+if(!college) return
+
+const res = await fetch(`${SUPABASE_URL}/rest/v1/users?role=eq.IT&college=eq.${college}`,{
+headers:{
+apikey:SUPABASE_KEY,
+Authorization:`Bearer ${SUPABASE_KEY}`
+}
+})
+
+const data = await res.json()
+
+const engineerSelect = document.getElementById("engineer")
+engineerSelect.innerHTML = ""
+
+data.forEach(e=>{
+const option = document.createElement("option")
+option.value = e.id
+option.textContent = e.name
+engineerSelect.appendChild(option)
+})
+
+}
+
+
+document.getElementById("college").addEventListener("change",loadEngineers)
+
+
+async function createTicket(){
+
+const title = document.getElementById("title").value
+const description = document.getElementById("description").value
+const college = document.getElementById("college").value
+const engineer = document.getElementById("engineer").value
+
+const res = await fetch(`${SUPABASE_URL}/rest/v1/tickets`,{
+
+method:"POST",
+
+headers:{
+apikey:SUPABASE_KEY,
+Authorization:`Bearer ${SUPABASE_KEY}`,
+"Content-Type":"application/json",
+Prefer:"return=representation"
+},
+
+body:JSON.stringify({
+
+title:title,
+description:description,
+college:college,
+employee_id:user.id,
+engineer_id:engineer,
+status:"open"
+
+})
+
+})
+
+loadTickets()
+
+}
+
+
+
+async function loadTickets(){
+
+const res = await fetch(`${SUPABASE_URL}/rest/v1/tickets?employee_id=eq.${user.id}`,{
+
+headers:{
+apikey:SUPABASE_KEY,
+Authorization:`Bearer ${SUPABASE_KEY}`
+}
+
+})
+
+const data = await res.json()
+
+const container = document.getElementById("tickets")
+container.innerHTML = ""
+
+data.forEach(t=>{
+
+const div = document.createElement("div")
+div.className="ticket"
+
+div.innerHTML = `
+<b>${t.title}</b><br>
+${t.description}<br>
+الحالة : ${t.status}
+`
+
+container.appendChild(div)
+
+})
+
+}
+
+
+loadTickets()
+
+</script>
+
+</body>
+</html>
