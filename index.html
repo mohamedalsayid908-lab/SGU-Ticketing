@@ -641,10 +641,7 @@ if(data.length > 0){
 
 let user = data[0]
 
-localStorage.setItem(
-"user",
-JSON.stringify(user)
-)
+sessionStorage.setItem("user", JSON.stringify(user));
 
 if(user.role === "employee"){
 window.location = "dashboard.html"
