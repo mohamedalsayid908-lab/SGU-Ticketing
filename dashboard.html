@@ -1397,6 +1397,578 @@ button{
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*==================================================
+                TOOLBAR
+==================================================*/
+
+.tickets-toolbar{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+gap:20px;
+flex-wrap:wrap;
+
+}
+
+.tickets-toolbar h3{
+
+margin:0;
+font-size:26px;
+font-weight:700;
+color:#f7f8f8;
+
+}
+
+.tickets-toolbar select{
+
+padding:12px 18px;
+font-size:15px;
+font-weight:600;
+border-radius:8px;
+border:1px solid #cbd5e1;
+background:#fff;
+color:#1e293b;
+cursor:pointer;
+min-width:220px;
+
+}
+
+.tickets-toolbar select:focus{
+
+outline:none;
+border-color:#2563eb;
+box-shadow:0 0 0 4px rgba(37,99,235,.15);
+
+}
+
+
+/*==================================================
+                TABLE
+==================================================*/
+
+.tickets-table{
+
+width:100%;
+
+background:#fff;
+
+border-radius:15px;
+
+overflow:hidden;
+
+border:1px solid #dbe2ea;
+
+box-shadow:0 8px 30px rgba(0,0,0,.08);
+
+}
+
+
+/*==================================================
+                HEADER
+==================================================*/
+
+.tickets-head{
+
+display:grid;
+
+grid-template-columns:
+
+70px
+4fr
+2fr
+1.5fr
+220px;
+
+align-items:center;
+
+background:#0f4c81;
+
+color:#fff;
+
+font-size:16px;
+
+font-weight:bold;
+
+padding:18px;
+
+}
+
+.tickets-head>div{
+
+padding:0 15px;
+
+text-align:center;
+
+}
+
+.tickets-head>div:not(:last-child){
+
+border-left:1px solid rgba(255,255,255,.2);
+
+}
+
+
+/*==================================================
+                ROW
+==================================================*/
+
+.ticket-row{
+
+border-top:1px solid #edf2f7;
+
+background:#fff;
+
+}
+
+.ticket-row:nth-child(even){
+
+background:#fbfcfe;
+
+}
+
+.ticket-summary{
+
+display:grid;
+
+grid-template-columns:
+
+70px
+4fr
+2fr
+1.5fr
+220px;
+
+align-items:center;
+
+padding:22px 18px;
+
+cursor:pointer;
+
+transition:.25s;
+
+color:#1e293b;
+
+}
+
+.ticket-summary:hover{
+
+background:#eef6ff;
+
+}
+
+.ticket-summary>div{
+
+padding:0 15px;
+
+font-size:15px;
+
+color:#1e293b;
+
+display:flex;
+
+align-items:center;
+
+min-height:45px;
+
+}
+
+.ticket-summary>div:not(:last-child){
+
+border-left:1px solid #e5e7eb;
+
+}
+
+
+/*==================================================
+                TITLE
+==================================================*/
+
+.ticket-title{
+
+font-size:17px;
+
+font-weight:700;
+
+color:#0f172a;
+
+line-height:1.7;
+
+}
+
+
+/*==================================================
+                ENGINEER
+==================================================*/
+
+.ticket-engineer{
+
+font-size:15px;
+
+font-weight:600;
+
+color:#475569;
+
+}
+.ticket-info{
+
+display:grid;
+
+grid-template-columns:180px 1fr;
+
+gap:15px;
+
+padding:14px 18px;
+
+margin-bottom:12px;
+
+background:#f8fafc;
+
+border:1px solid #dbe2ea;
+
+border-radius:8px;
+
+align-items:center;
+
+}
+
+/*==================================================
+                DETAILS
+==================================================*/
+
+.ticket-details{
+
+display:none;
+
+padding:25px 30px;
+
+background:#ffffff;
+
+border-top:2px solid #2563eb;
+
+border-bottom:2px solid #2563eb;
+
+border-right:2px solid #2563eb;
+
+border-left:2px solid #2563eb;
+
+box-shadow:0 5px 18px rgba(0,0,0,.12);
+
+margin:10px;
+
+border-radius:10px;
+
+line-height:2.2;
+
+color:#1e293b;
+
+animation:fadeIn .25s;
+
+}
+
+.ticket-details.show{
+
+display:block;
+
+animation:fadeIn .25s;
+
+}
+
+.ticket-details p{
+
+margin:15px 0;
+
+}
+
+.ticket-details strong{
+
+display:block;
+
+margin-bottom:5px;
+
+color:#0f4c81;
+
+font-size:15px;
+
+}
+.ticket-label{
+
+font-weight:bold;
+
+color:#0f4c81;
+
+font-size:15px;
+
+}
+.ticket-value{
+
+font-size:15px;
+
+color:#1e293b;
+
+line-height:1.8;
+
+word-break:break-word;
+
+}
+.ticket-solution{
+
+background:#eef7ff;
+
+border-right:5px solid #2563eb;
+
+padding:18px;
+
+border-radius:8px;
+
+margin-top:18px;
+
+}
+.ticket-rating{
+
+margin-top:20px;
+
+padding:15px;
+
+background:#fff8e6;
+
+border:1px solid #ffd54f;
+
+border-radius:8px;
+
+font-size:16px;
+
+font-weight:bold;
+
+color:#c27b00;
+
+}
+
+/*==================================================
+                STATUS
+==================================================*/
+
+.status-badge{
+
+display:inline-flex;
+
+justify-content:center;
+
+align-items:center;
+
+min-width:120px;
+
+padding:9px 16px;
+
+border-radius:30px;
+
+font-size:14px;
+
+font-weight:bold;
+
+color:#fff;
+
+}
+
+.status-open{
+
+background:#2196F3;
+
+}
+
+.status-progress{
+
+background:#F59E0B;
+
+}
+
+.status-resolved{
+
+background:#10B981;
+
+}
+
+.status-closed{
+
+background:#64748B;
+
+}
+
+
+/*==================================================
+                SELECT
+==================================================*/
+
+.ticket-summary select{
+
+width:100%;
+
+padding:10px;
+
+border-radius:8px;
+
+border:1px solid #cbd5e1;
+
+background:#fff;
+
+color:#1e293b;
+
+font-size:14px;
+
+cursor:pointer;
+
+}
+
+.ticket-summary select:focus{
+
+outline:none;
+
+border-color:#2563eb;
+
+}
+
+
+/*==================================================
+                ARROW
+==================================================*/
+
+.arrow{
+
+font-size:22px;
+
+font-weight:bold;
+
+color:#2563eb;
+
+justify-content:center;
+
+transition:.3s;
+
+}
+
+.arrow.open{
+
+transform:rotate(180deg);
+
+}
+
+
+/*==================================================
+                ANIMATION
+==================================================*/
+
+@keyframes fadeIn{
+
+from{
+
+opacity:0;
+
+transform:translateY(-8px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+.ticket-summary{
+
+background:#f3f6fa;
+
+transition:.25s;
+
+}
+
+.ticket-summary:hover{
+
+background:#dde9f7;
+
+}
+
+.ticket-summary.active{
+
+background:linear-gradient(to left,#dbeafe,#bfdbfe);
+
+border-right:6px solid #2563eb;
+
+box-shadow:
+
+0 4px 15px rgba(37,99,235,.15),
+
+inset 0 0 0 1px rgba(37,99,235,.25);
+
+}
+
+.location-box{
+
+width:100%;
+
+margin:10px 0;
+
+}
+
+#location{
+
+width:100%;
+
+padding:14px 16px;
+
+border:1px solid #cbd5e1;
+
+border-radius:10px;
+
+font-size:15px;
+
+background:#fff;
+
+color:#1e293b;
+
+transition:.3s;
+
+box-sizing:border-box;
+
+}
+
+#location:focus{
+
+outline:none;
+
+border-color:#2563eb;
+
+box-shadow:0 0 0 4px rgba(37,99,235,.15);
+
+}
+#location::placeholder{
+
+color:#6b7280;
+
+opacity:1;
+
+font-weight:500;
+
+}
 </style>
 
 </head>
@@ -1411,9 +1983,7 @@ button{
         SGU Ticketing
     </div>
 
-    <a href="about.html" class="about-link">
-        من نحن
-    </a>
+     <button class="about-link" id="logoutBtn" onclick="logout()"> تسجيل الخروج</button>
 
 </header>
 
@@ -1439,7 +2009,44 @@ button{
 
         <textarea id="description" placeholder="وصف المشكلة"></textarea>
 
-        <input id="location" placeholder="الموقع">
+        <div class="location-box">
+
+    <input
+        id="location"
+        list="locations"
+        placeholder="اختر الموقع أو اكتبه..."
+        autocomplete="off">
+
+    <datalist id="locations">
+
+        <option value="كلية الحاسبات والمعلومات - الدور الأول">
+        <option value="كلية الحاسبات والمعلومات - الدور الثاني">
+        <option value="كلية الحاسبات والمعلومات - الدور الثالث">
+        <option value="كلية الحاسبات والمعلومات - الدور الرابع">
+
+        <option value="كلية الصيدلة - الدور الأول">
+        <option value="كلية الصيدلة - الدور الثاني">
+        <option value="كلية الصيدلة - الدور الثالث">
+        <option value="كلية الصيدلة - الدور الرابع">
+
+        <option value="كلية العلاج الطبيعي - الدور الأول">
+        <option value="كلية العلاج الطبيعي - الدور الثاني">
+        <option value="كلية العلاج الطبيعي - الدور الثالث">
+        <option value="كلية العلاج الطبيعي - الدور الرابع">
+
+        <option value="كلية طب الأسنان - الدور الأول">
+        <option value="كلية طب الأسنان - الدور الثاني">
+        <option value="كلية طب الأسنان - الدور الثالث">
+        <option value="كلية طب الأسنان - الدور الرابع">
+
+        <option value="كلية الإدارة - الدور الأول">
+        <option value="كلية الإدارة - الدور الثاني">
+        <option value="كلية الإدارة - الدور الثالث">
+        <option value="كلية الإدارة - الدور الرابع">
+
+    </datalist>
+
+</div>
 
         <button class="btn-create" onclick="createTicket()">
             إنشاء تيكت
@@ -1447,37 +2054,52 @@ button{
 
     </div>
 
+
+
+    
     <div class="section">
 
-        <h3>تيكتاتي المفتوحة</h3>
+    <div class="tickets-toolbar">
 
-        <div id="openTickets"></div>
+        <h3>تذاكري</h3>
+
+        <select id="statusFilter" onchange="loadTickets()">
+
+            <option value="all">كل الحالات</option>
+
+            <option value="open">المفتوحة</option>
+
+            <option value="in_progress">جاري العمل عليها</option>
+
+            <option value="resolved">تم الرد عليها</option>
+
+            <option value="closed">المغلقة</option>
+
+        </select>
 
     </div>
 
-    <div class="section">
+    <div class="tickets-table">
 
-        <h3>تيكتاتي جاري العمل عليها</h3>
+        <div class="tickets-head">
 
-        <div id="progressTickets"></div>
+            <div></div>
 
-    </div>
+            <div>عنوان المشكلة</div>
 
-    <div class="section">
+            <div>المهندس</div>
 
-        <h3>تيكتات تم الرد عليها بالحل</h3>
+            <div>الحالة</div>
 
-        <div id="resolvedTickets"></div>
+            <div>تغيير الحالة</div>
 
-    </div>
+        </div>
 
-    <div class="section">
-
-        <h3>تيكتات تم إغلاقها</h3>
-
-        <div id="closedTickets"></div>
+        <div id="ticketsTable"></div>
 
     </div>
+
+</div>
 
 </div>
 
@@ -1514,10 +2136,19 @@ SUPABASE_URL,
 SUPABASE_KEY
 )
 
-let user = JSON.parse(localStorage.getItem("user"))
+let user = JSON.parse(sessionStorage.getItem("user"));
 
-if(!user){
-location="login.html"
+if (!user || user.role !== "employee") {
+
+    logout();
+
+}
+function logout() {
+
+    sessionStorage.clear();
+
+    window.location.replace("index.html");
+
 }
 
 document.getElementById("welcome").innerHTML =
@@ -1615,13 +2246,6 @@ document.getElementById("profile").innerHTML =
 </div>
 `
 
-function logout(){
-
-    localStorage.removeItem("user")
-
-    location = "login.html"
-}
-
 
 let usersMap={}
 
@@ -1682,217 +2306,434 @@ faculty:user.faculty,
 assigned_to:engineer?engineer.id:null
 })
 
-document.getElementById("title").value=""
-document.getElementById("description").value=""
-document.getElementById("location").value=""
+// تنظيف الحقول
+document.getElementById("title").value="";
+document.getElementById("description").value="";
+document.getElementById("location").value="";
 
+// تحديث الصفحة بالكامل
+location.reload();
 }
 
 
 async function changeStatus(ticket,status){
 
-if(status=="closed"){
+    try{
 
-let rating=prompt("Rate service 1-5")
+        if(!status) return;
 
-if(rating){
+        if(status=="closed"){
 
-await supabaseClient
-.from("ratings")
-.insert({
-ticket_id:ticket,
-rating:rating
-})
+            let rating = prompt("قيم الخدمة من 1 إلى 5");
 
-}
+            if(rating){
 
-}
+                await supabaseClient
+                .from("ratings")
+                .insert({
+                    ticket_id:ticket,
+                    rating:rating
+                });
 
-await supabaseClient
-.from("tickets")
-.update({status:status})
-.eq("id",ticket)
+            }
+
+        }
+
+        const {error} = await supabaseClient
+        .from("tickets")
+        .update({
+            status:status
+        })
+        .eq("id",ticket);
+
+        if(error){
+
+            console.error(error);
+
+            alert(error.message);
+
+            return;
+
+        }
+
+        await loadTickets();
+
+    }
+
+    catch(ex){
+
+        console.error(ex);
+
+    }
 
 }
 
 
 async function loadTickets(){
 
-await loadUsers()
+    await loadUsers();
 
-let {data} = await supabaseClient
-.from("tickets")
-.select("*")
-.eq("created_by",user.id)
-.order("created_at",{ascending:false})
+    let { data } = await supabaseClient
+    .from("tickets")
+    .select("*")
+    .eq("created_by", user.id);
 
+    if(!data){
+        document.getElementById("ticketsTable").innerHTML="";
+        return;
+    }
 
-let open=""
-let progress=""
-let resolved=""
-let closed=""
+    // ترتيب الحالات
+    const priority = {
 
-for(let t of data){
+        open:0,
 
-let engineerName=usersMap[t.assigned_to] || "Unassigned"
+        assigned:0,
 
-let solution=""
-let rating=""
+        in_progress:1,
 
-if(t.status=="resolved" || t.status=="waiting_confirmation" || t.status=="closed"){
+        resolved:2,
 
-let {data:sol}=await supabaseClient
-.from("ticket_solution")
-.select("*")
-.eq("ticket_id",t.id)
+        waiting_confirmation:2,
 
-if(sol.length){
-solution=sol[0].solution_text
-}
+        closed:3
 
-}
+    };
 
-if(t.status=="closed"){
+    data.sort((a,b)=>{
 
-let {data:r}=await supabaseClient
-.from("ratings")
-.select("*")
-.eq("ticket_id",t.id)
+        let p1 = priority[a.status] ?? 99;
 
-if(r.length){
-rating="Rating: "+r[0].rating
-}
+        let p2 = priority[b.status] ?? 99;
 
-}
+        if(p1!==p2) return p1-p2;
 
-let html =
+        return new Date(b.created_at)-new Date(a.created_at);
 
-`
-<div class="ticket">
+    });
 
-    <div class="ticket-top">
+    const filter =
+    document.getElementById("statusFilter")?.value || "all";
 
-        <div class="ticket-title">
-            ${t.title}
-        </div>
+    let html="";
 
-        <div class="ticket-status status-${t.status}">
-            ${t.status === "open" ? "مفتوحة" : "مغلقة"}
-        </div>
+    for(const t of data){
 
-    </div>
+        // الفلترة
 
-    <div class="ticket-body">
+        if(filter!="all"){
 
-        <div class="ticket-item">
-            <span class="label">وصف المشكلة :</span>
-            <span class="value">
-                ${t.description || "لا يوجد وصف للمشكلة"}
-            </span>
-        </div>
+            if(filter=="open"){
 
-        <div class="ticket-item">
-            <span class="label">مكان المشكلة :</span>
-            <span class="value">
-                ${t.location || "لم يتم تحديد الموقع"}
-            </span>
-        </div>
-
-        <div class="ticket-item">
-            <span class="label">حالة التيكت :</span>
-            <span class="value">
-                ${
-                    t.status === "open"
-                    ? "مفتوحة"
-                    : t.status === "progress"
-                    ? "جاري العمل عليها"
-                    : t.status === "resolved"
-                    ? "تم الرد بالحل"
-                    : "مغلقة"
+                if(
+                    t.status!="open" &&
+                    t.status!="assigned"
+                ){
+                    continue;
                 }
-            </span>
-        </div>
 
-        <div class="ticket-item">
-            <span class="label">مهندس الدعم :</span>
-            <span class="value">
-                ${engineerName || "غير محدد"}
-            </span>
-        </div>
+            }
 
-        ${
-            solution
-            ?
-            `
-            <div class="ticket-solution">
-                <span class="label">
-                    السبب الفني للمشكلة :
-                </span>
+            else if(filter=="in_progress"){
 
-                <div class="solution-text">
-                    ${solution}
+                if(t.status!="in_progress"){
+                    continue;
+                }
+
+            }
+
+            else if(filter=="resolved"){
+
+                if(
+                    t.status!="resolved" &&
+                    t.status!="waiting_confirmation"
+                ){
+                    continue;
+                }
+
+            }
+
+            else if(filter=="closed"){
+
+                if(t.status!="closed"){
+                    continue;
+                }
+
+            }
+
+        }
+
+        let engineerName =
+        usersMap[t.assigned_to] || "غير محدد";
+
+        let solution="";
+
+        let rating="";
+
+        if(
+
+            t.status=="resolved" ||
+
+            t.status=="waiting_confirmation" ||
+
+            t.status=="closed"
+
+        ){
+
+            let {data:sol} = await supabaseClient
+
+            .from("ticket_solution")
+
+            .select("*")
+
+            .eq("ticket_id",t.id);
+
+            if(sol && sol.length){
+
+                solution = sol[0].solution_text;
+
+            }
+
+        }
+
+        if(t.status=="closed"){
+
+            let {data:r}=await supabaseClient
+
+            .from("ratings")
+
+            .select("*")
+
+            .eq("ticket_id",t.id);
+
+            if(r && r.length){
+
+                rating = r[0].rating;
+
+            }
+
+        }
+
+        let statusText="";
+
+        let statusClass="";
+
+        switch(t.status){
+
+            case "open":
+
+            case "assigned":
+
+                statusText="مفتوحة";
+
+                statusClass="status-open";
+
+                break;
+
+            case "in_progress":
+
+                statusText="جاري العمل";
+
+                statusClass="status-progress";
+
+                break;
+
+            case "resolved":
+
+            case "waiting_confirmation":
+
+                statusText="تم الرد";
+
+                statusClass="status-resolved";
+
+                break;
+
+            case "closed":
+
+                statusText="مغلقة";
+
+                statusClass="status-closed";
+
+                break;
+
+            default:
+
+                statusText=t.status;
+
+                statusClass="";
+
+        }
+                html += `
+
+        <div class="ticket-row">
+
+            <div class="ticket-summary"
+                 onclick="toggleTicket(${t.id})">
+
+                <div class="arrow"
+                     id="arrow-${t.id}">
+                    ▶
                 </div>
+
+                <div class="ticket-title">
+    ${t.title}
+</div>
+
+<div class="ticket-engineer">
+    ${engineerName}
+</div>
+
+                <div>
+
+                    <span class="status-badge ${statusClass}">
+
+                        ${statusText}
+
+                    </span>
+
+                </div>
+
+                <div onclick="event.stopPropagation()">
+
+                    <select onchange="changeStatus(${t.id},this.value)">
+
+                        <option value="">
+                            تغيير الحالة
+                        </option>
+
+                        <option value="open">
+                            فتح التيكت
+                        </option>
+
+                        <option value="closed">
+                            إغلاق التيكت
+                        </option>
+
+                    </select>
+
+                </div>
+
             </div>
-            `
-            :
-            ""
-        }
 
-        ${
-            rating
-            ?
-            `
-            <div class="ticket-rating">
-                ⭐ ${rating}
-            </div>
-            `
-            :
-            ""
-        }
+            <div
+                class="ticket-details"
+                id="ticket-${t.id}">
 
-    </div>
+                <div class="ticket-info">
 
-    <div class="ticket-actions">
+<div class="ticket-label">
+وصف المشكلة
+</div>
 
-        <select onchange="changeStatus(${t.id},this.value)">
-
-            <option value="">
-                تغيير حالة التيكت
-            </option>
-
-            <option value="open">
-                فتح التيكت
-            </option>
-
-            <option value="closed">
-                إغلاق التيكت
-            </option>
-
-        </select>
-
-    </div>
+<div class="ticket-value">
+${t.description || "لا يوجد"}
+</div>
 
 </div>
-`
 
-if(t.status=="open" || t.status=="assigned")
-open+=html
+                <div class="ticket-info">
 
-else if(t.status=="in_progress")
-progress+=html
+<div class="ticket-label">
+مكان المشكلة
+</div>
 
-else if(t.status=="resolved" || t.status=="waiting_confirmation")
-resolved+=html
+<div class="ticket-value">
+${t.location || "غير محدد"}
+</div>
 
-else if(t.status=="closed")
-closed+=html
+</div>
+
+                ${
+                    solution
+                    ?
+
+                    `
+                    <div class="ticket-solution">
+
+<div class="ticket-label">
+السبب الفني
+</div>
+
+<div class="ticket-value">
+${solution}
+</div>
+
+</div>
+                    `
+
+                    :
+
+                    ""
+                }
+
+                ${
+                    rating
+                    ?
+
+                    `
+                    <div class="ticket-rating">
+
+⭐ تقييم الخدمة : ${rating}/5
+
+</div>
+                    `
+
+                    :
+
+                    ""
+                }
+
+            </div>
+
+        </div>
+
+        `;
+            }
+
+    document.getElementById("ticketsTable").innerHTML = html;
 
 }
+function toggleTicket(id){
 
-document.getElementById("openTickets").innerHTML=open
-document.getElementById("progressTickets").innerHTML=progress
-document.getElementById("resolvedTickets").innerHTML=resolved
-document.getElementById("closedTickets").innerHTML=closed
+    const details=document.getElementById("ticket-"+id);
+
+    const arrow=document.getElementById("arrow-"+id);
+
+    const row=details.previousElementSibling;
+
+    const opened=details.classList.contains("show");
+
+    document.querySelectorAll(".ticket-details").forEach(e=>{
+
+        e.classList.remove("show");
+
+    });
+
+    document.querySelectorAll(".arrow").forEach(e=>{
+
+        e.classList.remove("open");
+
+        e.innerHTML="▼";
+
+    });
+
+    document.querySelectorAll(".ticket-summary").forEach(e=>{
+
+        e.classList.remove("active");
+
+    });
+
+    if(!opened){
+
+        details.classList.add("show");
+
+        arrow.classList.add("open");
+
+        arrow.innerHTML="▲";
+
+        row.classList.add("active");
+
+    }
 
 }
 
