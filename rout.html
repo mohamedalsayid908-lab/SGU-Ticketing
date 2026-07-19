@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>بوابة الأنظمة</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+/* =======================================================
+====================== ROOT START ========================
+======================================================= */
+:root{
+
+    --primary:#071739;
+    --secondary:#b7c0cc;
+    --gold:#ffd369;
+
+    --white:#ffffff;
+
+    --glass:rgba(255,255,255,0.08);
+    --glass-border:rgba(255,255,255,0.10);
+
+    --shadow:0 10px 35px rgba(0,0,0,.25);
+
+}
+/* =======================================================
+======================= ROOT END =========================
+======================================================= */
+
+
+/* =======================================================
+====================== GLOBAL START ======================
+======================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    font-family:'Cairo',sans-serif;
+
+    background:
+    radial-gradient(circle at top left,#123d91 0%,transparent 25%),
+    radial-gradient(circle at bottom right,#0f3460 0%,transparent 30%),
+    linear-gradient(135deg,#020814,#071739,#0f3460);
+
+    color:white;
+
+    overflow-x:hidden;
+
+    min-height:100vh;
+
+    padding-top:95px;
+
+    direction:rtl;
+
+}
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    width:500px;
+    height:500px;
+
+    background:rgba(255,211,105,.08);
+
+    border-radius:50%;
+
+    top:-150px;
+    left:-150px;
+
+    filter:blur(120px);
+
+    z-index:-1;
+
+}
+
+body::after{
+
+    content:"";
+
+    position:fixed;
+
+    width:450px;
+    height:450px;
+
+    background:rgba(15,52,96,.45);
+
+    border-radius:50%;
+
+    bottom:-150px;
+    right:-150px;
+
+    filter:blur(120px);
+
+    z-index:-1;
+
+}
+
+/* =======================================================
+======================= HEADER ===========================
+======================================================= */
+
+.main-header{
+
+    width:100%;
+    min-height:85px;
+
+    position:fixed;
+
+    top:0;
+    right:0;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:18px 5%;
+
+    backdrop-filter:blur(18px);
+
+    background:rgba(255,255,255,.05);
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    z-index:999;
+
+}
+.logo{
+    height:58px;
+    filter:drop-shadow(0 0 10px rgba(255,255,255,0.2));
+}
+.brand{
+
+    font-size:30px;
+    font-weight:800;
+
+    background:linear-gradient(to right,#fff,#ffd369);
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+}
+
+.about-link{
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:12px 24px;
+
+    border-radius:40px;
+
+    background:rgba(255,255,255,.08);
+
+    transition:.3s;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.about-link:hover{
+
+    background:#ffd369;
+
+    color:#071739;
+
+}
+
+/* =======================================================
+====================== PAGE HEADER =======================
+======================================================= */
+
+header{
+
+    width:calc(100% - 60px);
+
+    margin:30px auto;
+
+    padding:25px;
+
+    border-radius:30px;
+
+    text-align:center;
+
+    backdrop-filter:blur(20px);
+
+    background:rgba(255,255,255,.06);
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+header h1{
+
+    font-size:34px;
+    margin-bottom:10px;
+
+}
+
+header p{
+
+    color:#d9d9d9;
+
+    font-size:17px;
+
+}
+
+/* =======================================================
+====================== CARDS =============================
+======================================================= */
+
+.cards{
+
+    max-width:1200px;
+
+    margin:70px auto;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:45px;
+
+    flex-wrap:wrap;
+
+}
+
+.card{
+
+    width:380px;
+
+    min-height:340px;
+
+    border-radius:30px;
+
+    cursor:pointer;
+
+    position:relative;
+
+    overflow:hidden;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    padding:35px;
+
+    backdrop-filter:blur(20px);
+
+    background:rgba(255,255,255,.07);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:var(--shadow);
+
+    transition:.45s;
+
+}
+
+.card::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:linear-gradient(135deg,
+    rgba(255,211,105,.18),
+    transparent);
+
+    opacity:0;
+
+    transition:.4s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-12px) scale(1.03);
+
+    border-color:#ffd369;
+
+}
+
+.card:hover::before{
+
+    opacity:1;
+
+}
+
+.icon{
+
+    font-size:80px;
+
+    margin-bottom:20px;
+
+}
+
+.card h2{
+
+    font-size:30px;
+
+    margin-bottom:15px;
+
+}
+
+.card p{
+
+    color:#d9d9d9;
+
+    line-height:1.9;
+
+    font-size:15px;
+
+}
+
+.enter-btn{
+
+    margin-top:35px;
+
+    padding:14px 35px;
+
+    border:none;
+
+    border-radius:40px;
+
+    background:linear-gradient(135deg,#ffd369,#ffb703);
+
+    color:#071739;
+
+    font-family:Cairo;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.enter-btn:hover{
+
+    transform:scale(1.08);
+
+}
+
+/* =======================================================
+====================== RESPONSIVE ========================
+======================================================= */
+
+@media(max-width:900px){
+
+.cards{
+
+    flex-direction:column;
+
+    align-items:center;
+
+}
+
+.card{
+
+    width:95%;
+
+}
+
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<header class="main-header">
+
+    <img src="photo/logo.png" class="logo">
+
+    <div class="brand">
+        SGU Ticketing
+    </div>
+
+    <button class="about-link" id="logoutBtn" onclick="logout()"> تسجيل الخروج</button>
+
+</header>
+
+<header>
+
+    <h1>
+        مرحباً بك
+    </h1>
+
+    <p>
+        اختر النظام الذي ترغب في الدخول إليه
+    </p>
+
+</header>
+
+<div class="cards">
+
+    <div class="card" onclick="goSupport()">
+
+        <div class="icon">
+            🖥️
+        </div>
+
+        <h2>
+            الدعم الفني
+        </h2>
+
+        <p>
+
+            تقديم طلبات الدعم الفني ومتابعة حالة الطلبات والردود الخاصة بها.
+
+        </p>
+
+        <button class="enter-btn">
+
+            الدخول
+
+        </button>
+
+    </div>
+
+    <div class="card" onclick="goHR()">
+
+        <div class="icon">
+            👨‍💼
+        </div>
+
+        <h2>
+
+            شؤون العاملين
+
+        </h2>
+
+        <p>
+
+            الدخول إلى خدمات شؤون العاملين ومتابعة الطلبات والإجراءات الخاصة بالموظفين.
+
+        </p>
+
+        <button class="enter-btn">
+
+            الدخول
+
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+let user = JSON.parse(sessionStorage.getItem("user"));
+
+if (!user || user.role !== "employee") {
+
+    logout();
+
+}
+function logout() {
+
+    sessionStorage.clear();
+
+    window.location.replace("index.html");
+
+}
+function goSupport(){
+
+    window.location.href="dashboard.html";
+
+}
+
+function goHR(){
+
+    window.location.href="hr.html";
+
+}
+
+</script>
+
+</body>
+</html>

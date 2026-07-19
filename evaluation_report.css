@@ -1,0 +1,760 @@
+/* ===========================
+   الصفحة
+===========================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Cairo",sans-serif;
+}
+
+body{
+    direction:rtl;
+    background:#f4f6f9;
+    color:#222;
+    padding:20px;
+}
+
+.page{
+    width:100%;
+    max-width:1700px;
+    margin:auto;
+}
+
+
+
+.header{
+
+    position:relative;
+
+    width:100%;
+
+    max-width:1400px;
+
+    margin:30px auto;
+
+    padding:24px 30px;
+
+    border-radius:30px;
+
+    text-align:center;
+
+    font-size:32px;
+
+    font-weight:800;
+
+    color:white;
+
+    overflow:hidden;
+
+    backdrop-filter:blur(18px);
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,255,255,0.08),
+        rgba(255,255,255,0.03)
+    );
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,0.25);
+}
+
+.header::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    right:0;
+
+    width:100%;
+    height:5px;
+
+    background:
+    linear-gradient(
+        to left,
+        #ffd369,
+        #ffb703,
+        transparent
+    );
+}
+
+/* =======================================================
+====================== MAIN HEADER START =================
+======================================================= */
+
+/*=======================================================
+                    MAIN HEADER
+=======================================================*/
+
+.main-header{
+
+    position:fixed;
+
+    top:15px;
+    right:20px;
+    left:20px;
+
+    height:80px;
+
+    padding:0 30px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:rgba(18,32,54,.92);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:18px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.25);
+
+    z-index:9999;
+
+    transition:.3s;
+
+}
+.logo{
+
+    width:58px;
+
+    height:58px;
+
+    object-fit:contain;
+
+}
+.brand{
+
+    flex:1;
+
+    margin-right:18px;
+
+    font-size:28px;
+
+    font-weight:800;
+
+    color:#fff;
+
+    letter-spacing:1px;
+    text-align: center;
+
+}
+.about-link{
+
+    padding:12px 24px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#dc3545;
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    box-shadow:
+        0 6px 18px rgba(220,53,69,.35);
+
+}
+
+.about-link:hover{
+
+    background:#bb2d3b;
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(220,53,69,.45);
+
+}
+
+.about-link:active{
+
+    transform:scale(.96);
+
+}
+/* ===========================
+   عنوان الصفحة
+===========================*/
+
+.page-header{
+
+    width:95%;
+
+    max-width:1500px;
+
+    margin:35px auto;
+
+    padding:50px;
+
+    text-align:center;
+
+    background:white;
+
+    border-radius:20px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.08);
+
+}
+
+.page-header h1{
+
+    margin-bottom:12px;
+
+    font-size:34px;
+
+    color:#1f3c88;
+
+}
+
+.page-header p{
+
+    color:#666;
+
+    font-size:18px;
+
+}
+/* ===========================
+   صندوق الفلاتر
+===========================*/
+
+.filter-box{
+
+    background:#fff;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.filter-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:18px;
+
+}
+
+.field{
+
+    display:flex;
+    flex-direction:column;
+
+}
+
+.field label{
+
+    margin-bottom:8px;
+    font-weight:bold;
+    color:#444;
+
+}
+
+.field input,
+.field select{
+
+    height:45px;
+    border:1px solid #dcdcdc;
+    border-radius:8px;
+    padding:0 12px;
+    font-size:14px;
+    background:white;
+    transition:.3s;
+
+}
+
+.field input:focus,
+.field select:focus{
+
+    border-color:#0d6efd;
+    outline:none;
+    box-shadow:0 0 8px rgba(13,110,253,.2);
+
+}
+
+
+/* ===========================
+   الأزرار
+===========================*/
+
+.button-group{
+
+    margin-top:25px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+
+}
+
+.btn{
+
+    border:none;
+    padding:12px 30px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+    color:white;
+    transition:.3s;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.btn-primary{
+
+    background:#0d6efd;
+
+}
+
+.btn-success{
+
+    background:#198754;
+
+}
+
+.btn-danger{
+
+    background:#dc3545;
+
+}
+
+
+/* ===========================
+   التقرير
+===========================*/
+
+.report-container{
+
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+
+}
+
+
+/* ===========================
+   صندوق التقرير
+===========================*/
+
+.report-box{
+
+    background:white;
+    border-radius:12px;
+    padding:25px;
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+
+}
+
+
+/* ===========================
+   رأس التقرير
+===========================*/
+
+.header-flex{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    border-bottom:2px solid #eee;
+    padding-bottom:15px;
+
+}
+
+.center-title{
+
+    text-align:center;
+    flex:1;
+
+}
+
+.center-title h2{
+
+    color:#0d6efd;
+    margin-bottom:10px;
+
+}
+
+.center-title div{
+
+    color:#555;
+
+}
+
+
+/* ===========================
+   العناوين
+===========================*/
+
+.report-box h3{
+
+    margin:25px 0 12px;
+    color:#0d6efd;
+
+}
+
+
+/* ===========================
+   الجداول
+===========================*/
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:20px;
+
+}
+
+table th{
+
+    background:#0d6efd;
+    color:white;
+    padding:12px;
+    border:1px solid #ddd;
+    font-size:14px;
+
+}
+
+table td{
+
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
+    font-size:13px;
+
+}
+
+table tr:nth-child(even){
+
+    background:#f8f9fa;
+
+}
+
+table tr:hover{
+
+    background:#eef5ff;
+
+}
+
+
+/* ===========================
+   تقييمات السرعة
+===========================*/
+
+.rate-excellent{
+
+    background:#198754;
+    color:white;
+    font-weight:bold;
+    border-radius:5px;
+    padding:5px 10px;
+    display:inline-block;
+
+}
+
+.rate-verygood{
+
+    background:#0dcaf0;
+    color:white;
+    font-weight:bold;
+    border-radius:5px;
+    padding:5px 10px;
+    display:inline-block;
+
+}
+
+.rate-good{
+
+    background:#ffc107;
+    color:black;
+    font-weight:bold;
+    border-radius:5px;
+    padding:5px 10px;
+    display:inline-block;
+
+}
+
+.rate-average{
+
+    background:#fd7e14;
+    color:white;
+    font-weight:bold;
+    border-radius:5px;
+    padding:5px 10px;
+    display:inline-block;
+
+}
+
+.rate-poor{
+
+    background:#dc3545;
+    color:white;
+    font-weight:bold;
+    border-radius:5px;
+    padding:5px 10px;
+    display:inline-block;
+
+}
+
+
+/* ===========================
+   الرسالة الفارغة
+===========================*/
+
+.empty{
+
+    background:white;
+    border-radius:12px;
+    padding:70px;
+    text-align:center;
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+
+}
+
+.empty-icon{
+
+    font-size:70px;
+    margin-bottom:20px;
+
+}
+
+.empty h2{
+
+    color:#0d6efd;
+    margin-bottom:10px;
+
+}
+
+.empty p{
+
+    color:#777;
+
+}
+
+
+/* ===========================
+   بطاقات الإحصائيات
+===========================*/
+
+.summary-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:15px;
+    margin-top:20px;
+
+}
+
+.summary-card{
+
+    background:#f8f9fa;
+    border-radius:10px;
+    padding:18px;
+    text-align:center;
+    border-top:4px solid #0d6efd;
+
+}
+
+.summary-card h4{
+
+    color:#666;
+    margin-bottom:8px;
+    font-size:14px;
+
+}
+
+.summary-card span{
+
+    font-size:22px;
+    color:#0d6efd;
+    font-weight:bold;
+
+}
+
+
+/* ===========================
+   الطباعة
+===========================*/
+
+@media print{
+
+body{
+
+    background:white;
+    padding:0;
+
+}
+
+.filter-box,
+.button-group{
+
+    display:none;
+
+}
+
+.report-box{
+
+    box-shadow:none;
+    page-break-after:always;
+    border:none;
+
+}
+
+table{
+
+    font-size:11px;
+
+}
+
+table th{
+
+    background:#ddd !important;
+    color:black !important;
+
+}
+
+}
+
+
+/* ===========================
+   الشاشات الصغيرة
+===========================*/
+
+@media(max-width:900px){
+
+.header-flex{
+
+    flex-direction:column;
+    gap:15px;
+
+}
+
+.button-group{
+
+    flex-direction:column;
+
+}
+
+.btn{
+
+    width:100%;
+
+}
+
+table{
+
+    display:block;
+    overflow-x:auto;
+
+}
+
+.page-header h1{
+
+    font-size:24px;
+
+}
+
+}
+.report-page{
+
+    width:29.1cm;
+
+    min-height:19.8cm;
+
+    margin:auto;
+
+    padding:0.6cm;
+
+    background:#fff;
+
+    box-sizing:border-box;
+
+    page-break-after:always;
+
+    break-after:page;
+
+    overflow:hidden;
+
+}
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    page-break-inside:auto;
+
+}
+
+thead{
+
+    display:table-header-group;
+
+}
+
+tfoot{
+
+    display:table-footer-group;
+
+}
+
+tr{
+
+    page-break-inside:avoid;
+
+    break-inside:avoid;
+
+}
+
+.page-footer{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-top:15px;
+
+    padding-top:10px;
+
+    border-top:1px solid #ccc;
+
+    font-size:12px;
+
+    color:#666;
+
+}

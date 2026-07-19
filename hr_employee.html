@@ -1,0 +1,2132 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+
+<meta charset="UTF-8">
+<title>hr Dashboard</title>
+
+<style>
+
+/* =======================================================
+PAGE BASE
+======================================================= */
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Tahoma;
+    direction:rtl;
+    margin:0;
+    padding-top:110px;
+
+    background:
+    radial-gradient(circle at top,#0f2742,#071739);
+
+    color:white;
+}
+
+/* =======================================================
+MAIN HEADER
+======================================================= */
+
+.main-header{
+
+    width:100%;
+
+    height:85px;
+
+    padding:0 5%;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    position:fixed;
+
+    top:0;
+    right:0;
+    left:0;
+
+    z-index:2000;
+
+    backdrop-filter:blur(18px);
+
+    background:rgba(255,255,255,0.05);
+
+    border-bottom:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.logo{
+    height:50px;
+}
+
+.brand{
+
+    font-size:26px;
+
+    font-weight:800;
+
+    background:
+    linear-gradient(to right,#fff,#ffd369);
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+}
+
+.about-link{
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:10px 22px;
+
+    border-radius:40px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,255,255,0.15),
+        rgba(255,255,255,0.05)
+    );
+
+    border:
+    1px solid rgba(255,255,255,0.12);
+
+    transition:0.3s;
+
+    font-weight:700;
+}
+
+.about-link:hover{
+
+    transform:translateY(-2px);
+
+    background:
+    linear-gradient(
+        135deg,
+        #ffd369,
+        #ffb703
+    );
+
+    color:#071739;
+}
+
+/* =======================================================
+PAGE TITLE
+======================================================= */
+
+.header{
+
+    text-align:center;
+
+    font-size:28px;
+
+    font-weight:800;
+
+    margin-top:20px;
+
+    margin-bottom:30px;
+
+    color:#ffd369;
+}
+
+/* =======================================================
+CONTAINER
+======================================================= */
+
+.container{
+
+    width:90%;
+
+    max-width:1200px;
+
+    margin:auto;
+}
+
+/* =======================================================
+SECTION
+======================================================= */
+
+.section{
+
+    margin-bottom:50px;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    backdrop-filter:blur(10px);
+
+    background:
+    rgba(255,255,255,0.03);
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.section h2{
+
+    font-size:22px;
+
+    margin-bottom:20px;
+
+    padding-bottom:8px;
+
+    border-bottom:
+    1px solid rgba(255,255,255,0.12);
+
+    color:#ffd369;
+}
+
+/* =======================================================
+TICKETS GRID
+======================================================= */
+
+.tickets-container{
+
+    display:grid;
+
+    grid-template-columns:1fr;
+
+    gap:18px;
+}
+
+@media(min-width:900px){
+
+.tickets-container{
+
+    grid-template-columns:1fr 1fr;
+}
+
+}
+
+/* =======================================================
+BUTTONS
+======================================================= */
+
+button{
+
+    padding:10px 14px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    margin:4px;
+
+    font-weight:bold;
+
+    transition:0.25s;
+}
+
+button:hover{
+
+    transform:translateY(-2px);
+}
+
+.inprogress{
+
+    background:#f39c12;
+
+    color:white;
+}
+
+.resolved{
+
+    background:#27ae60;
+
+    color:white;
+}
+
+/* =======================================================
+TEXTAREA
+======================================================= */
+
+textarea{
+
+    width:100%;
+
+    margin-top:10px;
+
+    padding:10px;
+
+    border-radius:8px;
+
+    border:none;
+
+    resize:vertical;
+
+    font-family:Tahoma;
+}
+
+/* =======================================================
+SOLUTION BOX
+======================================================= */
+
+.solution{
+
+    background:
+    rgba(255,255,255,0.05);
+
+    padding:10px;
+
+    margin-top:8px;
+
+    border-radius:8px;
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+}
+
+/* =======================================================
+FOOTER
+======================================================= */
+
+.main-footer{
+
+    margin-top:60px;
+
+    width:100%;
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    backdrop-filter:blur(15px);
+
+    background:rgba(255,255,255,0.04);
+
+    border-top:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.social{
+    margin-bottom:16px;
+}
+
+.social a{
+
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+
+    width:45px;
+    height:45px;
+
+    margin:6px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,0.08);
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:bold;
+
+    transition:0.3s;
+}
+
+.social a:hover{
+
+    transform:translateY(-5px);
+
+    background:#ffd369;
+
+    color:#071739;
+
+    box-shadow:
+    0 8px 20px rgba(255,211,105,0.35);
+}
+
+.footer-text{
+
+    color:rgba(255,255,255,0.7);
+
+    font-size:14px;
+}
+/* =======================================================
+====================== TICKET DETAILS ====================
+======================================================= */
+
+.ticket{
+
+    direction:rtl;
+    text-align:right;
+
+    margin-bottom:22px;
+
+    padding:22px;
+
+    border-radius:24px;
+
+    background:
+    linear-gradient(
+        145deg,
+        rgba(255,255,255,0.08),
+        rgba(255,255,255,0.03)
+    );
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(18px);
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.20);
+
+    transition:0.35s;
+
+    position:relative;
+}
+
+/* Hover */
+.ticket:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:
+    0 18px 40px rgba(0,0,0,0.30);
+}
+
+/* خط علوي */
+.ticket::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    right:0;
+
+    width:100%;
+    height:4px;
+
+    border-radius:24px 24px 0 0;
+
+    background:
+    linear-gradient(
+        to left,
+        #ffd369,
+        transparent
+    );
+}
+
+/* رأس التيكت */
+.ticket-top{
+
+    display:flex;
+
+    justify-content:space-between;
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:20px;
+
+    flex-wrap:wrap;
+}
+
+/* عنوان التيكت */
+.ticket-title{
+
+    font-size:24px;
+
+    font-weight:800;
+
+    color:#ffffff;
+
+    line-height:1.7;
+}
+
+/* حالة التيكت */
+.ticket-status{
+
+    padding:10px 18px;
+
+    border-radius:50px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    backdrop-filter:blur(10px);
+
+    border:
+    1px solid rgba(255,255,255,0.15);
+
+    box-shadow:
+    0 8px 18px rgba(0,0,0,0.15);
+}
+
+/* مفتوحة */
+.status-open{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(0,255,170,0.18),
+        rgba(0,255,170,0.08)
+    );
+
+    color:#7dffd3;
+}
+
+/* مغلقة */
+.status-closed{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,80,80,0.18),
+        rgba(255,80,80,0.08)
+    );
+
+    color:#ffb0b0;
+}
+
+/* جاري العمل */
+.status-progress{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,211,105,0.20),
+        rgba(255,211,105,0.08)
+    );
+
+    color:#ffe08a;
+}
+
+/* تم الحل */
+.status-resolved{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(80,180,255,0.20),
+        rgba(80,180,255,0.08)
+    );
+
+    color:#9fd6ff;
+}
+
+/* جسم التيكت */
+.ticket-body{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+}
+
+/* كل سطر بيانات */
+.ticket-item{
+
+    background:
+    rgba(255,255,255,0.05);
+
+    border:
+    1px solid rgba(255,255,255,0.06);
+
+    border-radius:18px;
+
+    padding:16px 18px;
+
+    line-height:2;
+}
+
+/* العنوان */
+.ticket-item .label,
+.ticket-solution .label{
+
+    font-weight:800;
+
+    color:#ffd369;
+
+    margin-left:8px;
+}
+
+/* القيمة */
+.ticket-item .value{
+
+    color:rgba(255,255,255,0.85);
+}
+
+/* صندوق الحل */
+.ticket-solution{
+
+    margin-top:8px;
+
+    padding:20px;
+
+    border-radius:22px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,211,105,0.10),
+        rgba(255,255,255,0.04)
+    );
+
+    border:
+    1px solid rgba(255,211,105,0.18);
+}
+
+/* نص الحل */
+.solution-text{
+
+    margin-top:12px;
+
+    line-height:2.1;
+
+    color:rgba(255,255,255,0.88);
+}
+
+/* التقييم */
+.ticket-rating{
+
+    width:fit-content;
+
+    padding:12px 18px;
+
+    border-radius:50px;
+
+    background:
+    rgba(255,255,255,0.08);
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    font-weight:700;
+
+    margin-top:10px;
+}
+
+/* أزرار التحكم */
+.ticket-actions{
+
+    margin-top:28px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+}
+
+/* textarea */
+.ticket-actions textarea{
+
+    width:100%;
+
+    border-radius:14px;
+
+    padding:12px;
+
+    border:
+    1px solid rgba(255,255,255,0.1);
+
+    background:
+    rgba(255,255,255,0.05);
+
+    color:white;
+}
+
+/* select */
+.ticket-actions select{
+
+    min-width:220px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,255,255,0.10),
+        rgba(255,255,255,0.04)
+    );
+
+    color:white;
+
+    border-radius:18px;
+
+    border:
+    1px solid rgba(255,255,255,0.10);
+
+    padding:14px 18px;
+
+    cursor:pointer;
+
+    font-weight:700;
+
+    transition:0.35s;
+}
+
+.ticket-actions select:hover{
+
+    transform:translateY(-2px);
+
+    border:
+    1px solid rgba(255,211,105,0.30);
+}
+
+.ticket-actions option{
+
+    color:black;
+}
+
+/* =======================================================
+====================== RESPONSIVE ========================
+======================================================= */
+
+@media(max-width:768px){
+
+    .ticket-top{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+    .ticket-title{
+
+        font-size:21px;
+    }
+
+    .ticket-actions{
+
+        justify-content:center;
+    }
+
+    .ticket-actions select{
+
+        width:75%;
+    }
+
+}
+.no-data{
+    text-align:center;
+    padding:25px;
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:8px;
+    color:#888;
+    margin-bottom:30px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*==================================================
+    Toolbar
+==================================================*/
+
+.tickets-toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    align-items:end;
+    margin-bottom:20px;
+}
+
+.toolbar-item{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.toolbar-item label{
+    font-size:14px;
+    font-weight:bold;
+    color:#fffbfb;
+}
+
+.toolbar-item input,
+.toolbar-item select{
+    min-width:220px;
+    height:42px;
+    border:1px solid #d0d7de;
+    border-radius:8px;
+    padding:0 12px;
+    font-size:15px;
+    background:#fff;
+    transition:.25s;
+}
+
+.toolbar-item input:focus,
+.toolbar-item select:focus{
+    outline:none;
+    border-color:#1976d2;
+    box-shadow:0 0 6px rgba(25,118,210,.2);
+}
+
+.tickets-info{
+    margin-bottom:15px;
+    font-size:15px;
+    font-weight:bold;
+    color:#1976d2;
+}
+
+/*==================================================
+    Table
+==================================================*/
+
+.tickets-table{
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.tickets-table thead{
+    background:#1976d2;
+}
+
+.tickets-table th{
+    color:#fff;
+    font-size:15px;
+    font-weight:bold;
+    padding:14px;
+    text-align:center;
+}
+
+.tickets-table td{
+    padding:12px;
+    text-align:center;
+    color:#000;
+    border-bottom:1px solid #ececec;
+    vertical-align:middle;
+}
+
+.tickets-table tbody tr:hover{
+    background:#f7fbff;
+}
+
+/*==================================================
+    Details
+==================================================*/
+
+.details-row{
+    display:none;
+    background:#f9fbfd;
+}
+
+.details-cell{
+    padding:20px !important;
+    text-align:right !important;
+}
+
+.details-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+    gap:15px;
+
+}
+
+/*==================================================
+    Boxes
+==================================================*/
+
+.detail-box{
+
+    background:#fff;
+
+    border:1px solid #e4e7eb;
+
+    border-radius:10px;
+
+    padding:15px;
+
+    box-shadow:0 2px 6px rgba(0,0,0,.05);
+
+}
+
+.detail-box h4{
+
+    margin:0 0 10px;
+
+    color:#1976d2;
+
+    font-size:15px;
+
+    border-bottom:1px solid #eee;
+
+    padding-bottom:8px;
+
+}
+
+.detail-box p{
+
+    margin:0;
+
+    color:#000;
+
+    font-size:15px;
+
+    line-height:1.8;
+
+    white-space:pre-wrap;
+
+    word-break:break-word;
+
+}
+
+/*==================================================
+    Solutions
+==================================================*/
+
+.solution-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.solution-list div{
+
+    background:#f5f7fa;
+
+    border-right:4px solid #1976d2;
+
+    padding:10px;
+
+    border-radius:6px;
+
+    color:#000;
+
+    line-height:1.8;
+
+    font-size:15px;
+
+}
+
+/*==================================================
+    Buttons
+==================================================*/
+
+.btn-view{
+
+    width:38px;
+
+    height:38px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:#1976d2;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    font-size:15px;
+
+}
+
+.btn-view:hover{
+
+    background:#125ca8;
+
+}
+
+.ticket-actions{
+
+    margin-top:25px;
+
+    padding-top:20px;
+
+    border-top:1px solid #ddd;
+
+}
+
+.ticket-actions textarea{
+
+    width:100%;
+
+    min-height:120px;
+
+    resize:vertical;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    padding:12px;
+
+    font-size:15px;
+
+    color:#000;
+
+    background:#fff;
+
+    margin-bottom:15px;
+
+}
+
+.ticket-actions textarea:focus{
+
+    outline:none;
+
+    border-color:#1976d2;
+
+}
+
+.ticket-actions button{
+
+    padding:10px 22px;
+
+    border:none;
+
+    border-radius:8px;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    margin-left:10px;
+
+}
+
+.inprogress{
+
+    background:#ff9800;
+
+}
+
+.inprogress:hover{
+
+    background:#f57c00;
+
+}
+
+.resolved{
+
+    background:#2e7d32;
+
+}
+
+.resolved:hover{
+
+    background:#1b5e20;
+
+}
+
+/*==================================================
+    Status
+==================================================*/
+.ddh{
+
+    color:#fff;
+
+}
+.status-open,
+.status-progress,
+.status-resolved,
+.status-closed{
+
+    display:inline-block;
+
+    min-width:100px;
+
+    padding:6px 12px;
+
+    border-radius:30px;
+
+    color:#fff;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+}
+
+.status-open{
+
+    background:#ff9800;
+
+}
+
+.status-progress{
+
+    background:#2196f3;
+
+}
+
+.status-resolved{
+
+    background:#4caf50;
+
+}
+
+.status-closed{
+
+    background:#757575;
+
+}
+
+/*==================================================
+    Empty Data
+==================================================*/
+
+.no-data{
+
+    background:#fff;
+
+    padding:30px;
+
+    text-align:center;
+
+    border-radius:10px;
+
+    color:#777;
+
+    font-size:16px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+
+}
+
+.new-ticket-alert{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:#fff8e1;
+
+    border:1px solid #ffca28;
+
+    color:#000;
+
+    padding:12px 18px;
+
+    border-radius:8px;
+
+    margin-bottom:15px;
+
+}
+
+.new-ticket-alert button{
+
+    background:#1976d2;
+
+    color:#fff;
+
+    border:none;
+
+    padding:8px 16px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+}
+
+.new-ticket-alert button:hover{
+
+    background:#125ca8;
+
+}
+
+
+</style>
+
+
+</head>
+
+<body>
+
+
+<header class="main-header">
+
+    <img src="photo/logo.png" class="logo">
+
+    <div class="brand">
+        SGU Ticketing
+    </div>
+    <button class="about-link" id="logoutBtn" onclick="logout()"> تسجيل الخروج</button>
+</header>
+
+
+<div class="header">
+لوحة موظف شؤون العاملين
+</div>
+
+
+<div class="container">
+
+<div class="section">
+<div id="newTicketAlert" class="new-ticket-alert" style="display:none;">
+
+    <span>
+        🔔 يوجد تحديث جديد للتذاكر
+    </span>
+
+    <button onclick="reloadTickets()">
+        تحديث الآن
+    </button>
+
+</div>
+    <div class="tickets-toolbar">
+
+        <div class="toolbar-item">
+
+            <label>بحث</label>
+
+            <input
+                type="text"
+                id="searchBox"
+                placeholder="ابحث بالعنوان أو الوصف أو المكان..."
+                onkeyup="applyFilters()">
+
+        </div>
+
+        <div class="toolbar-item">
+
+            <label>الموظف</label>
+
+            <select id="employeeFilter" onchange="applyFilters()">
+            
+                <option value=""> <h4>جميع الموظفين </h4></option>
+
+            </select>
+
+        </div>
+
+        <div class="toolbar-item">
+
+            <label>الحالة</label>
+
+            <select id="statusFilter" onchange="applyFilters()">
+
+                <option value="">كل الحالات</option>
+
+                <option value="open">مفتوحة</option>
+
+                <option value="assigned">تم الإسناد</option>
+
+                <option value="in_progress">تحت العمل</option>
+
+                <option value="resolved">تم الحل</option>
+
+                <option value="closed">مغلقة</option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+    <div class="tickets-info">
+
+        <span id="ticketsCount">
+            0 تذكرة
+        </span>
+
+    </div>
+
+    <div id="ticketsTable"></div>
+
+</div>
+
+
+</div>
+
+
+<footer class="main-footer">
+
+    <div class="social">
+
+        <a href="#">F</a>
+        <a href="#">Y</a>
+        <a href="#">L</a>
+        <a href="#">W</a>
+        <a href="#">E</a>
+
+    </div>
+
+    <div class="footer-text">
+        جميع الحقوق محفوظة © M.H.D
+    </div>
+
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL="https://cqmhpvaaaduqbhjtyrgk.supabase.co"
+const SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxbWhwdmFhYWR1cWJoanR5cmdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MTA3OTUsImV4cCI6MjA5NDE4Njc5NX0.eqZ69jTSRFvPhjSVx2KZe9-3LSw0cw8uAQ6D06ZkQFg"
+
+const supabaseClient=supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+)
+
+
+
+let user = JSON.parse(sessionStorage.getItem("user"));
+
+if (!user || user.role !== "hr") {
+
+    logout();
+
+}
+
+let allTickets = [];
+
+function logout() {
+
+    sessionStorage.clear();
+
+    window.location.replace("index.html");
+
+}
+
+
+let lastUpdateTime = null;
+let hasPendingUpdate = false;
+
+async function autoRefresh() {
+
+    // آخر تحديث موجود فى قاعدة البيانات
+
+    const { data, error } = await supabaseClient
+
+        .from("tickets")
+
+        .select("updated_at")
+
+        .eq("assigned_to", user.id)
+
+        .order("updated_at", { ascending: false })
+
+        .limit(1);
+
+    if (error || !data || data.length === 0)
+        return;
+
+    const newest = data[0].updated_at;
+
+    // أول مرة
+
+    if (lastUpdateTime == null) {
+
+        lastUpdateTime = newest;
+        return;
+
+    }
+
+    // لا يوجد تحديث
+
+    if (newest == lastUpdateTime)
+        return;
+
+    // يوجد تحديث
+
+    lastUpdateTime = newest;
+
+    // إذا كان المستخدم يكتب
+
+    if (isEditing()) {
+
+        hasPendingUpdate = true;
+
+        document.getElementById("newTicketAlert").style.display = "flex";
+
+        return;
+
+    }
+
+    // إذا لم يكن يكتب
+
+    loadTickets();
+
+}
+setInterval(autoRefresh,15000);
+
+async function reloadTickets() {
+
+    document.getElementById("newTicketAlert").style.display = "none";
+
+    hasPendingUpdate = false;
+
+    await loadTickets();
+
+}
+function isEditing() {
+
+    const activeElement = document.activeElement;
+
+    return (
+        activeElement &&
+        activeElement.tagName === "TEXTAREA"
+    );
+
+}
+
+
+
+
+
+
+async function loadTickets() {
+
+    //====================================
+    // التذاكر
+    //====================================
+
+    const { data: tickets, error } = await supabaseClient
+        .from("tickets")
+        .select(`
+            *,
+            employee:created_by(
+                id,
+                name,
+                phone
+            )
+        `)
+        .eq("assigned_to", user.id);
+
+    if (error) {
+
+        console.error(error);
+        return;
+
+    }
+
+    //====================================
+    // الحلول
+    //====================================
+
+    const { data: solutions } = await supabaseClient
+        .from("ticket_solution")
+        .select("*");
+
+    //====================================
+    // التقييمات
+    //====================================
+
+    const { data: ratings } = await supabaseClient
+        .from("ratings")
+        .select("*");
+
+    //====================================
+    // Map للحلول
+    //====================================
+
+    const solutionMap = {};
+
+    solutions.forEach(item => {
+
+        solutionMap[item.ticket_id] = item;
+
+    });
+
+    //====================================
+    // Map للتقييمات
+    //====================================
+
+    const ratingMap = {};
+
+    ratings.forEach(item => {
+
+        ratingMap[item.ticket_id] = item;
+
+    });
+
+    //====================================
+    // تجهيز البيانات
+    //====================================
+
+    allTickets = tickets.map(ticket => {
+
+        return {
+
+            ...ticket,
+
+            employeeName:
+                ticket.employee?.name || "غير معروف",
+
+            employeePhone:
+                ticket.employee?.phone || "---",
+
+            solution:
+                solutionMap[ticket.id] || null,
+
+            rating:
+                ratingMap[ticket.id] || null
+
+        };
+
+    });
+
+    //====================================
+    // تعبئة قائمة الموظفين
+    //====================================
+
+    fillEmployeeFilter();
+
+    //====================================
+    // رسم الجدول
+    //====================================
+
+    applyFilters();
+
+}
+
+
+
+function renderTickets(tickets) {
+
+    let html = `
+        <table class="tickets-table">
+
+            <thead>
+                <tr>
+                    <th style="width:70px">#</th>
+                    <th style="width:80px">عرض</th>
+                    <th style="width:140px">الحالة</th>
+                    <th style="width:180px">الموظف</th>
+                    <th style="width:180px">آخر تحديث</th>
+                    <th style="width:180px">تاريخ الإنشاء</th>
+                    <th>العنوان</th>
+                </tr>
+            </thead>
+
+            <tbody>
+    `;
+
+    for (const t of tickets) {
+
+        let solutionsHTML = "لا توجد حلول";
+
+        if (t.solution && t.solution.solution_text) {
+
+            solutionsHTML = "";
+
+            t.solution.solution_text
+                .split("\n-\n")
+                .forEach(item => {
+
+                    solutionsHTML += `
+                        <div>${item}</div>
+                    `;
+
+                });
+
+        }
+
+        let actionsHTML = "";
+
+        if (t.status === "open" || t.status === "assigned") {
+
+            actionsHTML = `
+
+                <div class="ticket-actions">
+
+                    <textarea
+                        id="solution-${t.id}"
+                        placeholder="اكتب السبب الفني"></textarea>
+
+                    <br><br>
+
+                    <button
+                        class="inprogress"
+                        onclick="updateStatus(${t.id},'in_progress')">
+
+                        تحت العمل
+
+                    </button>
+
+                    <button
+                        class="resolved"
+                        onclick="resolveTicket(${t.id})">
+
+                        تم الحل
+
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+        else if (t.status === "in_progress") {
+
+            actionsHTML = `
+
+                <div class="ticket-actions">
+
+                    <textarea
+                        id="solution-${t.id}"
+                        placeholder="إضافة سبب فني"></textarea>
+
+                    <br><br>
+
+                    <button
+                        class="resolved"
+                        onclick="resolveTicket(${t.id})">
+
+                        تم الحل
+
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+        html += `
+
+        <tr>
+
+            <td>${t.id}</td>
+
+            <td>
+
+                <button
+                    id="btn-${t.id}"
+                    class="btn-view"
+                    onclick="toggleTicket(${t.id})">
+
+                    ▶
+
+                </button>
+
+            </td>
+
+            <td>
+
+                <span class="${statusClass(t.status)}">
+
+                    ${statusName(t.status)}
+
+                </span>
+
+            </td>
+
+            <td>
+
+                ${t.employeeName}
+
+            </td>
+
+            <td>
+
+                ${formatDate(t.updated_at)}
+
+            </td>
+
+            <td>
+
+                ${formatDate(t.created_at)}
+
+            </td>
+
+            <td>
+
+                ${t.title}
+
+            </td>
+
+        </tr>
+
+        <tr
+            id="details-${t.id}"
+            class="details-row">
+
+            <td colspan="7" class="details-cell">
+
+                <div class="details-grid">
+
+                    <div class="detail-box">
+
+                        <h4>الوصف</h4>
+
+                        <p>${t.description || "-"}</p>
+
+                    </div>
+
+                    <div class="detail-box">
+
+                        <h4>المكان</h4>
+
+                        <p>${t.location || "-"}</p>
+
+                    </div>
+
+                    <div class="detail-box">
+
+                        <h4>الموظف</h4>
+
+                        <p>${t.employeeName}</p>
+
+                    </div>
+
+                    <div class="detail-box">
+
+                        <h4>الهاتف</h4>
+
+                        <p>${t.employeePhone}</p>
+
+                    </div>
+
+                    <div class="detail-box">
+
+                        <h4>الحلول الفنية</h4>
+
+                        <div class="solution-list">
+
+                            ${solutionsHTML}
+
+                        </div>
+
+                    </div>
+
+                    ${t.status === "closed" ? `
+
+                    <div class="detail-box">
+
+                        <h4>التقييم</h4>
+
+                        <p>${t.rating ? t.rating.rating : "لا يوجد"}</p>
+
+                    </div>
+
+                    ` : ""}
+
+                </div>
+
+                ${actionsHTML}
+
+            </td>
+
+        </tr>
+
+        `;
+
+    }
+
+    html += `
+            </tbody>
+
+        </table>
+    `;
+
+    document.getElementById("ticketsTable").innerHTML = html;
+
+}
+/*-----------------------------------------------*/
+
+function fillEmployeeFilter() {
+
+    const select = document.getElementById("employeeFilter");
+
+    select.innerHTML = `
+        <option value="">جميع الموظفين</option>
+    `;
+
+    const employees = {};
+
+    allTickets.forEach(ticket => {
+
+        if (!ticket.employee) return;
+
+        employees[ticket.employee.id] = ticket.employee.name;
+
+    });
+
+    Object.keys(employees)
+        .sort((a, b) => employees[a].localeCompare(employees[b], "ar"))
+        .forEach(id => {
+
+            select.innerHTML += `
+                <option value="${id}">
+                    ${employees[id]}
+                </option>
+            `;
+
+        });
+
+}
+function applyFilters() {
+
+    const search =
+        document.getElementById("searchBox")
+        .value
+        .trim()
+        .toLowerCase();
+
+    const employee =
+        document.getElementById("employeeFilter")
+        .value;
+
+    const status =
+        document.getElementById("statusFilter")
+        .value;
+
+    //--------------------------------------------------
+    // فلترة
+    //--------------------------------------------------
+
+    let result = allTickets.filter(ticket => {
+
+        //--------------------------------------------------
+        // الموظف
+        //--------------------------------------------------
+
+        if (employee) {
+
+            if (ticket.employee?.id != employee)
+                return false;
+
+        }
+
+        //--------------------------------------------------
+        // الحالة
+        //--------------------------------------------------
+
+        if (status) {
+
+            if (ticket.status != status)
+                return false;
+
+        }
+
+        //--------------------------------------------------
+        // البحث
+        //--------------------------------------------------
+
+        if (search) {
+
+            const text = (
+
+                (ticket.title || "") +
+
+                " " +
+
+                (ticket.description || "") +
+
+                " " +
+
+                (ticket.location || "") +
+
+                " " +
+
+                (ticket.employeeName || "")
+
+            ).toLowerCase();
+
+            if (!text.includes(search))
+                return false;
+
+        }
+
+        return true;
+
+    });
+
+    //--------------------------------------------------
+    // ترتيب النتائج
+    //--------------------------------------------------
+
+    const order = {
+
+        open: 1,
+
+        assigned: 2,
+
+        in_progress: 3,
+
+        resolved: 4,
+
+        closed: 5
+
+    };
+
+    result.sort((a, b) => {
+
+        const s =
+            order[a.status] -
+            order[b.status];
+
+        if (s !== 0)
+            return s;
+
+        return new Date(b.created_at) -
+               new Date(a.created_at);
+
+    });
+
+    //--------------------------------------------------
+    // عدد النتائج
+    //--------------------------------------------------
+
+    document.getElementById("ticketsCount").innerHTML =
+
+        "عدد التذاكر : " + result.length;
+
+    //--------------------------------------------------
+    // رسم الجدول
+    //--------------------------------------------------
+
+    renderTickets(result);
+
+}
+
+/* داله التحديث */
+
+async function updateStatus(id,status){
+
+await supabaseClient
+.from("tickets")
+.update({status:status})
+.eq("id",id)
+
+loadTickets()
+
+}
+
+
+
+//====================================
+// فتح وإغلاق التفاصيل
+//====================================
+
+let openedTicket = null;
+
+function toggleTicket(id){
+
+    // إذا كانت هناك تذكرة مفتوحة
+    if(openedTicket !== null){
+
+        let oldRow = document.getElementById("details-" + openedTicket);
+
+        if(oldRow){
+            oldRow.style.display = "none";
+        }
+
+        let oldBtn = document.getElementById("btn-" + openedTicket);
+
+        if(oldBtn){
+            oldBtn.innerHTML = "▶";
+        }
+
+        // إذا ضغط على نفس التذكرة يتم إغلاقها فقط
+        if(openedTicket === id){
+
+            openedTicket = null;
+            return;
+
+        }
+
+    }
+
+    let row = document.getElementById("details-" + id);
+
+    if(row){
+
+        row.style.display = "table-row";
+
+    }
+
+    let btn = document.getElementById("btn-" + id);
+
+    if(btn){
+
+        btn.innerHTML = "▼";
+
+    }
+
+    openedTicket = id;
+
+}
+//====================================
+// تنسيق التاريخ
+//====================================
+
+function formatDate(date) {
+
+    if (!date) return "-";
+
+    return new Date(date).toLocaleString("ar-EG", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+
+}
+
+//====================================
+// اسم الحالة بالعربية
+//====================================
+
+function statusName(status) {
+
+    switch (status) {
+
+        case "open":
+            return "مفتوحة";
+
+        case "assigned":
+            return "تم الإسناد";
+
+        case "in_progress":
+            return "تحت العمل";
+
+        case "resolved":
+            return "تم الحل";
+
+        case "closed":
+            return "مغلقة";
+
+        default:
+            return status;
+
+    }
+
+}
+
+//====================================
+// لون الحالة
+//====================================
+
+function statusClass(status) {
+
+    switch (status) {
+
+        case "open":
+            return "status-open";
+
+        case "assigned":
+            return "status-open";
+
+        case "in_progress":
+            return "status-progress";
+
+        case "resolved":
+            return "status-resolved";
+
+        case "closed":
+            return "status-closed";
+
+        default:
+            return "";
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+async function resolveTicket(id){
+
+let newReason=document.getElementById("solution-"+id).value
+
+if(!newReason){
+alert("اكتب السبب الفني")
+return
+}
+
+let {data:old}=await supabaseClient
+.from("ticket_solution")
+.select("solution_text")
+.eq("ticket_id",id)
+.single()
+
+let finalText=""
+
+if(old){
+
+finalText=newReason+"\n-\n"+old.solution_text
+
+await supabaseClient
+.from("ticket_solution")
+.update({solution_text:finalText})
+.eq("ticket_id",id)
+
+}
+else{
+
+await supabaseClient
+.from("ticket_solution")
+.insert({
+ticket_id:id,
+engineer_id:user.id,
+solution_text:newReason
+})
+
+}
+
+await supabaseClient
+.from("tickets")
+.update({status:"resolved"})
+.eq("id",id)
+
+loadTickets()
+
+}
+
+loadTickets()
+
+supabaseClient
+.channel("tickets-live")
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"tickets"
+},
+payload=>{
+loadTickets()
+}
+)
+.subscribe()
+
+</script>
+
+</body>
+</html>

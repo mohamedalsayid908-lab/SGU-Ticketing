@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>تقرير التقييمات وسرعة الحل</title>
+
+<link rel="stylesheet" href="evaluation_report.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+</head>
+<body>
+
+<div class="page">
+<!-- =======================================================
+====================== HEADER START =======================
+======================================================= -->
+<header class="main-header">
+
+    <img src="photo/logo.png" class="logo">
+
+    <div class="brand">
+        SGU Ticketing
+    </div>
+
+    <button class="about-link" id="logoutBtn" onclick="logout()"> تسجيل الخروج</button>
+
+</header>
+<!-- =======================================================
+======================= HEADER END ========================
+======================================================= -->
+    <!-- عنوان الصفحة -->
+    <div class="page-header">
+
+        <h1>
+            تقرير التقييمات ومدى سرعة الحل
+        </h1>
+
+        <p>
+            متابعة أداء  موظفي    شؤون العاملين وسرعة معالجة التذاكر
+        </p>
+
+    </div>
+
+    <!-- الفلاتر -->
+
+    <div class="filter-box">
+
+        <div class="filter-grid">
+
+            <div class="field">
+
+                <label>
+
+                    من تاريخ
+
+                </label>
+
+                <input
+                    type="date"
+                    id="fromDate">
+
+            </div>
+
+            <div class="field">
+
+                <label>
+
+                    إلى تاريخ
+
+                </label>
+
+                <input
+                    type="date"
+                    id="toDate">
+
+            </div>
+
+            <div class="field">
+
+                <label>
+
+                    موظف شؤون العاملين
+
+                </label>
+
+                <select id="engineerFilter">
+
+                    <option value="">
+                        جميع موظفي شؤون العاملين
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="field">
+
+                <label>
+
+                    الموظف
+
+                </label>
+
+                <select id="employeeFilter">
+
+                    <option value="">
+                        جميع الموظفين
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="field">
+
+                <label>
+
+                    الكلية
+
+                </label>
+
+                <select id="facultyFilter">
+
+                    <option value="">
+                        جميع الكليات
+                    </option>
+
+                    <option value="pharmacy">
+                     كلية الصيدلة
+                    </option>
+
+                    <option value="physical_therapy">
+                          كلية العلاج الطبيعي
+                    </option>
+
+                    <option value="dentistry">
+                        كلية أسنان
+                    </option>
+
+                    <option value="computer_science">
+                        كلية الحاسبات والمعلومات
+                    </option>
+
+                    <option value="management">
+                        كلية إدارة
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <div class="button-group">
+
+            <button
+                class="btn btn-primary"
+                onclick="viewReport()">
+
+                عرض التقرير
+
+            </button>
+
+            <button
+                class="btn btn-success"
+                onclick="generateExcel()">
+
+                تصدير Excel
+
+            </button>
+
+            <button
+                class="btn btn-danger"
+                onclick="generatePDF()">
+
+                تصدير PDF
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- مكان ظهور التقرير -->
+
+    <div
+        id="reportView"
+        class="report-container">
+
+        <div class="empty">
+
+            <div class="empty-icon">
+
+                📊
+
+            </div>
+
+            <h2>
+
+                لا يوجد تقرير حالياً
+
+            </h2>
+
+            <p>
+
+                قم باختيار الفلاتر المطلوبة ثم اضغط
+                <strong>عرض التقرير</strong>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="hrevaluation_report.js"></script>
+
+</body>
+
+</html>
