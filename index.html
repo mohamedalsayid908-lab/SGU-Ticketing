@@ -644,7 +644,7 @@ let user = data[0]
 sessionStorage.setItem("user", JSON.stringify(user));
 
 if(user.role === "employee"){
-window.location = "dashboard.html"
+window.location = "rout.html"
 }
 
 else if(user.role === "it"){
@@ -655,6 +655,16 @@ window.location =
 else if(user.role === "admin"){
 window.location =
 "admin_dashboard.html"
+}
+
+else if(user.role === "admin_hr"){
+window.location =
+"hr_admin.html"
+}
+
+else if(user.role === "hr"){
+window.location =
+"hr_employee.html"
 }
 
 else{
