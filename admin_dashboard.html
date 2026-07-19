@@ -1234,11 +1234,15 @@ button:hover{
     <div class="card">
 
         <button class="report-btn" onclick="goReports()">
-            صفحة التقارير
+           تقرير بيانات بطاقات الدعم
+        </button>
+    </div>
+<div class="card">
+        <button class="report-btn" onclick="goReports2()">
+             التقرير الأحصائي لباطاقات الدعم
         </button>
 
     </div>
-
 </div>
 
 <!-- =======================================================
@@ -1709,6 +1713,9 @@ link.click()
 }
 function goReports(){
 window.location.href="reports.html"
+}
+function goReports2(){
+window.location.href="evaluation_report.html"
 }
 loadEngineers()
 loadTickets()
