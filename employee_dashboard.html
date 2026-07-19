@@ -118,8 +118,24 @@ const SUPABASE_URL = "https://cqmhpvaaaduqbhjtyrgk.supabase.co/rest/v1/";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxbWhwdmFhYWR1cWJoanR5cmdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MTA3OTUsImV4cCI6MjA5NDE4Njc5NX0.eqZ69jTSRFvPhjSVx2KZe9-3LSw0cw8uAQ6D06ZkQFg";
 
 
-const user = JSON.parse(localStorage.getItem("user"))
 
+let user = JSON.parse(sessionStorage.getItem("user"));
+
+if (!user || user.role !== "it") {
+
+    logout();
+
+}
+
+let allTickets = [];
+
+function logout() {
+
+    sessionStorage.clear();
+
+    window.location.replace("index.html");
+
+}
 
 async function loadEngineers(){
 
