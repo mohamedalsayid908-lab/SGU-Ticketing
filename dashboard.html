@@ -1969,6 +1969,96 @@ opacity:1;
 font-weight:500;
 
 }
+
+
+.location-box{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.location-box input{
+    height:42px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:0 12px;
+    font-size:14px;
+}
+
+#locationCollege{
+    flex:3;
+}
+
+#roomNumber{
+    flex:1;
+}
+
+
+
+
+.new-ticket-alert{
+
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    background: #2563eb;
+    color: #fff;
+
+    padding: 14px 18px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,.25);
+
+    animation: slideDown .35s ease;
+
+}
+
+.new-ticket-alert button{
+
+    border: none;
+    background: #fff;
+    color: #2563eb;
+
+    padding: 8px 14px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+}
+
+.new-ticket-alert button:hover{
+
+    background: #f3f4f6;
+
+}
+
+@keyframes slideDown{
+
+    from{
+
+        opacity: 0;
+        transform: translateY(-20px);
+
+    }
+
+    to{
+
+        opacity: 1;
+        transform: translateY(0);
+
+    }
+
+}
 </style>
 
 </head>
@@ -1999,7 +2089,7 @@ font-weight:500;
 
     </div>
 
-    <div class="card">
+<div class="card">
 
         <h3>إنشاء تيكت جديد</h3>
 
@@ -2012,38 +2102,22 @@ font-weight:500;
         <div class="location-box">
 
     <input
-        id="location"
+        id="locationCollege"
         list="locations"
-        placeholder="اختر الموقع أو اكتبه..."
+        placeholder="اختر الكلية"
         autocomplete="off">
 
+    <input
+        id="roomNumber"
+        type="text"
+        placeholder="رقم الغرفة">
+
     <datalist id="locations">
-
-        <option value="كلية الحاسبات والمعلومات - الدور الأول">
-        <option value="كلية الحاسبات والمعلومات - الدور الثاني">
-        <option value="كلية الحاسبات والمعلومات - الدور الثالث">
-        <option value="كلية الحاسبات والمعلومات - الدور الرابع">
-
-        <option value="كلية الصيدلة - الدور الأول">
-        <option value="كلية الصيدلة - الدور الثاني">
-        <option value="كلية الصيدلة - الدور الثالث">
-        <option value="كلية الصيدلة - الدور الرابع">
-
-        <option value="كلية العلاج الطبيعي - الدور الأول">
-        <option value="كلية العلاج الطبيعي - الدور الثاني">
-        <option value="كلية العلاج الطبيعي - الدور الثالث">
-        <option value="كلية العلاج الطبيعي - الدور الرابع">
-
-        <option value="كلية طب الأسنان - الدور الأول">
-        <option value="كلية طب الأسنان - الدور الثاني">
-        <option value="كلية طب الأسنان - الدور الثالث">
-        <option value="كلية طب الأسنان - الدور الرابع">
-
-        <option value="كلية الإدارة - الدور الأول">
-        <option value="كلية الإدارة - الدور الثاني">
-        <option value="كلية الإدارة - الدور الثالث">
-        <option value="كلية الإدارة - الدور الرابع">
-
+        <option value="كلية الحاسبات والمعلومات">
+        <option value="كلية الصيدلة">
+        <option value="كلية العلاج الطبيعي">
+        <option value="كلية طب الأسنان">
+        <option value="كلية الإدارة">
     </datalist>
 
 </div>
@@ -2054,7 +2128,15 @@ font-weight:500;
 
     </div>
 
+<div id="newTicketAlert" class="new-ticket-alert" style="display:none;">
 
+    <span>🔔 يوجد تحديث جديد على أحد طلباتك</span>
+
+    <button onclick="reloadTickets()">
+        عرض التحديث
+    </button>
+
+</div>
 
     
     <div class="section">
@@ -2150,6 +2232,65 @@ function logout() {
     window.location.replace("index.html");
 
 }
+
+let lastUpdateTime = null;
+
+async function autoRefresh() {
+
+    try {
+
+        const { data, error } = await supabaseClient
+            .from("tickets")
+            .select("updated_at")
+            .eq("created_by", user.id)
+            .order("updated_at", { ascending: false })
+            .limit(1);
+
+        if (error || !data || data.length === 0)
+            return;
+
+        const newest = data[0].updated_at;
+
+        // أول مرة
+        if (lastUpdateTime === null) {
+
+            lastUpdateTime = newest;
+            return;
+
+        }
+
+        // لا يوجد تحديث
+        if (newest === lastUpdateTime)
+            return;
+
+        // يوجد تحديث
+        lastUpdateTime = newest;
+
+        document.getElementById("newTicketAlert").style.display = "flex";
+
+    }
+
+    catch (ex) {
+
+        console.error(ex);
+
+    }
+
+}
+
+setInterval(autoRefresh, 10000);
+
+async function reloadTickets() {
+
+    document.getElementById("newTicketAlert").style.display = "none";
+
+    await loadTickets();
+
+}
+
+
+
+
 
 document.getElementById("welcome").innerHTML =
 
@@ -2289,69 +2430,142 @@ document.getElementById("engineerBox").innerHTML=
 }
 
 
-async function createTicket(){
+async function createTicket() {
 
-let title=document.getElementById("title").value
-let description=document.getElementById("description").value
-let location=document.getElementById("location").value
+    let title = document.getElementById("title").value.trim();
+    let description = document.getElementById("description").value.trim();
 
-await supabaseClient
-.from("tickets")
-.insert({
-title:title,
-description:description,
-location:location,
-created_by:user.id,
-faculty:user.faculty,
-assigned_to:engineer?engineer.id:null
-})
+    let college = document.getElementById("locationCollege").value.trim();
+    let room = document.getElementById("roomNumber").value.trim();
 
-// تنظيف الحقول
-document.getElementById("title").value="";
-document.getElementById("description").value="";
-document.getElementById("location").value="";
+    let ticketLocation = `${college} - غرفة رقم ${room}`;
 
-// تحديث الصفحة بالكامل
-location.reload();
+    await supabaseClient
+        .from("tickets")
+        .insert({
+            title: title,
+            description: description,
+            location: ticketLocation,
+            created_by: user.id,
+            faculty: user.faculty,
+            assigned_to: engineer ? engineer.id : null
+        });
+
+    // تنظيف الحقول
+    document.getElementById("title").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("locationCollege").value = "";
+    document.getElementById("roomNumber").value = "";
+
+    // تحديث الصفحة بالكامل
+    window.location.reload();
+
 }
 
 
-async function changeStatus(ticket,status){
+async function changeStatus(ticket, status) {
 
-    try{
+    try {
 
-        if(!status) return;
+        if (!status) return;
 
-        if(status=="closed"){
+        if (status === "closed") {
 
-            let rating = prompt("قيم الخدمة من 1 إلى 5");
+            const options = {
+                "0": "0 - لم يتم الحل",
+                "1": "1 - حل غير جيد",
+                "2": "2 - حل متأخر",
+                "3": "3 - حل مناسب إلى حد ما",
+                "4": "4 - حل جيد جداً",
+                "5": "5 - حل ممتاز"
+            };
 
-            if(rating){
+            const selected = await new Promise((resolve) => {
 
-                await supabaseClient
-                .from("ratings")
-                .insert({
-                    ticket_id:ticket,
-                    rating:rating
-                });
+                const overlay = document.createElement("div");
+                overlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,.5);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                `;
 
+                const box = document.createElement("div");
+                box.style.cssText = `
+                    background: #fff;
+                    color:#2563eb;
+                    padding: 20px;
+                    border-radius: 10px;
+                    width: 350px;
+                    text-align: center;
+                    font-family: Arial;
+                `;
+
+                box.innerHTML = `
+                    <h3 style="margin-bottom:15px;">تقييم الخدمة</h3>
+                    <select id="ratingSelect" style="width:100%;padding:10px;margin-bottom:15px; color:#2563eb;">
+                        ${Object.entries(options)
+                            .map(([value, text]) => `<option value="${value}">${text}</option>`)
+                            .join("")}
+                    </select>
+
+                    <div style="display:flex;gap:10px;justify-content:center;">
+                        <button id="btnOk" style="padding:8px 20px;">حفظ</button>
+                        <button id="btnCancel" style="padding:8px 20px;">إلغاء</button>
+                    </div>
+                `;
+
+                overlay.appendChild(box);
+                document.body.appendChild(overlay);
+
+                box.querySelector("#btnOk").onclick = () => {
+                    const value = box.querySelector("#ratingSelect").value;
+                    document.body.removeChild(overlay);
+                    resolve(value);
+                };
+
+                box.querySelector("#btnCancel").onclick = () => {
+                    document.body.removeChild(overlay);
+                    resolve(null);
+                };
+
+            });
+
+            if (selected === null) {
+                return;
             }
 
+            const { error: ratingError } = await supabaseClient
+                .from("ratings")
+                .insert({
+                    ticket_id: ticket,
+                    rating: Number(selected)
+                });
+
+            if (ratingError) {
+                console.error(ratingError);
+                alert(ratingError.message);
+                return;
+            }
         }
 
-        const {error} = await supabaseClient
-        .from("tickets")
-        .update({
-            status:status
-        })
-        .eq("id",ticket);
+        const { error } = await supabaseClient
+            .from("tickets")
+            .update({
+                status: status
+            })
+            .eq("id", ticket);
 
-        if(error){
+        if (error) {
 
             console.error(error);
-
             alert(error.message);
-
             return;
 
         }
@@ -2359,14 +2573,15 @@ async function changeStatus(ticket,status){
         await loadTickets();
 
     }
-
-    catch(ex){
+    catch (ex) {
 
         console.error(ex);
 
     }
 
 }
+
+
 
 
 async function loadTickets(){
@@ -2601,10 +2816,6 @@ async function loadTickets(){
                             تغيير الحالة
                         </option>
 
-                        <option value="open">
-                            فتح التيكت
-                        </option>
-
                         <option value="closed">
                             إغلاق التيكت
                         </option>
@@ -2651,7 +2862,7 @@ ${t.location || "غير محدد"}
                     <div class="ticket-solution">
 
 <div class="ticket-label">
-السبب الفني
+سبب المشكلة
 </div>
 
 <div class="ticket-value">
@@ -2693,6 +2904,7 @@ ${solution}
     document.getElementById("ticketsTable").innerHTML = html;
 
 }
+
 function toggleTicket(id){
 
     const details=document.getElementById("ticket-"+id);
@@ -2767,6 +2979,8 @@ realtime()
 }
 
 init()
+
+
 
 </script>
 
