@@ -94,77 +94,6 @@ body::after{
 ====================== GLOBAL END ========================
 ======================================================= */
 
-
-/* =======================================================
-====================== HEADER START ======================
-======================================================= */
-.main-header{
-    width:100%;
-    padding:22px 6%;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    position:fixed;
-    top:0;
-    right:0;
-    z-index:1000;
-
-    backdrop-filter:blur(14px);
-    background:rgba(255,255,255,0.05);
-
-    border-bottom:1px solid rgba(255,255,255,0.08);
-}
-
-.logo{
-    height:58px;
-    filter:drop-shadow(0 0 10px rgba(255,255,255,0.2));
-}
-
-.brand{
-    font-size:30px;
-    font-weight:800;
-    letter-spacing:1px;
-
-    background:linear-gradient(to right,#fff,#ffd369);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
-.about-link{
-    color:white;
-    text-decoration:none;
-    padding:12px 24px;
-    border-radius:50px;
-
-    background:linear-gradient(
-        135deg,
-        rgba(255,255,255,0.15),
-        rgba(255,255,255,0.05)
-    );
-
-    border:1px solid rgba(255,255,255,0.15);
-
-    transition:0.4s;
-    font-weight:700;
-}
-
-.about-link:hover{
-    transform:translateY(-3px) scale(1.04);
-    background:linear-gradient(
-        135deg,
-        #ffd369,
-        #ffb703
-    );
-
-    color:#071739;
-}
-/* =======================================================
-======================= HEADER END =======================
-======================================================= */
-
-
 /* =======================================================
 ====================== MAIN START ========================
 ======================================================= */
@@ -458,80 +387,221 @@ body::after{
 /* =======================================================
 ==================== RESPONSIVE START ====================
 ======================================================= */
-@media(max-width:900px){
+
+@media (max-width:900px){
 
     .main-header{
-        padding:18px 20px;
+        padding:14px 18px;
     }
 
-    .brand{
-        font-size:24px;
-    }
-
-    .login-card{
-        padding:40px 25px;
-        border-radius:28px;
-    }
-
-    .login-title h2{
-        font-size:34px;
-    }
-
-}
-
-@media(max-width:600px){
-
-    .main-header{
-        flex-direction:column;
-        gap:15px;
-    }
-
-    .main-section{
-        padding-top:220px;
+    .logo{
+        height:46px;
     }
 
     .brand{
         font-size:22px;
     }
 
-    .login-title h2{
-        font-size:30px;
+    .login-card{
+        padding:35px 22px;
+        border-radius:26px;
     }
 
-    .about-link{
-        width:100%;
-        text-align:center;
+    .login-title h2{
+        font-size:32px;
     }
 
 }
+
+/* الهواتف */
+@media (max-width:600px){
+
+    /* تصغير الهيدر */
+    .main-header{
+
+        flex-direction:column;
+
+        justify-content:center;
+
+        gap:10px;
+
+        padding:10px 15px;
+
+    }
+
+    .logo{
+        height:38px;
+    }
+
+    .brand{
+        font-size:18px;
+    }
+
+    .about-link{
+
+        width:auto;
+
+        padding:8px 18px;
+
+        font-size:14px;
+
+    }
+
+    /* إبعاد المحتوى عن الهيدر */
+    .main-section{
+
+        min-height:auto;
+
+        padding-top:170px;
+
+        padding-bottom:80px;
+
+        align-items:flex-start;
+
+    }
+
+    .login-card{
+
+        width:100%;
+
+        padding:28px 18px;
+
+        border-radius:22px;
+
+    }
+
+    .login-title{
+
+        margin-bottom:25px;
+
+    }
+
+    .login-title h2{
+
+        font-size:26px;
+
+    }
+
+    .login-title p{
+
+        font-size:13px;
+
+    }
+
+    .input-box input{
+
+        padding:15px;
+
+        font-size:14px;
+
+    }
+
+    .login-btn{
+
+        padding:15px;
+
+        font-size:15px;
+
+    }
+
+    /* الفوتر */
+    .main-footer{
+
+        margin-top:40px;
+
+        padding:22px 15px;
+
+    }
+
+    .social a{
+
+        width:38px;
+
+        height:38px;
+
+    }
+
+}
+
+/* الشاشات الصغيرة جداً */
+@media (max-width:380px){
+
+    .main-section{
+
+        padding-top:155px;
+
+    }
+
+    .brand{
+
+        font-size:16px;
+
+    }
+
+    .logo{
+
+        height:34px;
+
+    }
+
+    .login-card{
+
+        padding:22px 15px;
+
+    }
+
+    .login-title h2{
+
+        font-size:22px;
+
+    }
+
+}
+
 /* =======================================================
 ===================== RESPONSIVE END =====================
 ======================================================= */
+
+@media (max-width:600px){
+
+    /* اجعل القسم أعلى جميع العناصر */
+    .main-section{
+
+        position:relative;
+        z-index:9999;
+
+        padding-top:140px;
+        padding-bottom:40px;
+
+    }
+
+    .login-card{
+
+        position:relative;
+        z-index:10000;
+
+    }
+
+    /* اجعل الهيدر والفوتر أسفل البطاقة */
+    .main-header{
+
+        z-index:100;
+
+    }
+
+    .main-footer{
+
+        position:relative;
+        z-index:100;
+
+    }
+
+}
 
 </style>
 </head>
 
 <body>
-
-<!-- =======================================================
-====================== HEADER START =======================
-======================================================= -->
-<header class="main-header">
-
-    <img src="photo/logo.png" class="logo">
-
-    <div class="brand">
-        SGU Ticketing
-    </div>
-
-    <a href="about.html" class="about-link">
-        من نحن
-    </a>
-
-</header>
-<!-- =======================================================
-======================= HEADER END ========================
-======================================================= -->
 
 
 <!-- =======================================================
@@ -580,32 +650,6 @@ body::after{
 <!-- =======================================================
 ======================== MAIN END =========================
 ======================================================= -->
-
-
-<!-- =======================================================
-====================== FOOTER START =======================
-======================================================= -->
-<footer class="main-footer">
-
-    <div class="social">
-
-        <a href="#">F</a>
-        <a href="#">Y</a>
-        <a href="#">L</a>
-        <a href="#">W</a>
-        <a href="#">E</a>
-
-    </div>
-
-    <div class="footer-text">
-        جميع الحقوق محفوظة © M.H.D
-    </div>
-
-</footer>
-<!-- =======================================================
-======================= FOOTER END ========================
-======================================================= -->
-
 
 <script>
 
