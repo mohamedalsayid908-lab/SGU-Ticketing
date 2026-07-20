@@ -68,71 +68,6 @@ body{
     color:white;
 }
 
-/* خلفيات احترافية متحركة */
-body::before{
-    content:"";
-    position:fixed;
-
-    width:500px;
-    height:500px;
-
-    background:rgba(255,211,105,0.10);
-
-    border-radius:50%;
-
-    top:-150px;
-    left:-150px;
-
-    filter:blur(120px);
-
-    animation:moveGlow1 10s infinite alternate;
-}
-
-body::after{
-    content:"";
-    position:fixed;
-
-    width:450px;
-    height:450px;
-
-    background:rgba(15,52,96,0.45);
-
-    border-radius:50%;
-
-    bottom:-150px;
-    right:-150px;
-
-    filter:blur(120px);
-
-    animation:moveGlow2 12s infinite alternate;
-}
-
-@keyframes moveGlow1{
-
-    from{
-        transform:translate(0,0);
-    }
-
-    to{
-        transform:translate(90px,50px);
-    }
-
-}
-
-@keyframes moveGlow2{
-
-    from{
-        transform:translate(0,0);
-    }
-
-    to{
-        transform:translate(-80px,-40px);
-    }
-
-}
-/* =======================================================
-======================== GLOBAL END ======================
-======================================================= */
 
 
 /* =======================================================
@@ -492,6 +427,41 @@ body::after{
 /* =======================================================
 ========================= RESPONSIVE END =================
 ======================================================= */
+
+@media (max-width:600px){
+
+    /* اجعل نموذج التسجيل أعلى جميع العناصر */
+    .right-side{
+
+        position: relative;
+
+        z-index: 999999;
+
+        width: 100%;
+
+    }
+
+    .form-grid{
+
+        position: relative;
+
+        z-index: 999999;
+
+    }
+
+    .register-btn,
+    .login-link,
+    .input-box,
+    .input-box input,
+    .input-box select{
+
+        position: relative;
+
+        z-index: 999999;
+
+    }
+
+}
 
 </style>
 
