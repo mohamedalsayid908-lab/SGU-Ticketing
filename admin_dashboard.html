@@ -1515,10 +1515,36 @@ alert("تم اضافة السبب الفني")
 
 async function loadTickets(){
 
-let data=await fetchAPI(
-SUPABASE_URL+
-"tickets?select=*,creator:users!tickets_created_by_fkey(name,phone),engineer:users!tickets_assigned_to_fkey(name),solution:ticket_solution(solution_text)"
-)
+// تحميل مستخدمي IT
+let engineers = await fetchAPI(
+
+    SUPABASE_URL +
+
+    "users?role=eq.it&select=id"
+
+);
+
+// تحميل التذاكر
+let data = await fetchAPI(
+
+    SUPABASE_URL +
+
+    "tickets?select=*,\
+creator:users!tickets_created_by_fkey(name,phone),\
+engineer:users!tickets_assigned_to_fkey(id,name),\
+solution:ticket_solution(solution_text)"
+
+);
+
+// استخراج معرفات مستخدمي IT
+let itIds = engineers.map(e => e.id);
+
+// الاحتفاظ فقط بالتذاكر الموجهة لـ IT
+data = data.filter(
+
+    t => itIds.includes(t.assigned_to)
+
+);
 
 let open=""
 let progress=""
