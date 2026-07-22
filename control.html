@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>إدارة المستخدمين</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Cairo',sans-serif;
+}
+
+body{
+
+background:#f5f7fb;
+color:#1e293b;
+
+}
+
+.container{
+
+width:95%;
+max-width:1500px;
+margin:auto;
+padding:30px;
+
+}
+
+.page-header{
+
+background:white;
+padding:25px;
+border-radius:15px;
+margin-bottom:25px;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+
+}
+
+.page-header h1{
+
+font-size:30px;
+color:#2563eb;
+
+}
+
+.page-header p{
+
+margin-top:5px;
+color:#64748b;
+
+}
+
+.action-buttons{
+
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+
+}
+
+.action-buttons button{
+
+border:none;
+padding:12px 20px;
+border-radius:10px;
+cursor:pointer;
+font-size:15px;
+font-weight:bold;
+transition:.3s;
+
+}
+
+.btn-primary{
+
+background:#2563eb;
+color:white;
+
+}
+
+.btn-success{
+
+background:#16a34a;
+color:white;
+
+}
+
+.btn-warning{
+
+background:#f59e0b;
+color:white;
+
+}
+
+.action-buttons button:hover{
+
+transform:translateY(-2px);
+
+}
+
+.card{
+
+background:white;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,.06);
+padding:25px;
+margin-bottom:25px;
+
+}
+
+.card-title{
+
+font-size:22px;
+margin-bottom:20px;
+color:#2563eb;
+
+}
+
+.form-grid{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:20px;
+
+}
+
+.input-box{
+
+display:flex;
+flex-direction:column;
+
+}
+
+.input-box label{
+
+margin-bottom:8px;
+font-weight:bold;
+
+}
+
+.input-box input,
+.input-box select{
+
+height:48px;
+padding:10px;
+border:1px solid #d6dbe6;
+border-radius:10px;
+font-size:15px;
+transition:.3s;
+
+}
+
+.input-box input:focus,
+.input-box select:focus{
+
+outline:none;
+border-color:#2563eb;
+
+}
+
+.form-buttons{
+
+display:flex;
+gap:15px;
+margin-top:25px;
+flex-wrap:wrap;
+
+}
+
+.form-buttons button{
+
+border:none;
+padding:13px 30px;
+cursor:pointer;
+border-radius:10px;
+font-size:15px;
+font-weight:bold;
+
+}
+
+.save-btn{
+
+background:#16a34a;
+color:white;
+
+}
+
+.update-btn{
+
+background:#2563eb;
+color:white;
+display:none;
+
+}
+
+.cancel-btn{
+
+background:#ef4444;
+color:white;
+display:none;
+
+}
+
+.search-box{
+
+margin-bottom:20px;
+
+}
+
+.search-box input{
+
+width:100%;
+height:50px;
+padding:15px;
+border-radius:12px;
+border:1px solid #d7dce6;
+font-size:16px;
+
+}
+
+.table-container{
+
+overflow:auto;
+
+}
+
+table{
+
+width:100%;
+border-collapse:collapse;
+min-width:1100px;
+
+}
+
+thead{
+
+background:#2563eb;
+color:white;
+
+}
+
+th{
+
+padding:15px;
+
+}
+
+td{
+
+padding:13px;
+border-bottom:1px solid #ececec;
+text-align:center;
+
+}
+
+tbody tr:hover{
+
+background:#f8fbff;
+
+}
+
+.edit-btn{
+
+background:#2563eb;
+color:white;
+border:none;
+padding:8px 18px;
+border-radius:8px;
+cursor:pointer;
+
+}
+
+.delete-btn{
+
+background:#dc2626;
+color:white;
+border:none;
+padding:8px 18px;
+border-radius:8px;
+cursor:pointer;
+
+}
+
+.excel-box{
+
+border:2px dashed #cbd5e1;
+padding:35px;
+text-align:center;
+border-radius:15px;
+
+}
+
+.excel-box input{
+
+margin-top:15px;
+
+}
+
+@media(max-width:900px){
+
+.page-header{
+
+flex-direction:column;
+align-items:flex-start;
+gap:15px;
+
+}
+
+table{
+
+min-width:900px;
+
+}
+
+}
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="page-header">
+
+<div>
+
+<h1>إدارة المستخدمين</h1>
+
+<p>
+
+إضافة - تعديل - حذف - رفع المستخدمين من Excel
+
+</p>
+
+</div>
+
+<div class="action-buttons">
+
+<button class="btn-primary" onclick="newUser()">
+
+➕ مستخدم جديد
+
+</button>
+
+<button class="btn-success">
+
+📄 رفع Excel
+
+</button>
+
+<button class="btn-warning" onclick="loadUsers()">
+
+🔄 تحديث
+
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+
+بيانات المستخدم
+
+</div>
+
+<div class="form-grid">
+
+<div class="input-box">
+
+<label>الاسم</label>
+
+<input id="name">
+
+</div>
+
+<div class="input-box">
+
+<label>اسم المستخدم</label>
+
+<input id="username">
+
+</div>
+
+<div class="input-box">
+
+<label>كلمة المرور</label>
+
+<input id="password" type="password">
+
+</div>
+
+<div class="input-box">
+
+<label>رقم الهاتف</label>
+
+<input id="phone">
+
+</div>
+
+<div class="input-box">
+
+<label>الوظيفة</label>
+
+<input id="job_title">
+
+</div>
+
+<div class="input-box">
+
+<label>الكلية</label>
+
+<select id="faculty">
+
+<option value="">اختر</option>
+
+<option value="pharmacy">Pharmacy</option>
+
+<option value="computer_science">Computer Science</option>
+
+<option value="physical_therapy">Physical Therapy</option>
+
+<option value="management">Management</option>
+
+<option value="dentistry">Dentistry</option>
+
+</select>
+
+</div>
+
+<div class="input-box">
+
+<label>الصلاحية</label>
+
+<select id="role">
+
+<option value="">اختر</option>
+
+<option value="it">IT</option>
+
+<option value="admin">Admin</option>
+
+<option value="admin_hr">Admin HR</option>
+
+<option value="hr">HR</option>
+
+</select>
+
+</div>
+
+<div class="input-box">
+
+<label>النوع</label>
+
+<select id="gender">
+
+<option value="">اختر</option>
+
+<option>ذكر</option>
+
+<option>أنثى</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div class="form-buttons">
+
+<button class="save-btn" onclick="saveUser()">
+
+💾 حفظ
+
+</button>
+
+<button class="update-btn" onclick="updateUser()">
+
+✏️ تحديث
+
+</button>
+
+<button class="cancel-btn" onclick="cancelEdit()">
+
+إلغاء
+
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+
+رفع المستخدمين من Excel
+
+</div>
+
+<div class="excel-box">
+
+<h3>
+
+اسحب الملف هنا أو اختره من الجهاز
+
+</h3>
+
+<br>
+
+<input type="file" id="excelFile">
+
+<br><br>
+
+<button class="btn-success" onclick="importExcel()">
+
+رفع الملف
+
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="search-box">
+
+<input
+id="search"
+placeholder="ابحث بالاسم أو رقم الهاتف أو اسم المستخدم..."
+onkeyup="searchUsers()">
+
+</div>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>الاسم</th>
+<th>اسم المستخدم</th>
+<th>الهاتف</th>
+<th>الوظيفة</th>
+<th>الكلية</th>
+<th>الصلاحية</th>
+<th>النوع</th>
+<th>تعديل</th>
+<th>حذف</th>
+
+</tr>
+
+</thead>
+
+<tbody id="usersTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+    /*=====================================================
+                SUPABASE CONFIG
+=====================================================*/
+
+const SUPABASE_URL =
+"https://cqmhpvaaaduqbhjtyrgk.supabase.co/rest/v1/";
+
+const SUPABASE_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxbWhwdmFhYWR1cWJoanR5cmdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MTA3OTUsImV4cCI6MjA5NDE4Njc5NX0.eqZ69jTSRFvPhjSVx2KZe9-3LSw0cw8uAQ6D06ZkQFg";
+
+let users = [];
+let editingUser = null;
+
+
+/*=====================================================
+                    API
+=====================================================*/
+
+async function fetchAPI(url, options = {}) {
+
+    options.headers = {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+        ...(options.headers || {})
+    };
+
+    let response = await fetch(url, options);
+
+    if (!response.ok) {
+
+        let txt = await response.text();
+        console.error(txt);
+
+        throw new Error(txt);
+
+    }
+
+    if (response.status == 204)
+        return null;
+
+    return await response.json();
+
+}
+
+
+/*=====================================================
+                  LOAD USERS
+=====================================================*/
+
+async function loadUsers() {
+
+    try {
+
+        users = await fetchAPI(
+
+            SUPABASE_URL +
+
+            "users?select=*&order=created_at.desc"
+
+        );
+
+        drawTable(users);
+
+    }
+
+    catch (e) {
+
+        console.error(e);
+
+        alert("فشل تحميل المستخدمين");
+
+    }
+
+}
+
+
+/*=====================================================
+                  DRAW TABLE
+=====================================================*/
+
+function drawTable(data) {
+
+    let html = "";
+
+    for (let user of data) {
+
+        html += `
+
+<tr>
+
+<td>${user.name}</td>
+
+<td>${user.username}</td>
+
+<td>${user.phone || ""}</td>
+
+<td>${user.job_title || ""}</td>
+
+<td>${user.faculty || ""}</td>
+
+<td>${user.role || ""}</td>
+
+<td>${user.gender || ""}</td>
+
+<td>
+
+<button
+class="edit-btn"
+onclick="editUser('${user.id}')">
+
+✏️
+
+</button>
+
+</td>
+
+<td>
+
+<button
+class="delete-btn"
+onclick="deleteUser('${user.id}')">
+
+🗑
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+    }
+
+    document.getElementById("usersTable").innerHTML = html;
+
+}
+
+
+/*=====================================================
+                    SEARCH
+=====================================================*/
+
+function searchUsers() {
+
+    let key = document
+        .getElementById("search")
+        .value
+        .trim()
+        .toLowerCase();
+
+    if (key == "") {
+
+        drawTable(users);
+
+        return;
+
+    }
+
+    let result = users.filter(user => {
+
+        return (
+
+            (user.name || "")
+            .toLowerCase()
+            .includes(key)
+
+            ||
+
+            (user.username || "")
+            .toLowerCase()
+            .includes(key)
+
+            ||
+
+            (user.phone || "")
+            .toLowerCase()
+            .includes(key)
+
+        );
+
+    });
+
+    drawTable(result);
+
+}
+
+
+/*=====================================================
+                GET FORM DATA
+=====================================================*/
+
+function getFormData() {
+
+    return {
+
+        name:
+        document.getElementById("name").value.trim(),
+
+        username:
+        document.getElementById("username").value.trim(),
+
+        password_hash:
+        document.getElementById("password").value,
+
+        phone:
+        document.getElementById("phone").value.trim(),
+
+        job_title:
+        document.getElementById("job_title").value.trim(),
+
+        faculty:
+        document.getElementById("faculty").value,
+
+        role:
+        document.getElementById("role").value,
+
+        gender:
+        document.getElementById("gender").value
+
+    };
+
+}
+
+
+/*=====================================================
+                  VALIDATION
+=====================================================*/
+
+function validate(data) {
+
+    if (data.name == "") {
+
+        alert("ادخل الاسم");
+
+        return false;
+
+    }
+
+    if (data.username == "") {
+
+        alert("ادخل اسم المستخدم");
+
+        return false;
+
+    }
+
+    if (data.password_hash == "") {
+
+        alert("ادخل كلمة المرور");
+
+        return false;
+
+    }
+
+    if (data.role == "") {
+
+        alert("اختر الصلاحية");
+
+        return false;
+
+    }
+
+    return true;
+
+}
+
+
+/*=====================================================
+                SAVE USER
+=====================================================*/
+
+async function saveUser() {
+
+    let data = getFormData();
+
+    if (!validate(data))
+        return;
+
+    try {
+
+        await fetchAPI(
+
+            SUPABASE_URL + "users",
+
+            {
+
+                method: "POST",
+
+                body: JSON.stringify(data)
+
+            }
+
+        );
+
+        alert("تم إضافة المستخدم");
+
+        clearForm();
+
+        loadUsers();
+
+    }
+
+    catch (e) {
+
+        console.error(e);
+
+        alert("حدث خطأ أثناء الحفظ");
+
+    }
+
+}
+
+
+/*=====================================================
+                  CLEAR FORM
+=====================================================*/
+
+function clearForm() {
+
+    document.getElementById("name").value = "";
+
+    document.getElementById("username").value = "";
+
+    document.getElementById("password").value = "";
+
+    document.getElementById("phone").value = "";
+
+    document.getElementById("job_title").value = "";
+
+    document.getElementById("faculty").value = "";
+
+    document.getElementById("role").value = "";
+
+    document.getElementById("gender").value = "";
+
+}
+
+
+/*=====================================================
+                NEW USER
+=====================================================*/
+
+function newUser() {
+
+    editingUser = null;
+
+    clearForm();
+
+    document.querySelector(".save-btn").style.display = "";
+
+    document.querySelector(".update-btn").style.display = "none";
+
+    document.querySelector(".cancel-btn").style.display = "none";
+
+}
+
+
+/*=====================================================
+                START
+=====================================================*/
+
+loadUsers();
+/*=====================================================
+                EDIT USER
+=====================================================*/
+
+function editUser(id){
+
+    editingUser = users.find(u=>u.id===id);
+
+    if(!editingUser){
+        alert("المستخدم غير موجود");
+        return;
+    }
+
+    document.getElementById("name").value =
+    editingUser.name || "";
+
+    document.getElementById("username").value =
+    editingUser.username || "";
+
+    document.getElementById("password").value =
+    editingUser.password_hash || "";
+
+    document.getElementById("phone").value =
+    editingUser.phone || "";
+
+    document.getElementById("job_title").value =
+    editingUser.job_title || "";
+
+    document.getElementById("faculty").value =
+    editingUser.faculty || "";
+
+    document.getElementById("role").value =
+    editingUser.role || "";
+
+    document.getElementById("gender").value =
+    editingUser.gender || "";
+
+    document.querySelector(".save-btn").style.display="none";
+
+    document.querySelector(".update-btn").style.display="inline-block";
+
+    document.querySelector(".cancel-btn").style.display="inline-block";
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/*=====================================================
+                UPDATE USER
+=====================================================*/
+
+async function updateUser(){
+
+    if(editingUser==null)
+        return;
+
+    let data=getFormData();
+
+    if(!validate(data))
+        return;
+
+    try{
+
+        await fetchAPI(
+
+            SUPABASE_URL+
+            "users?id=eq."+editingUser.id,
+
+            {
+
+                method:"PATCH",
+
+                body:JSON.stringify(data)
+
+            }
+
+        );
+
+        alert("تم تحديث البيانات");
+
+        cancelEdit();
+
+        loadUsers();
+
+    }
+
+    catch(e){
+
+        console.error(e);
+
+        alert("حدث خطأ أثناء التحديث");
+
+    }
+
+}
+
+
+/*=====================================================
+                DELETE USER
+=====================================================*/
+
+async function deleteUser(id){
+
+    let ok=confirm("هل تريد حذف المستخدم؟");
+
+    if(!ok)
+        return;
+
+    try{
+
+        await fetchAPI(
+
+            SUPABASE_URL+
+            "users?id=eq."+id,
+
+            {
+
+                method:"DELETE"
+
+            }
+
+        );
+
+        users=users.filter(u=>u.id!=id);
+
+        drawTable(users);
+
+        alert("تم الحذف");
+
+    }
+
+    catch(e){
+
+        console.error(e);
+
+        alert("فشل الحذف");
+
+    }
+
+}
+
+
+/*=====================================================
+                CANCEL EDIT
+=====================================================*/
+
+function cancelEdit(){
+
+    editingUser=null;
+
+    clearForm();
+
+    document.querySelector(".save-btn").style.display="inline-block";
+
+    document.querySelector(".update-btn").style.display="none";
+
+    document.querySelector(".cancel-btn").style.display="none";
+
+}
+
+
+/*=====================================================
+                ENTER TO SEARCH
+=====================================================*/
+
+document.getElementById("search")
+.addEventListener("keyup",searchUsers);
+
+
+/*=====================================================
+            REFRESH EVERY 30 SECOND
+=====================================================*/
+
+setInterval(loadUsers,30000);
+
+/*=====================================================
+                IMPORT EXCEL
+=====================================================*/
+
+async function importExcel() {
+
+    let file = document.getElementById("excelFile").files[0];
+
+    if (!file) {
+
+        alert("اختر ملف Excel أولاً");
+
+        return;
+
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = async function (e) {
+
+        try {
+
+            const workbook = XLSX.read(e.target.result, {
+
+                type: "binary"
+
+            });
+
+            const sheetName = workbook.SheetNames[0];
+
+            const sheet = workbook.Sheets[sheetName];
+
+            const rows = XLSX.utils.sheet_to_json(sheet, {
+
+                defval: ""
+
+            });
+
+            if (rows.length == 0) {
+
+                alert("الملف فارغ");
+
+                return;
+
+            }
+
+            await loadUsers();
+
+            let added = 0;
+
+            let duplicated = 0;
+
+            let failed = 0;
+
+            for (let row of rows) {
+
+                let username = String(
+                    row.username || row.Username || ""
+                ).trim();
+
+                if (username == "")
+                    continue;
+
+                let exists = users.find(u =>
+
+                    u.username.toLowerCase() == username.toLowerCase()
+
+                );
+
+                if (exists) {
+
+                    duplicated++;
+
+                    continue;
+
+                }
+
+                let data = {
+
+                    name:
+                    row.name || row.Name || "",
+
+                    username:
+                    username,
+
+                    password_hash:
+                    row.password ||
+                    row.Password ||
+                    "123456",
+
+                    phone:
+                    row.phone ||
+                    row.Phone ||
+                    "",
+
+                    job_title:
+                    row.job_title ||
+                    row.Job ||
+                    "",
+
+                    faculty:
+                    row.faculty ||
+                    "",
+
+                    role:
+                    row.role ||
+                    "it",
+
+                    gender:
+                    row.gender ||
+                    ""
+
+                };
+
+                try {
+
+                    await fetchAPI(
+
+                        SUPABASE_URL + "users",
+
+                        {
+
+                            method: "POST",
+
+                            body: JSON.stringify(data)
+
+                        }
+
+                    );
+
+                    users.push(data);
+
+                    added++;
+
+                }
+
+                catch (err) {
+
+                    console.error(err);
+
+                    failed++;
+
+                }
+
+            }
+
+            loadUsers();
+
+            alert(
+
+`تم الانتهاء
+
+تمت الإضافة : ${added}
+
+المكرر : ${duplicated}
+
+فشل : ${failed}`
+
+            );
+
+        }
+
+        catch (e) {
+
+            console.error(e);
+
+            alert("حدث خطأ أثناء قراءة الملف");
+
+        }
+
+    };
+
+    reader.readAsBinaryString(file);
+
+}
+
+</script>
+</body>
+
+</html>

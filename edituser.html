@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>بياناتي الشخصية</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Cairo',sans-serif;
+}
+
+body{
+
+background:#f3f6fb;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+padding:20px;
+
+}
+
+.profile-card{
+
+width:100%;
+max-width:850px;
+background:white;
+border-radius:18px;
+box-shadow:0 15px 40px rgba(0,0,0,.08);
+overflow:hidden;
+
+}
+
+.header{
+
+background:linear-gradient(135deg,#2563eb,#1d4ed8);
+padding:35px;
+color:white;
+text-align:center;
+
+}
+
+.header .avatar{
+
+width:90px;
+height:90px;
+border-radius:50%;
+background:white;
+color:#2563eb;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-size:40px;
+font-weight:bold;
+
+margin:auto;
+margin-bottom:15px;
+
+}
+
+.header h2{
+
+font-size:28px;
+margin-bottom:5px;
+
+}
+
+.header p{
+
+opacity:.9;
+
+}
+
+.content{
+
+padding:35px;
+
+}
+
+.form-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(260px,1fr));
+
+gap:20px;
+
+}
+
+.input-box{
+
+display:flex;
+flex-direction:column;
+
+}
+
+.input-box label{
+
+margin-bottom:8px;
+font-weight:bold;
+color:#334155;
+
+}
+
+.input-box input,
+.input-box select{
+
+height:50px;
+
+border:1px solid #d8dee9;
+
+border-radius:10px;
+
+padding:10px 15px;
+
+font-size:15px;
+
+transition:.3s;
+
+}
+
+.input-box input:focus,
+.input-box select:focus{
+
+outline:none;
+
+border-color:#2563eb;
+
+box-shadow:0 0 0 3px rgba(37,99,235,.15);
+
+}
+
+.input-box input[disabled]{
+
+background:#edf2f7;
+
+cursor:not-allowed;
+
+color:#555;
+
+}
+
+.save-area{
+
+margin-top:35px;
+
+display:flex;
+justify-content:center;
+
+}
+
+.save-btn{
+
+background:#2563eb;
+
+color:white;
+
+border:none;
+
+padding:14px 45px;
+
+font-size:16px;
+
+border-radius:12px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.save-btn:hover{
+
+background:#1e40af;
+
+transform:translateY(-2px);
+
+}
+
+.message{
+
+margin-top:25px;
+
+padding:15px;
+
+border-radius:10px;
+
+display:none;
+
+text-align:center;
+
+font-weight:bold;
+
+}
+
+.success{
+
+background:#dcfce7;
+
+color:#166534;
+
+}
+
+.error{
+
+background:#fee2e2;
+
+color:#991b1b;
+
+}
+
+@media(max-width:700px){
+
+.header{
+
+padding:25px;
+
+}
+
+.content{
+
+padding:20px;
+
+}
+
+.header h2{
+
+font-size:23px;
+
+}
+
+}
+
+header{
+
+    position:relative;
+
+    margin-top:25px;
+
+    margin-right:auto;
+    margin-left:auto;
+
+    width:calc(100% - 60px);
+
+    min-height:90px;
+
+    padding:22px 28px;
+
+    border-radius:30px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:20px;
+
+    backdrop-filter:blur(18px);
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,255,255,0.08),
+        rgba(255,255,255,0.03)
+    );
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,0.25);
+}
+
+header h1{
+
+    font-size:32px;
+    font-weight:800;
+}
+
+header p{
+
+    color:rgba(255,255,255,0.65);
+
+    margin-top:6px;
+}
+.main-header{
+
+    width:100%;
+
+    min-height:85px;
+
+    padding:18px 5%;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    position:fixed;
+
+    top:0;
+    right:0;
+
+    gap:20px;
+
+    z-index:2000;
+
+    backdrop-filter:blur(18px);
+
+    background:rgba(255,255,255,0.05);
+
+    border-bottom:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.logo{
+    height:55px;
+}
+
+.brand{
+
+    font-size:28px;
+    font-weight:800;
+
+    background:
+    linear-gradient(to right,#fff,#ffd369);
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.about-link{
+
+    color:rgb(255, 231, 16);
+    text-decoration:none;
+
+    padding:12px 24px;
+
+    border-radius:50px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0),
+        rgba(255,255,255,0.05)
+    );
+
+    border:
+    1px solid rgb(10, 2, 2);
+
+    transition:0.4s;
+
+    font-weight:700;
+}
+
+.about-link:hover{
+
+    transform:translateY(-3px);
+
+    background:
+    linear-gradient(
+        135deg,
+        #ffd369,
+        #ffb703
+    );
+
+    color:#071739;
+}
+</style>
+
+</head>
+<header class="main-header">
+
+    <img src="photo/logo.png" class="logo">
+
+    <div class="brand">
+        SGU Ticketing
+    </div>
+
+    <button class="about-link" id="backBtn" onclick="location.href='dashboard.html'">
+    ⬅ عودة
+</button>
+
+</header>
+<body>
+
+<div class="profile-card">
+
+<div class="header">
+
+<div
+class="avatar"
+id="avatar">
+
+A
+
+</div>
+
+<h2 id="welcomeName">
+
+بياناتي الشخصية
+
+</h2>
+
+<p>
+
+يمكنك تعديل بيانات حسابك الشخصية
+
+</p>
+
+</div>
+
+<div class="content">
+
+<div class="form-grid">
+
+<div class="input-box">
+
+<label>
+
+الاسم
+
+</label>
+
+<input
+id="name">
+
+</div>
+
+<div class="input-box">
+
+<label>
+
+اسم المستخدم
+
+</label>
+
+<input
+id="username">
+
+</div>
+
+<div class="input-box">
+
+<label>
+
+كلمة المرور
+
+</label>
+
+<input
+id="password"
+type="password">
+
+</div>
+
+<div class="input-box">
+
+<label>
+
+رقم الهاتف
+
+</label>
+
+<input
+id="phone">
+
+</div>
+
+<div class="input-box">
+
+<label>
+
+الوظيفة
+
+</label>
+
+<input
+id="job_title">
+
+</div>
+
+<div class="input-box">
+
+<label>
+
+النوع
+
+</label>
+
+<select id="gender">
+
+<option value="ذكر">
+
+ذكر
+
+</option>
+
+<option value="أنثى">
+
+أنثى
+
+</option>
+
+</select>
+
+</div>
+
+<div class="input-box">
+
+<label>
+
+الكلية
+
+</label>
+
+<input
+id="faculty"
+disabled>
+
+</div>
+
+<div class="input-box">
+
+<label>
+
+الصلاحية
+
+</label>
+
+<input
+id="role"
+disabled>
+
+</div>
+
+</div>
+
+<div class="save-area">
+
+<button
+class="save-btn"
+onclick="saveProfile()">
+
+💾 حفظ التعديلات
+
+</button>
+
+</div>
+
+<div
+id="message"
+class="message">
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/*=========================================
+            SUPABASE
+=========================================*/
+
+const SUPABASE_URL =
+"https://cqmhpvaaaduqbhjtyrgk.supabase.co/rest/v1/";
+
+const SUPABASE_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxbWhwdmFhYWR1cWJoanR5cmdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MTA3OTUsImV4cCI6MjA5NDE4Njc5NX0.eqZ69jTSRFvPhjSVx2KZe9-3LSw0cw8uAQ6D06ZkQFg";
+
+
+/*==================================================
+                CURRENT USER
+==================================================*/
+
+const currentUser = JSON.parse(
+    sessionStorage.getItem("user")
+);
+
+if (!currentUser) {
+
+    location.href = "login.html";
+
+}
+
+
+/*==================================================
+                ELEMENTS
+==================================================*/
+
+const txtName =
+document.getElementById("name");
+
+const txtUsername =
+document.getElementById("username");
+
+const txtPassword =
+document.getElementById("password");
+
+const txtPhone =
+document.getElementById("phone");
+
+const txtJob =
+document.getElementById("job_title");
+
+const txtFaculty =
+document.getElementById("faculty");
+
+const txtRole =
+document.getElementById("role");
+
+const txtGender =
+document.getElementById("gender");
+
+const lblName =
+document.getElementById("welcomeName");
+
+const avatar =
+document.getElementById("avatar");
+
+const message =
+document.getElementById("message");
+
+
+/*==================================================
+                FETCH API
+==================================================*/
+
+async function fetchAPI(url, options = {}) {
+
+    options.headers = {
+
+        apikey: SUPABASE_KEY,
+
+        Authorization:
+        "Bearer " + SUPABASE_KEY,
+
+        "Content-Type":
+        "application/json",
+
+        Prefer:
+        "return=representation",
+
+        ...(options.headers || {})
+
+    };
+
+    let response =
+    await fetch(url, options);
+
+    if (!response.ok) {
+
+        throw new Error(
+            await response.text()
+        );
+
+    }
+
+    if (response.status == 204)
+        return null;
+
+    return await response.json();
+
+}
+
+
+/*==================================================
+                LOAD PROFILE
+==================================================*/
+
+function loadProfile() {
+
+    txtName.value =
+    currentUser.name || "";
+
+    txtUsername.value =
+    currentUser.username || "";
+
+    txtPassword.value =
+    currentUser.password_hash || "";
+
+    txtPhone.value =
+    currentUser.phone || "";
+
+    txtJob.value =
+    currentUser.job_title || "";
+
+    txtFaculty.value =
+    currentUser.faculty || "";
+
+    txtRole.value =
+    currentUser.role || "";
+
+    txtGender.value =
+    currentUser.gender || "";
+
+    lblName.innerHTML =
+    currentUser.name || "";
+
+    avatar.innerHTML =
+    (currentUser.name || "?")
+    .charAt(0)
+    .toUpperCase();
+
+}
+
+loadProfile();
+
+
+/*==================================================
+                MESSAGE
+==================================================*/
+
+function showMessage(text, type) {
+
+    message.innerHTML = text;
+
+    message.className =
+    "message " + type;
+
+    message.style.display =
+    "block";
+
+    setTimeout(function () {
+
+        message.style.display =
+        "none";
+
+    }, 3000);
+
+}
+/*==================================================
+                SAVE PROFILE
+==================================================*/
+
+async function saveProfile() {
+
+    let data = {
+
+        name: txtName.value.trim(),
+
+        username: txtUsername.value.trim(),
+
+        password_hash: txtPassword.value,
+
+        phone: txtPhone.value.trim(),
+
+        job_title: txtJob.value.trim(),
+
+        gender: txtGender.value,
+
+        // لا يسمح بتعديلهما
+        faculty: currentUser.faculty,
+
+        role: currentUser.role
+
+    };
+
+    /*====================
+        VALIDATION
+    ====================*/
+
+    if (data.name === "") {
+
+        showMessage("يرجى إدخال الاسم.", "error");
+        txtName.focus();
+        return;
+
+    }
+
+    if (data.username === "") {
+
+        showMessage("يرجى إدخال اسم المستخدم.", "error");
+        txtUsername.focus();
+        return;
+
+    }
+
+    if (data.password_hash === "") {
+
+        showMessage("يرجى إدخال كلمة المرور.", "error");
+        txtPassword.focus();
+        return;
+
+    }
+
+    try {
+
+        await fetchAPI(
+
+            SUPABASE_URL +
+            "users?id=eq." +
+            currentUser.id,
+
+            {
+
+                method: "PATCH",
+
+                body: JSON.stringify(data)
+
+            }
+
+        );
+
+        // تحديث بيانات المستخدم الحالية
+        currentUser.name = data.name;
+        currentUser.username = data.username;
+        currentUser.password_hash = data.password_hash;
+        currentUser.phone = data.phone;
+        currentUser.job_title = data.job_title;
+        currentUser.gender = data.gender;
+
+        // تحديث Session Storage
+        sessionStorage.setItem(
+
+            "user",
+
+            JSON.stringify(currentUser)
+
+        );
+
+        // إعادة تحميل البيانات في الصفحة
+        loadProfile();
+
+        showMessage(
+
+            "✅ تم حفظ التعديلات بنجاح.",
+
+            "success"
+
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        showMessage(
+
+            "❌ حدث خطأ أثناء حفظ البيانات.",
+
+            "error"
+
+        );
+
+    }
+
+}
+
+
+/*==================================================
+            SAVE WITH ENTER
+==================================================*/
+
+document.addEventListener(
+
+    "keydown",
+
+    function (e) {
+
+        if (e.key === "Enter") {
+
+            e.preventDefault();
+
+            saveProfile();
+
+        }
+
+    }
+
+);
+
+
+/*==================================================
+            PREVENT EDIT
+==================================================*/
+
+txtFaculty.disabled = true;
+
+txtRole.disabled = true;
+
+
+/*==================================================
+            AUTO FOCUS
+==================================================*/
+
+txtName.focus();
+
+</script>
+</body>
+
+</html>
