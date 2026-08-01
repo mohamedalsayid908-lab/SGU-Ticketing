@@ -2060,34 +2060,26 @@ font-weight:500;
 
 }
 
+.edit-profile-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .3s;
 
-.edit-profile-btn{
-
-background:#2563eb;
-color:white;
-
-border:none;
-
-padding:12px 25px;
-
-border-radius:10px;
-
-font-size:15px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-transition:.3s;
-
+  /* تحريك الزر بمفرده لأقصى اليسار */
+  display: block;
+  margin-right: auto !important;
+  margin-left: 0 !important;
 }
 
-.edit-profile-btn:hover{
-
-background:#1d4ed8;
-
-transform:translateY(-2px);
-
+.edit-profile-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
 }
 </style>
 
@@ -2112,53 +2104,39 @@ transform:translateY(-2px);
 </header>
 
 <div class="container">
- <button class="edit-profile-btn"
+    <div class="card">
+<button class="edit-profile-btn"
 onclick="location.href='edituser.html'">
 
-👤 تعديل بياناتي الشخصية
+👤   اعادة تعيين كلمة المرور
 
 </button>
-    <div class="card">
-
         <div id="profile"></div>
         
     </div>
 
 <div class="card">
 
-        <h3>إنشاء تيكت جديد</h3>
+        <h3>إنشاء تذكرة جديد</h3>
 
         <div id="engineerBox" style="margin-bottom:10px;color:#ffffff"></div>
 
-        <input id="title" placeholder="عنوان المشكلة">
+        <input id="title" placeholder="عنوان التذكرة">
 
-        <textarea id="description" placeholder="وصف المشكلة"></textarea>
+        <textarea id="description" placeholder="وصف التذكرة"></textarea>
 
         <div class="location-box">
 
-    <input
-        id="locationCollege"
-        list="locations"
-        placeholder="اختر الكلية"
-        autocomplete="off">
-
+    
     <input
         id="roomNumber"
         type="text"
         placeholder="رقم الغرفة">
 
-    <datalist id="locations">
-        <option value="كلية الحاسبات والمعلومات">
-        <option value="كلية الصيدلة">
-        <option value="كلية العلاج الطبيعي">
-        <option value="كلية طب الأسنان">
-        <option value="كلية الإدارة">
-    </datalist>
-
 </div>
 
         <button class="btn-create" onclick="createTicket()">
-            إنشاء تيكت
+            إنشاء تذكرة
         </button>
 
     </div>
@@ -2466,48 +2444,89 @@ document.getElementById("engineerBox").innerHTML=
 
 
 async function createTicket() {
+    try {
+        // قراءة البيانات المتاحة فقط (تم حذف locationCollege)
+        let title = document.getElementById("title")?.value?.trim() || "";
+        let description = document.getElementById("description")?.value?.trim() || "";
+        let room = document.getElementById("roomNumber")?.value?.trim() || "";
 
-    let title = document.getElementById("title").value.trim();
-    let description = document.getElementById("description").value.trim();
+        // التحقق من الحقول الفارغة (تم استبعاد locationCollege)
+        if (!title || !description || !room) {
+            alert("يرجى إكمال جميع الحقول المطلوبة قبل إرسال التذكرة!");
+            return; // إيقاف التنفيذ
+        }
 
-    let college = document.getElementById("locationCollege").value.trim();
-    let room = document.getElementById("roomNumber").value.trim();
+        // صيغة مكان التذكرة بناءً على رقم الغرفة (أو يمكنك تعديلها بالطريقة التي تناسبك)
+        let ticketLocation = `غرفة رقم ${room}`;
 
-    let ticketLocation = `${college} - غرفة رقم ${room}`;
+        // قراءة id الموظف المعني (العشوائي) بأمان
+        let assignedEngineerId = null;
+        if (typeof engineer !== "undefined" && engineer) {
+            assignedEngineerId = engineer.id;
+        } else {
+            let engineerSelectElement = document.getElementById("engineerSelect");
+            assignedEngineerId = engineerSelectElement ? engineerSelectElement.value : null;
+        }
 
-    await supabaseClient
-        .from("tickets")
-        .insert({
-            title: title,
-            description: description,
-            location: ticketLocation,
-            created_by: user.id,
-            faculty: user.faculty,
-            assigned_to: engineer ? engineer.id : null
-        });
+        // إدخال التذكرة في Supabase
+        const { error } = await supabaseClient
+            .from("tickets")
+            .insert({
+                title: title,
+                description: description,
+                location: ticketLocation,
+                created_by: user.id,
+                faculty: user.faculty,
+                assigned_to: assignedEngineerId
+            });
 
-    // تنظيف الحقول
-    document.getElementById("title").value = "";
-    document.getElementById("description").value = "";
-    document.getElementById("locationCollege").value = "";
-    document.getElementById("roomNumber").value = "";
+        if (error) {
+            alert("حدث خطأ أثناء إنشاء التذكرة: " + error.message);
+            return;
+        }
 
-    // تحديث الصفحة بالكامل
-    window.location.reload();
+        // تنظيف الحقول بأمان بعد النجاح
+        if (document.getElementById("title")) document.getElementById("title").value = "";
+        if (document.getElementById("description")) document.getElementById("description").value = "";
+        if (document.getElementById("roomNumber")) document.getElementById("roomNumber").value = "";
 
+        // تحديث الصفحة
+        window.location.reload();
+
+    } catch (ex) {
+        console.error("خطأ غير متوقع:", ex);
+    }
 }
 
 
 async function changeStatus(ticket, status) {
-
     try {
-
         if (!status) return;
 
-        if (status === "closed") {
+        // إذا كان الاختيار هو الحذف
+        if (status === "delete") {
+            const confirmDelete = confirm("هل أنت متأكد من أنك تريد حذف هذه التذكرة نهائياً؟");
+            if (!confirmDelete) return;
 
+            const { error: deleteError } = await supabaseClient
+                .from("tickets")
+                .delete()
+                .eq("id", ticket);
+
+            if (deleteError) {
+                console.error(deleteError);
+                alert(deleteError.message);
+                return;
+            }
+
+            await loadTickets();
+            return;
+        }
+
+        // إذا كان الاختيار إغلاق التذكرة (مع نافذة التقييم)
+        if (status === "closed") {
             const options = {
-                "0": "0 - لم يتم الحل",
+                "1": "0 - لم يتم الحل",
                 "1": "1 - حل غير جيد",
                 "2": "2 - حل متأخر",
                 "3": "3 - حل مناسب إلى حد ما",
@@ -2516,7 +2535,6 @@ async function changeStatus(ticket, status) {
             };
 
             const selected = await new Promise((resolve) => {
-
                 const overlay = document.createElement("div");
                 overlay.style.cssText = `
                     position: fixed;
@@ -2569,7 +2587,6 @@ async function changeStatus(ticket, status) {
                     document.body.removeChild(overlay);
                     resolve(null);
                 };
-
             });
 
             if (selected === null) {
@@ -2590,6 +2607,7 @@ async function changeStatus(ticket, status) {
             }
         }
 
+        // تحديث حالة التذكرة في قاعدة البيانات
         const { error } = await supabaseClient
             .from("tickets")
             .update({
@@ -2598,22 +2616,16 @@ async function changeStatus(ticket, status) {
             .eq("id", ticket);
 
         if (error) {
-
             console.error(error);
             alert(error.message);
             return;
-
         }
 
         await loadTickets();
 
-    }
-    catch (ex) {
-
+    } catch (ex) {
         console.error(ex);
-
     }
-
 }
 
 
@@ -2844,20 +2856,16 @@ async function loadTickets(){
                 </div>
 
                 <div onclick="event.stopPropagation()">
+    <select onchange="changeStatus(${t.id}, this.value)">
+        <option value="">تغيير الحالة</option>
+        
+        <option value="closed">إغلاق التيكت</option>
 
-                    <select onchange="changeStatus(${t.id},this.value)">
-
-                        <option value="">
-                            تغيير الحالة
-                        </option>
-
-                        <option value="closed">
-                            إغلاق التيكت
-                        </option>
-
-                    </select>
-
-                </div>
+        ${(t.status === "open" || t.status === "assigned") ? `
+            <option value="delete" style="color: red;">حذف التيكت</option>
+        ` : ""}
+    </select>
+</div>
 
             </div>
 
