@@ -2059,35 +2059,28 @@ font-weight:500;
     }
 
 }
-    
 
-.edit-profile-btn{
 
-background:#2563eb;
-color:white;
+.edit-profile-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .3s;
 
-border:none;
-
-padding:12px 25px;
-
-border-radius:10px;
-
-font-size:15px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-transition:.3s;
-
+  /* تحريك الزر بمفرده لأقصى اليسار */
+  display: block;
+  margin-right: auto !important;
+  margin-left: 0 !important;
 }
 
-.edit-profile-btn:hover{
-
-background:#1d4ed8;
-
-transform:translateY(-2px);
-
+.edit-profile-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
 }
 </style>
 
@@ -2112,61 +2105,45 @@ transform:translateY(-2px);
 </header>
 
 <div class="container">
- <button class="edit-profile-btn"
+
+    <div class="card">
+<button class="edit-profile-btn"
 onclick="location.href='edituser.html'">
 
-👤 تعديل بياناتي الشخصية
+👤   اعادة تعيين كلمة المرور
 
 </button>
-    <div class="card">
-
         <div id="profile"></div>
-
+        
     </div>
 
 <div class="card">
 
-        <h3>إنشاء تيكت جديد</h3>
+        <h3>إنشاء تذكرة جديدة</h3>
 
-        <div id="engineerBox">
-
-    <label for="engineerSelect">    موظف شؤون العاملين  </label>
-
-    <select id="engineerSelect">
-        <option value=""> أختر موظف شؤون العاملين </option>
-    </select>
-
+        <div class="assigned-engineer-box">
+  <span class="label-text">الموظف المعني: </span>
+  <span id="assignedEngineerName">جاري الاختيار...</span>
+  
+  <!-- هذا العنصر هو الذي تقرأ الدالة قيمته (engineerSelect) -->
+  <input type="hidden" id="engineerSelect">
 </div>
 
-        <input id="title" placeholder="عنوان التيكت">
+        <input id="title" placeholder="عنوان التذكرة">
 
         <textarea id="description" placeholder="الوصف "></textarea>
 
         <div class="location-box">
-
-    <input
-        id="locationCollege"
-        list="locations"
-        placeholder="اختر الكلية"
-        autocomplete="off">
-
     <input
         id="roomNumber"
         type="text"
         placeholder="رقم الغرفة">
 
-    <datalist id="locations">
-        <option value="كلية الحاسبات والمعلومات">
-        <option value="كلية الصيدلة">
-        <option value="كلية العلاج الطبيعي">
-        <option value="كلية طب الأسنان">
-        <option value="كلية الإدارة">
-    </datalist>
 
 </div>
 
         <button class="btn-create" onclick="createTicket()">
-            إنشاء تيكت
+            إنشاء تذكرة
         </button>
 
     </div>
@@ -2210,7 +2187,7 @@ onclick="location.href='edituser.html'">
 
             <div></div>
 
-            <div>عنوان المشكلة</div>
+            <div>عنوان التذكرة</div>
 
             <div>  موظف شؤون العاملين </div>
 
@@ -2462,66 +2439,104 @@ async function loadEngineer() {
 
     engineers = data || [];
 
-    const select = document.getElementById("engineerSelect");
+    const engineerNameElement = document.getElementById("assignedEngineerName");
+const engineerInputHidden = document.getElementById("engineerSelect");
 
-    select.innerHTML = `<option value="">اختر موظف شؤون العاملين</option>`;
+if (engineers && engineers.length > 0) {
+    // اختيار موظف عشوائي
+    const randomIndex = Math.floor(Math.random() * engineers.length);
+    const randomEngineer = engineers[randomIndex];
 
-    engineers.forEach(engineer => {
+    // عرض اسم الموظف المختار كـ نص فقط
+    engineerNameElement.textContent = randomEngineer.name;
 
-        select.innerHTML += `
-            <option value="${engineer.id}">
-                ${engineer.name}
-            </option>
-        `;
-
-    });
-
+    // حفظ id الموظف في الـ input الخفي للربط مع النموذج (Form)
+    if (engineerInputHidden) {
+        engineerInputHidden.value = randomEngineer.id;
+    }
+} else {
+    engineerNameElement.textContent = "لا يوجد موظفين متاحين";
+}
 }
 
 
 async function createTicket() {
+    try {
+        // قراءة البيانات المتاحة بأمان (استبعاد locationCollege)
+        let title = document.getElementById("title")?.value?.trim() || "";
+        let description = document.getElementById("description")?.value?.trim() || "";
+        let room = document.getElementById("roomNumber")?.value?.trim() || "";
 
-    let title = document.getElementById("title").value.trim();
-    let description = document.getElementById("description").value.trim();
+        // التثبت من وجود جميع البيانات المطلوبة وإظهار رسالة إذا كان أي منها فارغاً
+        if (!title || !description || !room) {
+            alert("يرجى تعبئة جميع الحقول المطلوبة (العنوان، الوصف، رقم الغرفة) قبل الإرسال!");
+            return; // إيقاف تنفيذ الدالة وعدم إرسال التذكرة
+        }
 
-    let college = document.getElementById("locationCollege").value.trim();
-    let room = document.getElementById("roomNumber").value.trim();
+        let ticketLocation = `غرفة رقم ${room}`;
 
-    let ticketLocation = `${college} - غرفة رقم ${room}`;
+        // قراءة id الموظف المعني بأمان
+        let engineerSelectElement = document.getElementById("engineerSelect");
+        let assignedEngineerId = engineerSelectElement ? engineerSelectElement.value : null;
 
-    await supabaseClient
-        .from("tickets")
-        .insert({
-            title: title,
-            description: description,
-            location: ticketLocation,
-            created_by: user.id,
-            faculty: user.faculty,
-            assigned_to: document.getElementById("engineerSelect").value || null
-        });
+        // إضافة التذكرة في Supabase
+        const { error } = await supabaseClient
+            .from("tickets")
+            .insert({
+                title: title,
+                description: description,
+                location: ticketLocation,
+                created_by: user.id,
+                faculty: user.faculty,
+                assigned_to: assignedEngineerId
+            });
 
-    // تنظيف الحقول
-    document.getElementById("title").value = "";
-    document.getElementById("description").value = "";
-    document.getElementById("locationCollege").value = "";
-    document.getElementById("roomNumber").value = "";
+        if (error) {
+            alert("حدث خطأ أثناء إنشاء التذكرة: " + error.message);
+            return;
+        }
 
-    // تحديث الصفحة بالكامل
-    window.location.reload();
+        // تنظيف الحقول بأمان بعد الإرسال الناجح
+        if (document.getElementById("title")) document.getElementById("title").value = "";
+        if (document.getElementById("description")) document.getElementById("description").value = "";
+        if (document.getElementById("roomNumber")) document.getElementById("roomNumber").value = "";
 
+        // تحديث الصفحة بالكامل
+        window.location.reload();
+
+    } catch (ex) {
+        console.error("خطأ أثناء إنشاء التذكرة:", ex);
+    }
 }
 
-
 async function changeStatus(ticket, status) {
-
     try {
-
         if (!status) return;
 
-        if (status === "closed") {
+        // إذا كان الاختيار هو الحذف
+        if (status === "delete") {
+            const confirmDelete = confirm("هل أنت متأكد من أنك تريد حذف هذه التذكرة نهائياً؟");
+            if (!confirmDelete) return;
 
+            const { error: deleteError } = await supabaseClient
+                .from("tickets")
+                .delete()
+                .eq("id", ticket);
+
+            if (deleteError) {
+                console.error(deleteError);
+                alert(deleteError.message);
+                return;
+            }
+
+            await loadTickets();
+            return;
+        }
+
+        // إذا كان الاختيار إغلاق التذكرة (مع نافذة التقييم)
+        if (status === "closed") {
             const options = {
-                "0": "0 - لم يتم الحل",
+                "1": "0 - لم يتم الحل",
                 "1": "1 - حل غير جيد",
                 "2": "2 - حل متأخر",
                 "3": "3 - حل مناسب إلى حد ما",
@@ -2530,7 +2545,6 @@ async function changeStatus(ticket, status) {
             };
 
             const selected = await new Promise((resolve) => {
-
                 const overlay = document.createElement("div");
                 overlay.style.cssText = `
                     position: fixed;
@@ -2583,7 +2597,6 @@ async function changeStatus(ticket, status) {
                     document.body.removeChild(overlay);
                     resolve(null);
                 };
-
             });
 
             if (selected === null) {
@@ -2604,6 +2617,7 @@ async function changeStatus(ticket, status) {
             }
         }
 
+        // تحديث حالة التذكرة في قاعدة البيانات
         const { error } = await supabaseClient
             .from("tickets")
             .update({
@@ -2612,22 +2626,16 @@ async function changeStatus(ticket, status) {
             .eq("id", ticket);
 
         if (error) {
-
             console.error(error);
             alert(error.message);
             return;
-
         }
 
         await loadTickets();
 
-    }
-    catch (ex) {
-
+    } catch (ex) {
         console.error(ex);
-
     }
-
 }
 
 
@@ -2865,20 +2873,16 @@ async function loadTickets(){
                 </div>
 
                 <div onclick="event.stopPropagation()">
+    <select onchange="changeStatus(${t.id}, this.value)">
+        <option value="">تغيير الحالة</option>
+        
+        <option value="closed">إغلاق التيكت</option>
 
-                    <select onchange="changeStatus(${t.id},this.value)">
-
-                        <option value="">
-                            تغيير الحالة
-                        </option>
-
-                        <option value="closed">
-                            إغلاق التيكت
-                        </option>
-
-                    </select>
-
-                </div>
+        ${(t.status === "open" || t.status === "assigned") ? `
+            <option value="delete" style="color: red;">حذف التيكت</option>
+        ` : ""}
+    </select>
+</div>
 
             </div>
 
@@ -3004,7 +3008,29 @@ function toggleTicket(id){
     }
 
 }
+// دالة حذف التذكرة المستقلة
+async function deleteTicket(ticketId, status) {
+    // التأكد من أن الحالة لا تزال مفتوحة (أمان إضافي في الفرونت إند)
+    if (status !== "open" && status !== "assigned") {
+        alert("عفواً، لا يمكن حذف التذكرة إلا إذا كانت حالتها مفتوحة.");
+        return;
+    }
 
+    const confirmDelete = confirm("هل أنت تأكد من أنك تريد حذف هذه التذكرة نهائياً؟");
+    if (!confirmDelete) return;
+
+    const { error } = await supabaseClient
+        .from("tickets")
+        .delete()
+        .eq("id", ticketId);
+
+    if (error) {
+        alert("حدث خطأ أثناء حذف التذكرة: " + error.message);
+    } else {
+        alert("تم حذف التذكرة بنجاح.");
+        loadTickets(); // إعادة تحميل الجدول بعد الحذف
+    }
+}
 
 function realtime(){
 
