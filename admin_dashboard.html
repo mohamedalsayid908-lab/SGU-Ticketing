@@ -117,7 +117,6 @@ body{
 /* =======================================================
 ====================== MAIN HEADER START =================
 ======================================================= */
-
 /* =======================================================
 ======================= HEADER ===========================
 ======================================================= */
@@ -187,7 +186,6 @@ body{
     background: #ffd369;
     color: #071739;
 }
-
 /* =======================================================
 ======================= MAIN HEADER END ==================
 ======================================================= */
@@ -1141,7 +1139,7 @@ button:hover{
     ======================================================= -->
     <div class="card">
 
-        <h3> موظفي شؤون العاملين</h3>
+        <h3>مهندسي IT</h3>
 
         <table id="engineersTable"></table>
 
@@ -1214,12 +1212,16 @@ button:hover{
     ======================================================= -->
     <div class="card">
 
+        <button class="report-btn" onclick="goReports()">
+           تقرير بيانات بطاقات الدعم
+        </button>
+    </div>
+<div class="card">
         <button class="report-btn" onclick="goReports2()">
-            تقرير أحصائي لشؤون العاملين  
+             التقرير الأحصائي لباطاقات الدعم
         </button>
 
     </div>
-
 </div>
 
 <!-- =======================================================
@@ -1275,55 +1277,34 @@ return await res.json()
 
 }
 
-async function loadEngineers() {
+async function loadEngineers(){
 
-    engineers = await fetchAPI(
-        SUPABASE_URL + "users?role=in.(hr)"
-    );
+engineers=await fetchAPI(
+SUPABASE_URL+"users?role=eq.it"
+)
 
-    let html = "<tr><th>الاسم</th><th>الهاتف</th><th>الكلية</th></tr>";
+let html="<tr><th>الاسم</th><th>الهاتف</th><th>الكلية</th></tr>"
 
-    for (let e of engineers) {
+for(let e of engineers){
 
-        html += `
-        <tr>
-            <td>${e.name}</td>
-            <td>${e.phone || ""}</td>
-            <td>${e.faculty || ""}</td>
-        </tr>
-        `;
+html+=`<tr>
+<td>${e.name}</td>
+<td>${e.phone||""}</td>
+<td>${e.faculty||""}</td>
+</tr>`
 
-    }
+}
 
-    const engineersTable = document.getElementById("engineersTable");
+document.getElementById("engineersTable").innerHTML=html
 
-    if (engineersTable) {
-        engineersTable.innerHTML = html;
-    }
+let opt="<option value=''>كل المهندسين</option>"
 
-    let opt = "<option value=''>كل موظفي شؤون العاملين</option>";
+for(let e of engineers){
+opt+=`<option value="${e.id}">${e.name}</option>`
+}
 
-    for (let e of engineers) {
-
-        opt += `
-        <option value="${e.id}">
-            ${e.name}
-        </option>
-        `;
-
-    }
-
-    const engineerReport = document.getElementById("engineerReport");
-
-    if (engineerReport) {
-        engineerReport.innerHTML = opt;
-    }
-
-    const engineerStats = document.getElementById("engineerStats");
-
-    if (engineerStats) {
-        engineerStats.innerHTML = opt;
-    }
+engineerReport.innerHTML=opt
+engineerStats.innerHTML=opt
 
 }
 
@@ -1376,8 +1357,8 @@ html+=`
 <select onchange="changeRole('${u.id}',this.value)">
 
 <option value="employee" ${u.role=="employee"?"selected":""}>employee</option>
-<option value="hr" ${u.role=="hr"?"selected":""}>hr</option>
-<option value="admin_hr" ${u.role=="admin_hr"?"selected":""}>admin_hr</option>
+<option value="it" ${u.role=="it"?"selected":""}>it</option>
+<option value="admin" ${u.role=="admin"?"selected":""}>admin</option>
 
 </select>
 
@@ -1513,9 +1494,35 @@ alert("تم اضافة السبب الفني")
 
 async function loadTickets(){
 
+// تحميل مستخدمي IT
+let engineers = await fetchAPI(
+
+    SUPABASE_URL +
+
+    "users?role=eq.it&select=id"
+
+);
+
+// تحميل التذاكر
 let data = await fetchAPI(
-SUPABASE_URL +
-"tickets?select=*,creator:users!tickets_created_by_fkey(name,phone),engineer:users!tickets_assigned_to_fkey!inner(name,role),solution:ticket_solution(solution_text)&engineer.role=in.(hr,admin_hr)"
+
+    SUPABASE_URL +
+
+    "tickets?select=*,\
+creator:users!tickets_created_by_fkey(name,phone),\
+engineer:users!tickets_assigned_to_fkey(id,name),\
+solution:ticket_solution(solution_text)"
+
+);
+
+// استخراج معرفات مستخدمي IT
+let itIds = engineers.map(e => e.id);
+
+// الاحتفاظ فقط بالتذاكر الموجهة لـ IT
+data = data.filter(
+
+    t => itIds.includes(t.assigned_to)
+
 );
 
 let open=""
@@ -1564,7 +1571,7 @@ ${statusText}
 </div>
 
 <div class="ticket-item">
-<span class="label">📍 المكان:</span>
+<span class="label">📍 اللوكيشن:</span>
 <span class="value">${t.location || "غير محدد"}</span>
 </div>
 
@@ -1579,13 +1586,13 @@ ${statusText}
 </div>
 
 <div class="ticket-item">
-<span class="label">🛠 موظف شؤون العاملين:</span>
+<span class="label">🛠 المهندس:</span>
 <span class="value">${t.engineer?.name || "غير معين"}</span>
 </div>
 
 <div class="ticket-item">
-<span class="label">⚙ الرد :</span>
-<span class="value">${t.solution?.solution_text || "لم يتم إضافة رد"}</span>
+<span class="label">⚙ السبب الفني:</span>
+<span class="value">${t.solution?.solution_text || "لم يتم إضافة سبب فني"}</span>
 </div>
 
 </div>
@@ -1637,7 +1644,7 @@ SUPABASE_URL+
 )
 
 let engineers=await fetchAPI(
-SUPABASE_URL+"users?role=eq.hr"
+SUPABASE_URL+"users?role=eq.it"
 )
 
 let content=[]
@@ -1648,7 +1655,7 @@ let list=tickets.filter(t=>t.assigned_to==e.id)
 
 if(!list.length)continue
 
-content.push({text:"بيانات موظف شؤون العاملين",style:"header"})
+content.push({text:"بيانات المهندس",style:"header"})
 
 content.push({
 table:{
@@ -1659,7 +1666,7 @@ body:[
 }
 })
 
-let rows=[["id","العنوان","الوصف","الموظف","الهاتف","الحالة","موظف شؤون العاملين"]]
+let rows=[["id","العنوان","الوصف","الموظف","الهاتف","الحالة","المهندس"]]
 
 for(let t of list){
 
@@ -1713,7 +1720,7 @@ function goReports(){
 window.location.href="reports.html"
 }
 function goReports2(){
-window.location.href="hrevaluation_report.html"
+window.location.href="evaluation_report.html"
 }
 loadEngineers()
 loadTickets()

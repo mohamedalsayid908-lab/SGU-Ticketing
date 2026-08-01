@@ -2047,7 +2047,6 @@ font-weight:500;
 
 }
 
-
 .edit-profile-btn {
   background: #2563eb;
   color: white;
@@ -2068,137 +2067,6 @@ font-weight:500;
 .edit-profile-btn:hover {
   background: #1d4ed8;
   transform: translateY(-2px);
-}
-
-
-
-
-
-
-/* تنسيق جدول العرض */
-.tickets-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    background-color: #ffffff; /* خلفية الصفوف بيضاء */
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-/* الهيدر: خلفية زرقاء ونصوص بيضاء */
-.tickets-table thead tr {
-    background-color: #0d6efd; /* لون أزرق */
-    color: #ffffff;            /* نص أبيض */
-    text-align: right;
-}
-
-.tickets-table th {
-    padding: 14px 16px;
-    font-size: 15px;
-    font-weight: 700;
-    color: #ffffff !important;  /* تأكيد اللون الأبيض للهيدر */
-}
-
-/* بيانات التذاكر: خلفية بيضاء ونصوص سوداء */
-.tickets-table td {
-    padding: 12px 16px;
-    color: #000000 !important; /* لون النصوص داخل الجدول بالأسود */
-    border-bottom: 1px solid #e9ecef;
-    font-size: 14px;
-}
-
-/* تمييز الصفوف عند التمرير */
-.tickets-table tbody tr:hover {
-    background-color: #f8f9fa;
-}
-.badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    display: inline-block;
-}
-.badge-warning { background-color: #fff3cd; color: #856404; }
-.badge-info { background-color: #d1ecf1; color: #0c5460; }
-.badge-danger { background-color: #f8d7da; color: #721c24; }
-.badge-success { background-color: #d4edda; color: #155724; }
-
-.btn-delete {
-    background-color: #dc3545;
-    color: rgb(5, 5, 5);
-    border: none;
-    padding: 6px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-.btn-delete:hover {
-    background-color: #bd2130;
-}
-
-
-
-
-
-
-/* أزرار الإجراءات الخاصة بالعميد */
-.btn-approve {
-    background-color: #198754;
-    color: white;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-left: 5px;
-    transition: 0.2s;
-}
-.btn-approve:hover { background-color: #146c43; }
-
-.btn-reject {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s;
-}
-.btn-reject:hover { background-color: #b02a37; }
-
-
-/* إشعار التحديث اللحظي */
-.live-toast-notification {
-    position: fixed !important;
-    top: 20px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    background-color: #0d6efd !important; /* أزرق مميز */
-    color: #ffffff !important;
-    padding: 14px 24px !important;
-    border-radius: 8px !important;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
-    z-index: 999999 !important; /* لضمان ظهوره فوق كل عناصر الصفحة */
-    font-size: 15px !important;
-    font-weight: bold !important;
-    cursor: pointer !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 12px !important;
-    transition: transform 0.2s ease !important;
-    animation: toastSlideDown 0.4s ease-out !important;
-}
-
-.live-toast-notification:hover {
-    background-color: #0b5ed7 !important;
-    transform: translateX(-50%) scale(1.03) !important;
-}
-
-@keyframes toastSlideDown {
-    from { top: -60px; opacity: 0; }
-    to { top: 20px; opacity: 1; }
 }
 </style>
 
@@ -2227,7 +2095,6 @@ font-weight:500;
 </header>
 
 <div class="container">
-
     <div class="card">
 <button class="edit-profile-btn"
 onclick="location.href='edituser.html'">
@@ -2241,31 +2108,29 @@ onclick="location.href='edituser.html'">
 
 <div class="card">
 
-    <h3>إنشاء تذكرة جديدة</h3>
+        <h3>إنشاء تذكرة جديد</h3>
 
-    <div class="assigned-engineer-box">
-        <span class="label-text">الموظف المعني: </span>
-        <span id="assignedEngineerName">جاري الاختيار...</span>
-        <input type="hidden" id="engineerSelect">
-    </div>
+        <div id="engineerBox" style="margin-bottom:10px;color:#ffffff"></div>
 
-    <!-- حقل العنوان يدعم الاختيار من قائمة أو الكتابة المباشرة -->
-    <input id="title" list="predefinedTitles" placeholder="اختر عنواناً أو اكتبه مباشرة..." autocomplete="off">
-    <datalist id="predefinedTitles">
-        <!-- سيتم ملء العناوين تلقائياً عبر JavaScript من جدول predefined_titles -->
-    </datalist>
+        <input id="title" placeholder="عنوان التذكرة">
 
-    <textarea id="description" placeholder="الوصف "></textarea>
+        <textarea id="description" placeholder="وصف التذكرة"></textarea>
 
-    <div class="location-box">
-        <input id="roomNumber" type="text" placeholder="رقم الغرفة">
-    </div>
+        <div class="location-box">
 
-    <button class="btn-create" onclick="createTicket()">
-        إنشاء تذكرة
-    </button>
+    
+    <input
+        id="roomNumber"
+        type="text"
+        placeholder="رقم الغرفة">
 
 </div>
+
+        <button class="btn-create" onclick="createTicket()">
+            إنشاء تذكرة
+        </button>
+
+    </div>
 
 <div id="newTicketAlert" class="new-ticket-alert" style="display:none;">
 
@@ -2277,33 +2142,13 @@ onclick="location.href='edituser.html'">
 
 </div>
 
-<!-- مخفي افتراضياً ولن يظهر مطلقاً إلا لمن وظيفته تحتوي كلمة "عميد" -->
-<div class="card dean-tickets-card" id="deanApprovalSection" style="display: none;">
-    <h3>طلبات الاعتماد الخاصّة بالكلية (اعتماد العميد)</h3>
-    
-    <div class="table-responsive">
-        <table class="tickets-table">
-            <thead>
-                <tr>
-                    <th>مقدم الطلب</th>
-                    <th>عنوان الطلب</th>
-                    <th>الوصف</th>
-                    <th>المكان</th>
-                    <th>الحالة</th>
-                    <th>الإجراءات</th>
-                </tr>
-            </thead>
-            <tbody id="deanTicketsTableBody">
-                <tr>
-                    <td colspan="6" style="text-align: center; color: #000;">جاري تحميل طلبات الكلية...</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
     
     <div class="section">
-<div class="tickets-toolbar">
+
+    <div class="tickets-toolbar">
+
+        <h3>تذاكري</h3>
+
         <select id="statusFilter" onchange="loadTickets()">
 
             <option value="all">كل الحالات</option>
@@ -2319,40 +2164,16 @@ onclick="location.href='edituser.html'">
         </select>
 
     </div>
-<!-- قسم تذاكر الاعتماد -->
-<div class="card my-approval-tickets-card">
-    <h3>'طلبات ' الاعتماد الخاصّة بي</h3>
-    
-    <div class="table-responsive">
-        <table class="tickets-table">
-            <thead>
-                <tr>
-                    <th>العنوان</th>
-                    <th>الوصف</th>
-                    <th>المكان</th>
-                    <th>العميد المعتمد</th>
-                    <th>الحالة</th>
-                    <th>رد شؤون العاملين</th>
-                    <th>إجراءات</th>
-                </tr>
-            </thead>
-            <tbody id="approvalTicketsTableBody">
-                <tr>
-                    <td colspan="7" style="text-align: center;">جاري تحميل تذاكر الاعتماد...</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+
     <div class="tickets-table">
 
         <div class="tickets-head">
 
             <div></div>
 
-            <div>عنوان التذكرة</div>
+            <div>عنوان المشكلة</div>
 
-            <div>  موظف شؤون العاملين </div>
+            <div>المهندس</div>
 
             <div>الحالة</div>
 
@@ -2585,189 +2406,89 @@ usersMap[u.id]=u.name
 
 }
 
-let engineers = [];
 
-async function loadEngineer() {
+let engineer=null
 
-    const { data, error } = await supabaseClient
-        .from("users")
-        .select("id,name")
-        .eq("role", "hr")
-        .order("name");
+async function loadEngineer(){
 
-    if (error) {
-        console.error(error);
-        return;
-    }
+let {data} = await supabaseClient
+.from("users")
+.select("*")
+.eq("role","it")
+.eq("faculty",user.faculty)
 
-    engineers = data || [];
+if(data.length){
 
-    const engineerNameElement = document.getElementById("assignedEngineerName");
-const engineerInputHidden = document.getElementById("engineerSelect");
+engineer=data[0]
 
-if (engineers && engineers.length > 0) {
-    // اختيار موظف عشوائي
-    const randomIndex = Math.floor(Math.random() * engineers.length);
-    const randomEngineer = engineers[randomIndex];
+document.getElementById("engineerBox").innerHTML=
+" المهندس المسؤل: <b>"+engineer.name+"</b>"
 
-    // عرض اسم الموظف المختار كـ نص فقط
-    engineerNameElement.textContent = randomEngineer.name;
+}else{
 
-    // حفظ id الموظف في الـ input الخفي للربط مع النموذج (Form)
-    if (engineerInputHidden) {
-        engineerInputHidden.value = randomEngineer.id;
-    }
-} else {
-    engineerNameElement.textContent = "لا يوجد موظفين متاحين";
-}
+document.getElementById("engineerBox").innerHTML=
+"No IT Engineer found"
+
 }
 
-// =======================================================
-// 1. دالة تحميل العناوين المحددة مسبقاً في الـ Datalist
-// =======================================================
-// =======================================================
-// تحميل العناوين المحددة مسبقاً في الـ Datalist
-// =======================================================
-async function loadPredefinedTitles() {
-    try {
-        console.log("جاري جلب العناوين المحددة مسبقاً...");
-        
-        // جلب البيانات من Supabase
-        const { data: titles, error } = await supabaseClient
-            .from("predefined_titles")
-            .select("title");
-
-        if (error) {
-            console.error("خطأ من Supabase أثناء جلب العناوين:", error.message);
-            return;
-        }
-
-        console.log("العناوين المجلوبة من قاعدة البيانات:", titles);
-
-        const dataListElement = document.getElementById("predefinedTitles");
-
-        if (!dataListElement) {
-            console.error("لم يتم العثور على عنصر <datalist id='predefinedTitles'> في الصفحة!");
-            return;
-        }
-
-        if (titles && titles.length > 0) {
-            // مسح أي خيارات القديمة وتعبئة الخيارات الجديدة
-            dataListElement.innerHTML = "";
-            titles.forEach(item => {
-                const option = document.createElement("option");
-                option.value = item.title;
-                dataListElement.appendChild(option);
-            });
-            console.log("تمت تعبئة القائمة بنجاح بعدد عناوين:", titles.length);
-        } else {
-            console.warn("جدول predefined_titles فارغ في قاعدة البيانات!");
-        }
-
-    } catch (ex) {
-        console.error("خطأ عام في دالة تحميل العناوين:", ex);
-    }
 }
 
-// التأكد من التشغيل فور اكتمال تحميل عناصر HTML
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", loadPredefinedTitles);
-} else {
-    loadPredefinedTitles(); // إذا كانت الصفحة محملة بالفعل
-}
-// =======================================================
-// 2. دالة إنشاء التذكرة المعدلة (فحص التوجيه تلقائياً)
-// =======================================================
+
 async function createTicket() {
     try {
+        // قراءة البيانات المتاحة فقط (تم حذف locationCollege)
         let title = document.getElementById("title")?.value?.trim() || "";
         let description = document.getElementById("description")?.value?.trim() || "";
         let room = document.getElementById("roomNumber")?.value?.trim() || "";
 
+        // التحقق من الحقول الفارغة (تم استبعاد locationCollege)
         if (!title || !description || !room) {
-            alert("يرجى تعبئة جميع الحقول المطلوبة (العنوان، الوصف، رقم الغرفة) قبل الإرسال!");
+            alert("يرجى إكمال جميع الحقول المطلوبة قبل إرسال التذكرة!");
+            return; // إيقاف التنفيذ
+        }
+
+        // صيغة مكان التذكرة بناءً على رقم الغرفة (أو يمكنك تعديلها بالطريقة التي تناسبك)
+        let ticketLocation = `غرفة رقم ${room}`;
+
+        // قراءة id الموظف المعني (العشوائي) بأمان
+        let assignedEngineerId = null;
+        if (typeof engineer !== "undefined" && engineer) {
+            assignedEngineerId = engineer.id;
+        } else {
+            let engineerSelectElement = document.getElementById("engineerSelect");
+            assignedEngineerId = engineerSelectElement ? engineerSelectElement.value : null;
+        }
+
+        // إدخال التذكرة في Supabase
+        const { error } = await supabaseClient
+            .from("tickets")
+            .insert({
+                title: title,
+                description: description,
+                location: ticketLocation,
+                created_by: user.id,
+                faculty: user.faculty,
+                assigned_to: assignedEngineerId
+            });
+
+        if (error) {
+            alert("حدث خطأ أثناء إنشاء التذكرة: " + error.message);
             return;
         }
 
-        let ticketLocation = `غرفة رقم ${room}`;
-        let engineerSelectElement = document.getElementById("engineerSelect");
-        let assignedEngineerId = engineerSelectElement ? engineerSelectElement.value : null;
-
-        // التحقق مما إذا كان العنوان المكتوب/المختار يتبع جدول العناوين المحددة مسبقاً
-        const { data: specialTitle } = await supabaseClient
-            .from("predefined_titles")
-            .select("title")
-            .eq("title", title)
-            .maybeSingle();
-
-        if (specialTitle) {
-            // ----------------------------------------------------
-            // البحث عن العميد الخاص بنفس كلية الموظف مُنشئ الطلب
-            // ----------------------------------------------------
-            const { data: deanUser, error: deanError } = await supabaseClient
-                .from("users")
-                .select("id, name")
-                .eq("faculty", user.faculty)
-                .ilike("job_title", "%عميد%") // يبحث عن الوظيفة التي تحتوي كلمة عميد
-                .maybeSingle();
-
-            let targetDeanId = deanUser ? deanUser.id : null;
-
-            // ----------------------------------------------------
-            // الحالة الأولية: الطلب يحتاج إلى اعتماد العميد وشؤون العاملين
-            // ----------------------------------------------------
-            const { error: approvalError } = await supabaseClient
-                .from("approval_tickets")
-                .insert({
-                    title: title,
-                    description: description,
-                    location: ticketLocation,
-                    created_by: user.id,
-                    faculty: user.faculty,
-                    dean_id: targetDeanId, // تم ربط العميد المعني فور إنشاء التذكرة
-                    status: 'pending_dean'
-                });
-
-            if (approvalError) {
-                alert("حدث خطأ أثناء إرسال طلب الاعتماد: " + approvalError.message);
-                return;
-            }
-
-            alert("تم إرسال الطلب بنجاح، وهو الآن بانتظار اعتماد عميد الكلية.");
-        } else {
-            // ----------------------------------------------------
-            // الحالة الثانية: تذكرة عادية تذهب لجدول tickets
-            // ----------------------------------------------------
-            const { error } = await supabaseClient
-                .from("tickets")
-                .insert({
-                    title: title,
-                    description: description,
-                    location: ticketLocation,
-                    created_by: user.id,
-                    faculty: user.faculty,
-                    assigned_to: assignedEngineerId
-                });
-
-            if (error) {
-                alert("حدث خطأ أثناء إنشاء التذكرة: " + error.message);
-                return;
-            }
-
-            alert("تم إنشاء التذكرة بنجاح.");
-        }
-
-        // تنظيف الحقول بعد النجاح
+        // تنظيف الحقول بأمان بعد النجاح
         if (document.getElementById("title")) document.getElementById("title").value = "";
         if (document.getElementById("description")) document.getElementById("description").value = "";
         if (document.getElementById("roomNumber")) document.getElementById("roomNumber").value = "";
 
+        // تحديث الصفحة
         window.location.reload();
 
     } catch (ex) {
-        console.error("خطأ أثناء إنشاء التذكرة:", ex);
+        console.error("خطأ غير متوقع:", ex);
     }
 }
+
 
 async function changeStatus(ticket, status) {
     try {
@@ -2905,18 +2626,11 @@ async function loadTickets(){
 
     await loadUsers();
 
-    let { data, error } = await supabaseClient
+    let { data } = await supabaseClient
     .from("tickets")
-    .select(`
-        *,
-        engineer:users!tickets_assigned_to_fkey!inner(
-            id,
-            name,
-            role
-        )
-    `)
-    .eq("created_by", user.id)
-    .in("engineer.role", ["hr", "admin_hr"]);
+    .select("*")
+    .eq("created_by", user.id);
+
     if(!data){
         document.getElementById("ticketsTable").innerHTML="";
         return;
@@ -3153,7 +2867,7 @@ async function loadTickets(){
                 <div class="ticket-info">
 
 <div class="ticket-label">
-الوصف  
+وصف المشكلة
 </div>
 
 <div class="ticket-value">
@@ -3165,7 +2879,7 @@ ${t.description || "لا يوجد"}
                 <div class="ticket-info">
 
 <div class="ticket-label">
-مكان  مقدم التيكت
+مكان المشكلة
 </div>
 
 <div class="ticket-value">
@@ -3182,7 +2896,7 @@ ${t.location || "غير محدد"}
                     <div class="ticket-solution">
 
 <div class="ticket-label">
-الرد  
+سبب المشكلة
 </div>
 
 <div class="ticket-value">
@@ -3268,473 +2982,6 @@ function toggleTicket(id){
     }
 
 }
-// دالة حذف التذكرة المستقلة
-async function deleteTicket(ticketId, status) {
-    // التأكد من أن الحالة لا تزال مفتوحة (أمان إضافي في الفرونت إند)
-    if (status !== "open" && status !== "assigned") {
-        alert("عفواً، لا يمكن حذف التذكرة إلا إذا كانت حالتها مفتوحة.");
-        return;
-    }
-
-    const confirmDelete = confirm("هل أنت تأكد من أنك تريد حذف هذه التذكرة نهائياً؟");
-    if (!confirmDelete) return;
-
-    const { error } = await supabaseClient
-        .from("tickets")
-        .delete()
-        .eq("id", ticketId);
-
-    if (error) {
-        alert("حدث خطأ أثناء حذف التذكرة: " + error.message);
-    } else {
-        alert("تم حذف التذكرة بنجاح.");
-        loadTickets(); // إعادة تحميل الجدول بعد الحذف
-    }
-}
-
-
-// =======================================================
-// 1. جلب وعرض تذاكر الاعتماد الخاصة بالموظف الحالي
-// =======================================================
-// =======================================================
-// جلب وعرض تذاكر الاعتماد الخاصة بالموظف الحالي (محدثة بالكامل)
-// =======================================================
-async function loadMyApprovalTickets() {
-    try {
-        const tableBody = document.getElementById("approvalTicketsTableBody");
-        if (!tableBody) return;
-
-        // جلب تذاكر الاعتماد للمستخدم الحالي مع تفاصيل اسم العميد المعتمد وسبب الرفض
-        const { data: tickets, error } = await supabaseClient
-            .from("approval_tickets")
-            .select(`
-                id,
-                title,
-                description,
-                location,
-                status,
-                rejection_reason,
-                hr_response,
-                dean:dean_id ( name )
-            `)
-            .eq("created_by", user.id)
-            .order("created_at", { ascending: false });
-
-        if (error) {
-            console.error("خطأ أثناء جلب تذاكر الاعتماد:", error.message);
-            tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:red;">حدث خطأ أثناء تحميل البيانات</td></tr>`;
-            return;
-        }
-
-        if (!tickets || tickets.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#333;">لا توجد تذاكر اعتماد حالية.</td></tr>`;
-            return;
-        }
-
-        // بناء صفوف الجدول
-        tableBody.innerHTML = tickets.map(ticket => {
-            // 1. تحديد اسم العميد
-            const deanName = ticket.dean?.name ? `أ.د/ ${ticket.dean.name}` : "لم يحدد بعد";
-            
-            // 2. رد شؤون العاملين
-            const hrResponse = ticket.hr_response || "—";
-            
-            // 3. حالة الطلب مع إضافة سبب الرفض عند وجوده
-            let statusBadge = getStatusBadgeHTML(ticket.status);
-            if (ticket.status === 'rejected_by_dean' && ticket.rejection_reason) {
-                statusBadge += `
-                    <div style="color: #dc3545; font-size: 12px; margin-top: 5px; font-weight: bold;">
-                        سبب الرفض: ${escapeHtml(ticket.rejection_reason)}
-                    </div>`;
-            }
-
-            // 4. إمكانية الحذف (مسموحة ما لم يكتمل الطلب نهائياً من شؤون العاملين)
-            const canDelete = ticket.status !== 'completed_by_hr';
-            const deleteButtonHtml = canDelete 
-                ? `<button class="btn-delete" onclick="deleteApprovalTicket(${ticket.id})">حذف</button>` 
-                : `<span style="color:#777; font-size:12px;">غير قابل للحذف</span>`;
-
-            return `
-                <tr>
-                    <td style="color:#000; font-weight:bold;">${escapeHtml(ticket.title)}</td>
-                    <td style="color:#000;">${escapeHtml(ticket.description || '—')}</td>
-                    <td style="color:#000;">${escapeHtml(ticket.location || '—')}</td>
-                    <td style="color:#000; font-weight:500;">${escapeHtml(deanName)}</td>
-                    <td>${statusBadge}</td>
-                    <td style="color:#000;">${escapeHtml(hrResponse)}</td>
-                    <td>${deleteButtonHtml}</td>
-                </tr>
-            `;
-        }).join("");
-
-    } catch (ex) {
-        console.error("خطأ في دالة loadMyApprovalTickets:", ex);
-    }
-}
-
-// =======================================================
-// 2. دالة ترجمة وتنسيق حالة التذكرة (Status Badges)
-// =======================================================
-function getStatusBadgeHTML(status) {
-    switch (status) {
-        case 'pending_dean':
-            return `<span class="badge badge-warning">بانتظار موافقة العميد</span>`;
-        case 'approved_by_dean':
-            return `<span class="badge badge-info">تمت موافقة العميد (قيد شؤون العاملين)</span>`;
-        case 'rejected_by_dean':
-            return `<span class="badge badge-danger">مرفوض من العميد</span>`;
-        case 'completed_by_hr':
-            return `<span class="badge badge-success">تم الاعتماد والرد</span>`;
-        default:
-            return `<span class="badge">${status}</span>`;
-    }
-}
-
-
-// =======================================================
-// 3. دالة حذف تذكرة الاعتماد
-// =======================================================
-async function deleteApprovalTicket(ticketId) {
-    if (!confirm("هل أنت تأكد من رغبتك في حذف هذه التذكرة؟")) return;
-
-    try {
-        const { error } = await supabaseClient
-            .from("approval_tickets")
-            .delete()
-            .eq("id", ticketId)
-            .eq("created_by", user.id); // التأكيد على حماية الملكية
-
-        if (error) {
-            alert("حدث خطأ أثناء الحذف: " + error.message);
-            return;
-        }
-
-        alert("تم حذف التذكرة بنجاح.");
-        loadMyApprovalTickets(); // إعادة تحديث الجدول بدون إعادة تحميل الصفحة
-
-    } catch (ex) {
-        console.error("خطأ أثناء الحذف:", ex);
-    }
-}
-
-
-// =======================================================
-// 4. الاستماع الفوري للتحديثات (Realtime Notifications)
-// =======================================================
-function subscribeToApprovalUpdates() {
-    supabaseClient
-        .channel('public:approval_tickets_changes')
-        .on(
-            'postgres_changes',
-            {
-                event: 'UPDATE',
-                schema: 'public',
-                table: 'approval_tickets',
-                filter: `created_by=eq.${user.id}`
-            },
-            (payload) => {
-                console.log('تحديث جديد على التذكرة:', payload);
-                
-                // إظهار تنبيه للمستخدم
-                alert(`هناك تحديث جديد على طلبك: "${payload.new.title}"`);
-                
-                // إعادة تحميل الجدول فوراً
-                loadMyApprovalTickets();
-            }
-        )
-        .subscribe();
-}
-
-
-// =======================================================
-// 5. دالة تنظيف للنصوص لمنع XSS
-// =======================================================
-function escapeHtml(text) {
-    if (!text) return '';
-    return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-
-// =======================================================
-// التشغيل التلقائي عند فتح الصفحة
-// =======================================================
-document.addEventListener("DOMContentLoaded", () => {
-    loadMyApprovalTickets();
-    subscribeToApprovalUpdates();
-});
-
-
-// دالة إظهار الإشعار في أعلى الشاشة
-function showToastNotification(message, callbackOnClick) {
-    // إذا كان الإشعار معروضاً بالفعل لا نكرره
-    if (document.getElementById("liveToastAlert")) return;
-
-    const toast = document.createElement("div");
-    toast.id = "liveToastAlert";
-    toast.className = "live-toast-notification";
-    toast.innerHTML = `
-        <span>🔔 ${escapeHtml(message)}</span>
-        <span style="text-decoration: underline; background: rgba(255,255,255,0.25); padding: 3px 8px; border-radius: 4px; font-size: 12px;">اضغط للتحديث</span>
-    `;
-
-    toast.onclick = () => {
-        toast.remove();
-        if (typeof callbackOnClick === "function") {
-            callbackOnClick();
-        } else {
-            window.location.reload();
-        }
-    };
-
-    document.body.appendChild(toast);
-}
-
-let employeeLastStateHash = null;
-
-// تشغيل تفقد التحديثات الخاصة بالموظف كل 3 ثوانٍ
-document.addEventListener("DOMContentLoaded", () => {
-    if (typeof user !== "undefined" && user?.id) {
-        // جلب بصمة أولية للطلبات
-        initEmployeeTracker();
-        setInterval(checkEmployeeNotifications, 3000);
-    }
-});
-
-async function initEmployeeTracker() {
-    try {
-        const { data: tickets } = await supabaseClient
-            .from("approval_tickets")
-            .select("id, status, hr_response")
-            .eq("created_by", user.id);
-
-        if (tickets) {
-            employeeLastStateHash = tickets.map(t => `${t.id}-${t.status}-${t.hr_response || ''}`).join("|");
-        }
-    } catch (e) {
-        console.error("خطأ في التهيئة الأولية لمراقب الموظف:", e);
-    }
-}
-
-async function checkEmployeeNotifications() {
-    if (typeof user === "undefined" || !user?.id) return;
-
-    try {
-        const { data: tickets, error } = await supabaseClient
-            .from("approval_tickets")
-            .select("id, status, hr_response")
-            .eq("created_by", user.id);
-
-        if (error || !tickets) return;
-
-        const currentHash = tickets.map(t => `${t.id}-${t.status}-${t.hr_response || ''}`).join("|");
-
-        if (employeeLastStateHash !== null && currentHash !== employeeLastStateHash) {
-            employeeLastStateHash = currentHash; // تحديث البصمة
-
-            showToastNotification("هناك تحديث جديد (اعتماد / رفض / رد) على طلب الاعتماد الخاص بك!", () => {
-                if (typeof loadMyApprovalTickets === "function") {
-                    loadMyApprovalTickets();
-                } else {
-                    window.location.reload();
-                }
-            });
-        }
-    } catch (ex) {
-        console.error("خطأ أثناء تفقد إشعارات الموظف:", ex);
-    }
-}
-
-class DeanManager {
-    constructor(currentUser) {
-        this.currentUser = currentUser;
-        this.lastStateHash = null;
-        this.init();
-    }
-
-    async init() {
-        const jobTitle = this.currentUser?.job_title || "";
-        const isDean = jobTitle.includes("عميد") || jobTitle.includes("عميد الكلية");
-
-        const deanCardContainer = document.getElementById("deanApprovalSection");
-        if (!isDean) {
-            if (deanCardContainer) {
-                deanCardContainer.style.display = "none";
-            }
-            return;
-        }
-
-        if (deanCardContainer) {
-            deanCardContainer.style.display = "block";
-        }
-        
-        await this.loadFacultyTickets();
-
-        // تشغيل التفقد كل 3 ثوانٍ
-        setInterval(() => this.checkNotifications(), 3000);
-    }
-
-    async loadFacultyTickets() {
-        try {
-            const tableBody = document.getElementById("deanTicketsTableBody");
-            if (!tableBody) return;
-
-            const { data: tickets, error } = await supabaseClient
-                .from("approval_tickets")
-                .select(`
-                    id,
-                    title,
-                    description,
-                    location,
-                    status,
-                    created_at,
-                    creator:created_by ( name, job_title )
-                `)
-                .eq("faculty", this.currentUser.faculty)
-                .eq("status", "pending_dean")
-                .order("created_at", { ascending: false });
-
-            if (error) {
-                console.error("خطأ أثناء جلب طلبات العميد:", error.message);
-                tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">حدث خطأ أثناء تحميل البيانات</td></tr>`;
-                return;
-            }
-
-            // حفظ بصمة البيانات الحالية منعاً لإطلاق إشعار للبيانات القديمة
-            if (tickets) {
-                this.lastStateHash = tickets.map(t => `${t.id}`).join("|");
-            }
-
-            if (!tickets || tickets.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#000;">لا توجد طلبات اعتماد بانتظار موافقتك حالياً.</td></tr>`;
-                return;
-            }
-
-            tableBody.innerHTML = tickets.map(ticket => {
-                const creatorName = ticket.creator?.name || "غير معروف";
-                const creatorJob = ticket.creator?.job_title ? `(${ticket.creator.job_title})` : "";
-                
-                const actionsHtml = `
-                    <button class="btn-approve" onclick="deanManager.approveTicket(${ticket.id})">اعتماد</button>
-                    <button class="btn-reject" onclick="deanManager.rejectTicket(${ticket.id})">رفض</button>
-                `;
-
-                return `
-                    <tr>
-                        <td style="color:#000;"><strong>${escapeHtml(creatorName)}</strong> <br><small style="color:#555;">${escapeHtml(creatorJob)}</small></td>
-                        <td style="color:#000;"><strong>${escapeHtml(ticket.title)}</strong></td>
-                        <td style="color:#000;">${escapeHtml(ticket.description || '—')}</td>
-                        <td style="color:#000;">${escapeHtml(ticket.location || '—')}</td>
-                        <td><span class="badge badge-warning">بانتظار موافقتك</span></td>
-                        <td>${actionsHtml}</td>
-                    </tr>
-                `;
-            }).join("");
-
-        } catch (ex) {
-            console.error("خطأ في loadFacultyTickets:", ex);
-        }
-    }
-
-    // فحص إشعارات العميد عند وجود طلبات جديدة
-    async checkNotifications() {
-        try {
-            const { data: tickets, error } = await supabaseClient
-                .from("approval_tickets")
-                .select("id")
-                .eq("faculty", this.currentUser.faculty)
-                .eq("status", "pending_dean");
-
-            if (error || !tickets) return;
-
-            const currentHash = tickets.map(t => `${t.id}`).join("|");
-
-            if (this.lastStateHash !== null && currentHash !== this.lastStateHash) {
-                // إذا أُضيفت طلبات لم تكن موجودة في البصمة
-                const hasNewItem = tickets.some(t => !this.lastStateHash.includes(`${t.id}`));
-                if (hasNewItem) {
-                    showToastNotification("وصل طلب اعتماد جديد بانتظار موافقتك!", () => {
-                        this.loadFacultyTickets();
-                    });
-                } else {
-                    this.lastStateHash = currentHash;
-                }
-            }
-        } catch (e) {
-            console.error("خطأ أثناء تفقد إشعارات العميد:", e);
-        }
-    }
-
-    async approveTicket(ticketId) {
-        if (!confirm("هل أنت متأكد من اعتماد هذا الطلب وتحويله لشؤون العاملين؟")) return;
-
-        try {
-            const { error } = await supabaseClient
-                .from("approval_tickets")
-                .update({
-                    status: 'approved_by_dean',
-                    dean_id: this.currentUser.id,
-                    updated_at: new Date()
-                })
-                .eq("id", ticketId);
-
-            if (error) {
-                alert("حدث خطأ أثناء اعتماد الطلب: " + error.message);
-                return;
-            }
-
-            alert("تم اعتماد الطلب بنجاح وتوجيهه إلى موظفي شؤون العاملين.");
-            await this.loadFacultyTickets();
-
-        } catch (ex) {
-            console.error("خطأ أثناء الاعتماد:", ex);
-        }
-    }
-
-    async rejectTicket(ticketId) {
-        const reason = prompt("يرجى إدخال سبب رفض الطلب:");
-        if (reason === null) return;
-        
-        if (reason.trim() === "") {
-            alert("يجب كتابة سبب الرفض لتوضيحه للموظف!");
-            return;
-        }
-
-        try {
-            const { error } = await supabaseClient
-                .from("approval_tickets")
-                .update({
-                    status: 'rejected_by_dean',
-                    dean_id: this.currentUser.id,
-                    rejection_reason: reason.trim(),
-                    updated_at: new Date()
-                })
-                .eq("id", ticketId);
-
-            if (error) {
-                alert("حدث خطأ أثناء رفض الطلب: " + error.message);
-                return;
-            }
-
-            alert("تم رفض الطلب وتسجيل سبب الرفض للموظف.");
-            await this.loadFacultyTickets();
-
-        } catch (ex) {
-            console.error("خطأ أثناء الرفض:", ex);
-        }
-    }
-}
-
-let deanManager;
-document.addEventListener("DOMContentLoaded", () => {
-    if (typeof user !== "undefined") {
-        deanManager = new DeanManager(user);
-    }
-});
 
 
 function realtime(){

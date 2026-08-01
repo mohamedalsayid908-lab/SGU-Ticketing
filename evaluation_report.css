@@ -93,111 +93,74 @@ body{
                     MAIN HEADER
 =======================================================*/
 
-.main-header{
+/* =======================================================
+======================= HEADER ===========================
+======================================================= */
 
-    position:fixed;
-
-    top:15px;
-    right:20px;
-    left:20px;
-
-    height:80px;
-
-    padding:0 30px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    background:rgba(18,32,54,.92);
-
-    backdrop-filter:blur(18px);
-
-    border:1px solid rgba(255,255,255,.08);
-
-    border-radius:18px;
-
-    box-shadow:
-        0 10px 30px rgba(0,0,0,.25);
-
-    z-index:9999;
-
-    transition:.3s;
-
+.main-header {
+    width: 100%;
+    min-height: 85px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding: 12px 5%;
+    backdrop-filter: blur(18px);
+    background: rgba(1, 2, 61, 0.89);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 999;
+    direction: rtl; /* لضمان ترتيب العناصر: يمين (لوجو) -> وسط (عنوان) -> يسار (زر) */
 }
-.logo{
 
-    width:58px;
-
-    height:58px;
-
-    object-fit:contain;
-
+/* جعل اللوجو دائري */
+.logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
 }
-.brand{
 
-    flex:1;
-
-    margin-right:18px;
-
-    font-size:28px;
-
-    font-weight:800;
-
-    color:#fff;
-
-    letter-spacing:1px;
+/* تنسيق Container النصوص في المنتصف */
+.brand-container {
     text-align: center;
-
-}
-.about-link{
-
-    padding:12px 24px;
-
-    border:none;
-
-    border-radius:12px;
-
-    background:#dc3545;
-
-    color:white;
-
-    font-size:15px;
-
-    font-weight:700;
-
-    cursor:pointer;
-
-    transition:.25s;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    box-shadow:
-        0 6px 18px rgba(220,53,69,.35);
-
 }
 
-.about-link:hover{
-
-    background:#bb2d3b;
-
-    transform:translateY(-2px);
-
-    box-shadow:
-        0 10px 25px rgba(220,53,69,.45);
-
+.brand-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(to right, #fdee68, #ffd369);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.about-link:active{
+.brand-subtitle {
+    font-size: 14px;
+    color: #d9d9d9;
+    margin: 3px 0 0 0;
+    font-weight: 400;
+}
 
-    transform:scale(.96);
+/* زر تسجيل الخروج البيضاوي */
+.about-link {
+    color: rgb(255, 245, 245);
+    text-decoration: none;
+    padding: 10px 24px;
+    border-radius: 50px; /* شكل بيضاوي كامل */
+    background: rgba(255, 255, 255, 0.08);
+    transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+}
 
+.about-link:hover {
+    background: #ffd369;
+    color: #071739;
 }
 /* ===========================
    عنوان الصفحة

@@ -32,91 +32,75 @@ body{
 MAIN HEADER
 ======================================================= */
 
-.main-header{
+/* =======================================================
+======================= HEADER ===========================
+======================================================= */
 
-    width:100%;
-
-    height:85px;
-
-    padding:0 5%;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    position:fixed;
-
-    top:0;
-    right:0;
-    left:0;
-
-    z-index:2000;
-
-    backdrop-filter:blur(18px);
-
-    background:rgba(255,255,255,0.05);
-
-    border-bottom:
-    1px solid rgba(255,255,255,0.08);
+.main-header {
+    width: 100%;
+    min-height: 85px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding: 12px 5%;
+    backdrop-filter: blur(18px);
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 999;
+    direction: rtl; /* لضمان ترتيب العناصر: يمين (لوجو) -> وسط (عنوان) -> يسار (زر) */
 }
 
-.logo{
-    height:50px;
+/* جعل اللوجو دائري */
+.logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
 }
 
-.brand{
-
-    font-size:26px;
-
-    font-weight:800;
-
-    background:
-    linear-gradient(to right,#fff,#ffd369);
-
-    -webkit-background-clip:text;
-
-    -webkit-text-fill-color:transparent;
+/* تنسيق Container النصوص في المنتصف */
+.brand-container {
+    text-align: center;
 }
 
-.about-link{
-
-    color:white;
-
-    text-decoration:none;
-
-    padding:10px 22px;
-
-    border-radius:40px;
-
-    background:
-    linear-gradient(
-        135deg,
-        rgba(255,255,255,0.15),
-        rgba(255,255,255,0.05)
-    );
-
-    border:
-    1px solid rgba(255,255,255,0.12);
-
-    transition:0.3s;
-
-    font-weight:700;
+.brand-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(to right, #fff, #ffd369);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.about-link:hover{
-
-    transform:translateY(-2px);
-
-    background:
-    linear-gradient(
-        135deg,
-        #ffd369,
-        #ffb703
-    );
-
-    color:#071739;
+.brand-subtitle {
+    font-size: 14px;
+    color: #d9d9d9;
+    margin: 3px 0 0 0;
+    font-weight: 400;
 }
 
+/* زر تسجيل الخروج البيضاوي */
+.about-link {
+    color: white;
+    text-decoration: none;
+    padding: 10px 24px;
+    border-radius: 50px; /* شكل بيضاوي كامل */
+    background: rgba(255, 255, 255, 0.08);
+    transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+}
+
+.about-link:hover {
+    background: #ffd369;
+    color: #071739;
+}
 /* =======================================================
 PAGE TITLE
 ======================================================= */
@@ -1161,6 +1145,75 @@ FOOTER
 }
 
 
+
+
+.live-toast-notification {
+    position: fixed !important;
+    top: 25px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    background-color: #0d6efd !important;
+    color: #ffffff !important;
+    padding: 12px 20px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3) !important;
+    z-index: 9999999 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 15px !important;
+    min-width: 320px !important;
+    animation: toastSlideDown 0.3s ease-out !important;
+}
+
+@keyframes toastSlideDown {
+    from { top: -60px; opacity: 0; }
+    to { top: 25px; opacity: 1; }
+}
+
+
+/* تنسيق زر الانتقال لصفحة التقارير */
+.btn-nav-reports {
+    display: flex;                   /* تحويله لـ flex لسهولة التنسيق والوسط */
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 auto;                  /* السر في توسيط الزر أفقيًا */
+    background: linear-gradient(135deg, #0d6efd, #0a58ca);
+    color: #ffffff;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(13, 110, 253, 0.25);
+    transition: all 0.25s ease-in-out;
+    outline: none;
+    width: fit-content;              /* لضمان ألا يأخذ عرض الصفحة بالكامل */
+}
+
+/* التأثير عند التمرير بالماوس */
+.btn-nav-reports:hover {
+    background: linear-gradient(135deg, #0b5ed7, #084298);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
+    transform: translateY(-2px);
+}
+
+/* التأثير عند الضغط */
+.btn-nav-reports:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(13, 110, 253, 0.2);
+}
+
+/* تنسيق أيقونة الزر */
+.btn-nav-reports .btn-icon {
+    font-size: 16px;
+    line-height: 1;
+}
+
 </style>
 
 
@@ -1171,12 +1224,18 @@ FOOTER
 
 <header class="main-header">
 
-    <img src="photo/logo.png" class="logo">
+    <!-- اللوجو على اليمين -->
+    <img src="photo/logo.png" class="logo" alt="Logo">
 
-    <div class="brand">
-        SGU Ticketing
+    <!-- العنوان في المنتصف -->
+    <div class="brand-container">
+        <h1 class="brand-title">EL saleheya EL Gadida Universty</h1>
+        <p class="brand-subtitle">Ticketing system</p>
     </div>
-    <button class="about-link" id="logoutBtn" onclick="logout()"> تسجيل الخروج</button>
+
+    <!-- زر تسجيل الخروج على اليسار -->
+    <button class="about-link" id="logoutBtn" onclick="logout()">تسجيل الخروج</button>
+
 </header>
 
 
@@ -1199,6 +1258,33 @@ FOOTER
     </button>
 
 </div>
+
+<!-- قسم شؤون العاملين (مخفي افتراضياً ويظهر فقط لموظفي HR) -->
+<div class="card hr-tickets-card" id="hrApprovalSection" style="display: none; margin-top: 20px;">
+    <h3>طلبات الاعتماد المعتمدة من العمداء (لوحة شؤون العاملين)</h3>
+    
+    <div class="table-responsive">
+        <table class="tickets-table">
+            <thead>
+                <tr>
+                    <th>مقدم الطلب</th>
+                    <th>الكلية</th>
+                    <th>عنوان الطلب</th>
+                    <th>الوصف</th>
+                    <th>اعتماد العميد</th>
+                    <th>الحالة</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody id="hrTicketsTableBody">
+                <tr>
+                    <td colspan="7" style="text-align: center; color: #000;">جاري تحميل الطلبات المعتمدة...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
     <div class="tickets-toolbar">
 
         <div class="toolbar-item">
@@ -1263,7 +1349,11 @@ FOOTER
 
 
 </div>
-
+<!-- زر الانتقال لصفحة التقارير -->
+<button class="btn-nav-reports" onclick="navigateToReports()">
+    <span class="btn-icon">📊</span>
+    <span>تقارير الاعتماد</span>
+</button>
 
 <footer class="main-footer">
 
@@ -2055,8 +2145,218 @@ function statusClass(status) {
 
 
 
+// 1. تعريف دالة الحماية لتجنب خطأ ReferenceError
+function escapeHtml(text) {
+    if (text === null || text === undefined) return '';
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+// دالة إظهار الإشعار الثابت فوق كل العناصر
+function showToastNotification(message, callbackOnClick) {
+    let toast = document.getElementById("liveToastAlert");
+    
+    // إذا كان الإشعار ظاهراً بالفعل، نكتفي بتحديث نصه
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "liveToastAlert";
+        toast.className = "live-toast-notification";
+        document.body.appendChild(toast);
+    }
+
+    toast.innerHTML = `
+        <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:18px;">🔔</span>
+            <span>${escapeHtml(message)}</span>
+        </div>
+        <span style="background: rgba(255,255,255,0.25); padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight:bold;">اضغط لتحديث الصفحة</span>
+    `;
+
+    toast.onclick = () => {
+        toast.remove();
+        if (typeof callbackOnClick === "function") {
+            callbackOnClick();
+        }
+    };
+}
+
+class HRManager {
+    constructor(currentUser) {
+        this.currentUser = currentUser;
+        this.renderedTicketsHash = null; // بصمة البيانات المَعروضة حالياً على الشاشة
+        this.pendingTicketsData = null;   // حفظ البيانات الجديدة المؤقتة لحين اضغط الموظف
+        this.init();
+    }
+
+    async init() {
+        const role = this.currentUser?.role || "";
+        const jobTitle = this.currentUser?.job_title || "";
+        
+        const isHR = role.toLowerCase() === "hr" || 
+                     jobTitle.includes("شؤون العاملين") || 
+                     jobTitle.includes("شؤون الموظفين") || 
+                     jobTitle.toLowerCase().includes("hr");
+
+        const hrCardContainer = document.getElementById("hrApprovalSection");
+
+        if (!isHR) {
+            if (hrCardContainer) hrCardContainer.style.display = "none";
+            return;
+        }
+
+        if (hrCardContainer) hrCardContainer.style.display = "block";
+
+        // التحميل الأول وعرض البيانات
+        await this.loadAndRenderApprovedTickets();
+
+        // 🟢 الجلب والتفقد الدوري كل 3 ثوانٍ
+        setInterval(() => this.fetchAndCheckUpdates(), 3000);
+    }
+
+    // جلب البيانات من الداتابيز ورسمها لأول مرة
+    async loadAndRenderApprovedTickets() {
+        const tickets = await this.fetchTicketsFromDB();
+        if (tickets !== null) {
+            this.renderTable(tickets);
+            // حفظ بصمة البيانات المعروضة
+            this.renderedTicketsHash = JSON.stringify(tickets.map(t => `${t.id}-${t.status}-${t.updated_at}`));
+        }
+    }
+
+    // جلب مباشر من Supabase
+    async fetchTicketsFromDB() {
+        try {
+            const { data: tickets, error } = await supabaseClient
+                .from("approval_tickets")
+                .select(`
+                    id,
+                    title,
+                    description,
+                    location,
+                    faculty,
+                    status,
+                    created_at,
+                    updated_at,
+                    creator:created_by ( name, job_title ),
+                    dean:dean_id ( name )
+                `)
+                .eq("status", "approved_by_dean")
+                .order("created_at", { ascending: false });
+
+            if (error) {
+                console.error("خطأ أثناء جلب الطلبات:", error.message);
+                return null;
+            }
+            return tickets || [];
+        } catch (ex) {
+            console.error("خطأ في الاتصال بالخادم:", ex);
+            return null;
+        }
+    }
+
+    // 🟢 الفحص كل 3 ثوانٍ للجلب ومقارنة التغييرات
+    async fetchAndCheckUpdates() {
+        const latestTickets = await this.fetchTicketsFromDB();
+        if (latestTickets === null) return;
+
+        // حساب بصمة البيانات المجلوبة حديثاً
+        const latestHash = JSON.stringify(latestTickets.map(t => `${t.id}-${t.status}-${t.updated_at}`));
+
+        // إذا كانت البصمة الجديدة مختلفة عن البصمة المعروضة حالياً على الشاشة
+        if (this.renderedTicketsHash !== null && latestHash !== this.renderedTicketsHash) {
+            this.pendingTicketsData = latestTickets; // حفظ البيانات الجديدة جاهزة للعرض
+
+            // إظهار الإشعار فوراً
+            showToastNotification("هناك تحديث جديد في بيانات طلبات الاعتماد!", () => {
+                // عند الضغط على الإشعار يتم تحديث الجدول بالبيانات الجديدة مباشرةً
+                this.renderTable(this.pendingTicketsData);
+                this.renderedTicketsHash = latestHash;
+                this.pendingTicketsData = null;
+            });
+        }
+    }
+
+    // رسم الجدول
+    renderTable(tickets) {
+        const tableBody = document.getElementById("hrTicketsTableBody");
+        if (!tableBody) return;
+
+        if (!tickets || tickets.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#000;">لا توجد طلبات معتمدة بانتظار رد شؤون العاملين حالياً.</td></tr>`;
+            return;
+        }
+
+        tableBody.innerHTML = tickets.map(ticket => {
+            const creatorName = ticket.creator?.name || "غير معروف";
+            const creatorJob = ticket.creator?.job_title ? `(${ticket.creator.job_title})` : "";
+            const deanName = ticket.dean?.name ? `أ.د/ ${ticket.dean.name}` : "العميد المعني";
+
+            return `
+                <tr>
+                    <td style="color:#000;"><strong>${escapeHtml(creatorName)}</strong> <br><small style="color:#555;">${escapeHtml(creatorJob)}</small></td>
+                    <td style="color:#000;"><strong>${escapeHtml(ticket.faculty || '—')}</strong></td>
+                    <td style="color:#000;"><strong>${escapeHtml(ticket.title)}</strong></td>
+                    <td style="color:#000;">${escapeHtml(ticket.description || '—')}</td>
+                    <td style="color:#000;"><small style="color:#198754; font-weight:bold;">معتمد من: ${escapeHtml(deanName)}</small></td>
+                    <td><span class="badge badge-info">معتمد بانتظار الرد</span></td>
+                    <td>
+                        <button class="btn-approve" style="background-color: #0d6efd;" onclick="hrManager.respondToTicket(${ticket.id})">كتابة الرد وإغلاق</button>
+                    </td>
+                </tr>
+            `;
+        }).join("");
+    }
+
+    // كتابة الرد
+    async respondToTicket(ticketId) {
+        const responseText = prompt("يرجى إدخال رد شؤون العاملين حول هذا الطلب:");
+        if (responseText === null) return;
+        
+        if (responseText.trim() === "") {
+            alert("يرجى كتابة نص الرد قبل الحفظ!");
+            return;
+        }
+
+        try {
+            const { error } = await supabaseClient
+                .from("approval_tickets")
+                .update({
+                    status: 'completed_by_hr',
+                    hr_response: responseText.trim(),
+                    updated_at: new Date()
+                })
+                .eq("id", ticketId);
+
+            if (error) {
+                alert("حدث خطأ أثناء حفظ الرد: " + error.message);
+                return;
+            }
+
+            alert("تم إرسال رد شؤون العاملين وإغلاق الطلب بنجاح.");
+            await this.loadAndRenderApprovedTickets(); // إخفاء الطلب المكتمل فوراً من صاحب الرد
+
+        } catch (ex) {
+            console.error("خطأ أثناء إضافة رد HR:", ex);
+        }
+    }
+}
+
+let hrManager;
+document.addEventListener("DOMContentLoaded", () => {
+    if (typeof user !== "undefined") {
+        hrManager = new HRManager(user);
+    }
+});
 
 
+// دالة الانتقال لصفحة تقارير طلبات الاعتماد
+function navigateToReports() {
+    window.location.href = "hrreports.html";
+}
 
 
 

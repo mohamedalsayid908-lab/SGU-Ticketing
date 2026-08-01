@@ -89,40 +89,74 @@ body{
 ====================== MAIN HEADER START =================
 ======================================================= */
 
-.main-header{
+/* =======================================================
+======================= HEADER ===========================
+======================================================= */
 
-    width:100%;
-
-    min-height:85px;
-
-    padding:18px 25px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    position:fixed;
-
-    top:0;
-    right:0;
-
-    gap:20px;
-
-    z-index:2000;
-
-    backdrop-filter:blur(18px);
-
-    background:rgba(255,255,255,0.05);
-
-    border-bottom:
-    1px solid rgba(255,255,255,0.08);
+.main-header {
+    width: 100%;
+    min-height: 85px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding: 12px 5%;
+    backdrop-filter: blur(18px);
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 999;
+    direction: rtl; /* لضمان ترتيب العناصر: يمين (لوجو) -> وسط (عنوان) -> يسار (زر) */
 }
 
-.logo{
-    height:55px;
-    max-width:100%;
+/* جعل اللوجو دائري */
+.logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+}
+
+/* تنسيق Container النصوص في المنتصف */
+.brand-container {
+    text-align: center;
+}
+
+.brand-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(to right, #fff, #ffd369);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-subtitle {
+    font-size: 14px;
+    color: #d9d9d9;
+    margin: 3px 0 0 0;
+    font-weight: 400;
+}
+
+/* زر تسجيل الخروج البيضاوي */
+.about-link {
+    color: white;
+    text-decoration: none;
+    padding: 10px 24px;
+    border-radius: 50px; /* شكل بيضاوي كامل */
+    background: rgba(255, 255, 255, 0.08);
+    transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+}
+
+.about-link:hover {
+    background: #ffd369;
+    color: #071739;
 }
 
 

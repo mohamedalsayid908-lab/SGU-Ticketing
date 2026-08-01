@@ -115,110 +115,70 @@ body::after{
 ======================= HEADER ===========================
 ======================================================= */
 
-.main-header{
-
-    width:100%;
-    min-height:85px;
-
-    position:fixed;
-
-    top:0;
-    right:0;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    padding:18px 5%;
-
-    backdrop-filter:blur(18px);
-
-    background:rgba(255,255,255,.05);
-
-    border-bottom:1px solid rgba(255,255,255,.08);
-
-    z-index:999;
-
-}
-.logo{
-    height:58px;
-    filter:drop-shadow(0 0 10px rgba(255,255,255,0.2));
-}
-.brand{
-
-    font-size:30px;
-    font-weight:800;
-
-    background:linear-gradient(to right,#fff,#ffd369);
-
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-
+.main-header {
+    width: 100%;
+    min-height: 85px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding: 12px 5%;
+    backdrop-filter: blur(18px);
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 999;
+    direction: rtl; /* لضمان ترتيب العناصر: يمين (لوجو) -> وسط (عنوان) -> يسار (زر) */
 }
 
-.about-link{
-
-    color:white;
-
-    text-decoration:none;
-
-    padding:12px 24px;
-
-    border-radius:40px;
-
-    background:rgba(255,255,255,.08);
-
-    transition:.3s;
-
-    border:1px solid rgba(255,255,255,.08);
-
+/* جعل اللوجو دائري */
+.logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
 }
 
-.about-link:hover{
-
-    background:#ffd369;
-
-    color:#071739;
-
+/* تنسيق Container النصوص في المنتصف */
+.brand-container {
+    text-align: center;
 }
 
-/* =======================================================
-====================== PAGE HEADER =======================
-======================================================= */
-
-header{
-
-    width:calc(100% - 60px);
-
-    margin:30px auto;
-
-    padding:25px;
-
-    border-radius:30px;
-
-    text-align:center;
-
-    backdrop-filter:blur(20px);
-
-    background:rgba(255,255,255,.06);
-
-    border:1px solid rgba(255,255,255,.08);
-
+.brand-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(to right, #fff, #ffd369);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-header h1{
-
-    font-size:34px;
-    margin-bottom:10px;
-
+.brand-subtitle {
+    font-size: 14px;
+    color: #d9d9d9;
+    margin: 3px 0 0 0;
+    font-weight: 400;
 }
 
-header p{
+/* زر تسجيل الخروج البيضاوي */
+.about-link {
+    color: white;
+    text-decoration: none;
+    padding: 10px 24px;
+    border-radius: 50px; /* شكل بيضاوي كامل */
+    background: rgba(255, 255, 255, 0.08);
+    transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+}
 
-    color:#d9d9d9;
-
-    font-size:17px;
-
+.about-link:hover {
+    background: #ffd369;
+    color: #071739;
 }
 
 /* =======================================================
@@ -398,25 +358,17 @@ header p{
 
 <header class="main-header">
 
-    <img src="photo/logo.png" class="logo">
+    <!-- اللوجو على اليمين -->
+    <img src="photo/logo.png" class="logo" alt="Logo">
 
-    <div class="brand">
-        SGU Ticketing
+    <!-- العنوان في المنتصف -->
+    <div class="brand-container">
+        <h1 class="brand-title">EL saleheya EL Gadida Universty</h1>
+        <p class="brand-subtitle">Ticketing system</p>
     </div>
 
-    <button class="about-link" id="logoutBtn" onclick="logout()"> تسجيل الخروج</button>
-
-</header>
-
-<header>
-
-    <h1>
-        مرحباً بك
-    </h1>
-
-    <p>
-        اختر النظام الذي ترغب في الدخول إليه
-    </p>
+    <!-- زر تسجيل الخروج على اليسار -->
+    <button class="about-link" id="logoutBtn" onclick="logout()">تسجيل الخروج</button>
 
 </header>
 

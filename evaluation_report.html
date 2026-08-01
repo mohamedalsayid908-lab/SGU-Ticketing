@@ -21,15 +21,28 @@
 ======================================================= -->
 <header class="main-header">
 
-    <img src="photo/logo.png" class="logo">
+    <!-- اللوجو على اليمين -->
+    <img src="photo/logo.png" class="logo" alt="Logo">
 
-    <div class="brand">
-        SGU Ticketing
+    <!-- العنوان في المنتصف -->
+    <div class="brand-container">
+        <h1 class="brand-title">EL saleheya EL Gadida Universty</h1>
+        <p class="brand-subtitle">Ticketing system</p>
     </div>
 
-    <button class="about-link" id="logoutBtn" onclick="logout()"> تسجيل الخروج</button>
+    <!-- زر تسجيل الخروج على اليسار -->
+    <button class="about-link" id="logoutBtn" onclick="logou()">عودة </button>
 
 </header>
+<script>
+    function logou() {
+
+    sessionStorage.clear();
+
+    window.location.replace("admin_dashboard.html");
+
+}
+</script>
 <!-- =======================================================
 ======================= HEADER END ========================
 ======================================================= -->

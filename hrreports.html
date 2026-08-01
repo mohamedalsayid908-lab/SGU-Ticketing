@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقارير طلبات الاعتماد - شؤون العاملين</title>
+    
+    <!-- مكتبة تصدير Excel فقط (لم نعد بحاجة لمكتبة html2pdf المعطوبة مع العربي) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            direction: rtl;
+        }
+
+      /* الهيدر الرئيسي الزجاجي الثابت */
+.main-header {
+    width: 100%;
+    min-height: 85px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding: 12px 5%;
+    backdrop-filter: blur(18px);
+    background: rgb(2, 3, 92);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 999;
+    direction: rtl; /* ترتيب العناصر: يمين (اللوجو) -> وسط (العنوان) -> يسار (المستخدم والزر) */
+}
+
+/* جعل اللوجو دائري */
+.logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+}
+
+/* تنسيق النصوص في المنتصف */
+.brand-container {
+    text-align: center;
+}
+
+.brand-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(to right, #fff, #ffd369);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-subtitle {
+    font-size: 14px;
+    color: #d9d9d9;
+    margin: 3px 0 0 0;
+    font-weight: 400;
+}
+
+/* قسم معلومات المستخدم والزر على اليسار */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.welcome-text {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* زر العودة البيضاوي */
+.about-link {
+    color: white;
+    text-decoration: none;
+    padding: 10px 24px;
+    border-radius: 50px; /* شكل بيضاوي كامل */
+    background: rgba(255, 255, 255, 0.08);
+    transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.about-link:hover {
+    background: #ffd369;
+    color: #071739;
+}
+
+        /* حاوية الصفحة */
+        .reports-container {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 0 15px;
+        }
+
+        /* الفلترة */
+        .filters-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+        }
+
+        .filters-card h3 {
+            font-size: 16px;
+            color: #0d6efd;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 8px;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        .filter-group { display: flex; flex-direction: column; gap: 6px; }
+        .filter-group label { font-weight: bold; font-size: 13px; color: #495057; }
+        .filter-group select, .filter-group input {
+            padding: 9px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        /* أزرار التصدير */
+        .export-actions {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn-export {
+            padding: 9px 18px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-export.pdf { background-color: #dc3545; }
+        .btn-export.excel { background-color: #198754; }
+
+        /* منطقة التقرير */
+        .report-preview-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        .reports-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            direction: rtl;
+        }
+
+        .reports-table th, .reports-table td {
+            padding: 10px 8px;
+            border: 1px solid #dee2e6;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .reports-table th {
+            background-color: #0d6efd;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        /* ترويسة التقرير المخفية للشاشة والعارضة للطباعة */
+        .pdf-header {
+            display: none;
+        }
+
+        .pdf-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            direction: rtl;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #0d6efd;
+            margin-bottom: 15px;
+        }
+
+        .pdf-logo img {
+            height: 75px;
+            width: auto;
+        }
+
+        .pdf-titles {
+            text-align: right;
+            flex-grow: 1;
+            margin-right: 15px;
+        }
+
+        .pdf-titles h2 { font-size: 22px; color: #0d6efd; margin-bottom: 2px; }
+        .pdf-titles h3 { font-size: 16px; color: #333; margin-bottom: 2px; }
+        .pdf-titles p { font-size: 12px; color: #6c757d; }
+
+        /* =========================================================
+           قواعد الطباعة والتصدير المباشر لـ PDF (الحل المضمن والشامل)
+           ========================================================= */
+        @media print {
+            /* إخفاء كافة عناصر الصفحة والموقع ما عدا التقرير */
+            body * {
+                visibility: hidden !important;
+            }
+
+            #printableReportArea, #printableReportArea * {
+                visibility: visible !important;
+            }
+
+            #printableReportArea {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+            }
+
+            .pdf-header {
+                display: block !important;
+            }
+
+            /* إعداد صفحة الطباعة لتكون A4 بالعرض مع هوامش متناسقة */
+            @page {
+                size: A4 landscape;
+                margin: 10mm;
+            }
+
+            .reports-table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+            }
+
+            .reports-table th, .reports-table td {
+                border: 1px solid #777 !important;
+                padding: 6px 4px !important;
+                font-size: 11pt !important;
+                color: #000 !important;
+            }
+
+            .reports-table th {
+                background-color: #0d6efd !important;
+                color: #ffffff !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* منع قص الصفوف بين الصفحات */
+            .reports-table tr {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+
+    <!-- اللوجو الدائري على اليمين -->
+    <img src="photo/logo.png" class="logo" alt="Logo" onerror="this.style.display='none'">
+
+    <!-- العنوان والنصوص في المنتصف -->
+    <div class="brand-container">
+        <h1 class="brand-title">EL saleheya EL Gadida Universty</h1>
+        <p class="brand-subtitle"> Ticketing system </p>
+    </div>
+
+    <!-- معلومات المستخدم وزر العودة على اليسار -->
+    <div class="user-info">
+        <span id="welcomeUser" class="welcome-text">مرحباً...</span>
+        <button class="about-link" onclick="logout()">عودة</button>
+    </div>
+
+</header>
+
+    <main class="reports-container" id="reportsMainContainer" style="display: none;">
+        
+        <section class="filters-card">
+            <h3>خيارات الفلترة والبحث</h3>
+            <div class="filters-grid">
+                
+                <div class="filter-group">
+                    <label for="statusFilter">حالة الطلب:</label>
+                    <select id="statusFilter">
+                        <option value="all">جميع الحالات</option>
+                        <option value="pending_dean">غير معتمدة (بانتظار العميد)</option>
+                        <option value="approved_by_dean">تم اعتماد العميد (بانتظار HR)</option>
+                        <option value="completed_by_hr">تم الإغلاق (رد HR)</option>
+                        <option value="rejected_by_dean">مرفوضة من العميد</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="dateFrom">من تاريخ:</label>
+                    <input type="date" id="dateFrom">
+                </div>
+
+                <div class="filter-group">
+                    <label for="dateTo">إلى تاريخ:</label>
+                    <input type="date" id="dateTo">
+                </div>
+
+                <div class="filter-actions">
+                    <button id="btnSearch" class="btn-primary" onclick="reportsManager.fetchReports()">بحث وتحديث البيانات</button>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="export-actions">
+            <button id="btnExportPDF" class="btn-export pdf" onclick="reportsManager.exportToPDF()">📄 تصدير PDF</button>
+            <button id="btnExportExcel" class="btn-export excel" onclick="reportsManager.exportToExcel()">📊 تصدير Excel</button>
+        </div>
+
+        <section class="report-preview-card" id="printableReportArea">
+            
+            <!-- الهيدر المخصص لطباعة الـ PDF مع اللوجو والاسم -->
+            <div class="pdf-header">
+                <div class="pdf-header-content">
+                    <div class="pdf-logo">
+                        <img src="photo/logo.png" alt="شعار الجامعة" onerror="this.style.display='none'">
+                    </div>
+                    <div class="pdf-titles">
+                        <h2>جامعة الصالحية الجديدة</h2>
+                        <h3>إدارة شؤون العاملين - تقرير طلبات الاعتماد</h3>
+                        <p id="pdfDateRangeStr">الفترة: جميع الأوقات</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- جدول البيانات -->
+            <div class="table-responsive">
+                <table class="reports-table" id="reportsTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 4%;">#</th>
+                            <th style="width: 15%;">مقدم الطلب</th>
+                            <th style="width: 11%;">الكلية</th>
+                            <th style="width: 15%;">عنوان الطلب</th>
+                            <th style="width: 18%;">الوصف</th>
+                            <th style="width: 9%;">المكان</th>
+                            <th style="width: 11%;">الحالة</th>
+                            <th style="width: 10%;">رد شؤون العاملين</th>
+                            <th style="width: 7%;">التاريخ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportsTableBody">
+                        <tr>
+                            <td colspan="9" style="text-align: center;">جاري التحضير...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="hrreports.js"></script>
+</body>
+</html>
