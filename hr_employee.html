@@ -2144,7 +2144,6 @@ function statusClass(status) {
 }
 
 
-
 // 1. تعريف دالة الحماية لتجنب خطأ ReferenceError
 function escapeHtml(text) {
     if (text === null || text === undefined) return '';
@@ -2304,43 +2303,38 @@ class HRManager {
                     <td style="color:#000;"><small style="color:#198754; font-weight:bold;">معتمد من: ${escapeHtml(deanName)}</small></td>
                     <td><span class="badge badge-info">معتمد بانتظار الرد</span></td>
                     <td>
-                        <button class="btn-approve" style="background-color: #0d6efd;" onclick="hrManager.respondToTicket(${ticket.id})">كتابة الرد وإغلاق</button>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn-approve" style="background-color: #198754; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-weight: bold;" onclick="hrManager.processAction(${ticket.id}, 'اعتمد')">اعتمد</button>
+                            <button class="btn-reject" style="background-color: #dc3545; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-weight: bold;" onclick="hrManager.processAction(${ticket.id}, 'رفض')">رفض</button>
+                        </div>
                     </td>
                 </tr>
             `;
         }).join("");
     }
 
-    // كتابة الرد
-    async respondToTicket(ticketId) {
-        const responseText = prompt("يرجى إدخال رد شؤون العاملين حول هذا الطلب:");
-        if (responseText === null) return;
-        
-        if (responseText.trim() === "") {
-            alert("يرجى كتابة نص الرد قبل الحفظ!");
-            return;
-        }
-
+    // دالة المعالجة التلقائية (اعتمد / رفض)
+    async processAction(ticketId, actionText) {
         try {
             const { error } = await supabaseClient
                 .from("approval_tickets")
                 .update({
                     status: 'completed_by_hr',
-                    hr_response: responseText.trim(),
+                    hr_response: actionText,
                     updated_at: new Date()
                 })
                 .eq("id", ticketId);
 
             if (error) {
-                alert("حدث خطأ أثناء حفظ الرد: " + error.message);
+                alert("حدث خطأ أثناء إتمام العملية: " + error.message);
                 return;
             }
 
-            alert("تم إرسال رد شؤون العاملين وإغلاق الطلب بنجاح.");
-            await this.loadAndRenderApprovedTickets(); // إخفاء الطلب المكتمل فوراً من صاحب الرد
+            alert(`تم تسجيل قرار (${actionText}) وإغلاق الطلب بنجاح.`);
+            await this.loadAndRenderApprovedTickets(); // إخفاء الطلب المكتمل فوراً من الجدول
 
         } catch (ex) {
-            console.error("خطأ أثناء إضافة رد HR:", ex);
+            console.error("خطأ أثناء حفظ القرار:", ex);
         }
     }
 }
@@ -2351,7 +2345,6 @@ document.addEventListener("DOMContentLoaded", () => {
         hrManager = new HRManager(user);
     }
 });
-
 
 // دالة الانتقال لصفحة تقارير طلبات الاعتماد
 function navigateToReports() {

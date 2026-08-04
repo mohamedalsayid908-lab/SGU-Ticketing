@@ -115,24 +115,30 @@ body::after{
 /* =======================================================
 ======================= HEADER ===========================
 ======================================================= */
-
+/* =======================================================
+======================= MAIN HEADER ======================
+======================================================= */
 .main-header {
     width: 100%;
     min-height: 85px;
     position: fixed;
     top: 0;
     right: 0;
-    
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
-    padding: 12px 5%;
     backdrop-filter: blur(18px);
     background: rgba(255, 255, 255, 0.05);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     z-index: 999;
-    direction: rtl; /* لضمان ترتيب العناصر: يمين (لوجو) -> وسط (عنوان) -> يسار (زر) */
+    direction: rtl;
+    padding: 12px 5%;
+    box-sizing: border-box;
+}
+
+/* حاوية المحتوى الأصلي للهيدر */
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 /* جعل اللوجو دائري */
@@ -170,7 +176,7 @@ body::after{
     color: white;
     text-decoration: none;
     padding: 10px 24px;
-    border-radius: 50px; /* شكل بيضاوي كامل */
+    border-radius: 50px;
     background: rgba(255, 255, 255, 0.08);
     transition: 0.3s;
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -181,10 +187,83 @@ body::after{
     background: #ffd369;
     color: #071739;
 }
-/* =======================================================
-======================= MAIN HEADER END ==================
-======================================================= */
 
+/* زر الشرطات الثلاث (مخفي افتراضياً في الشاشات الكبيرة) */
+.hamburger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 32px;
+    height: 22px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1000;
+}
+
+.hamburger-btn span {
+    width: 100%;
+    height: 3px;
+    background-color: #ffd369;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+/* تحويل الشرطات إلى X عند الفتح */
+.hamburger-btn.active span:nth-child(1) {
+    transform: translateY(9.5px) rotate(45deg);
+}
+.hamburger-btn.active span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger-btn.active span:nth-child(3) {
+    transform: translateY(-9.5px) rotate(-45deg);
+}
+
+/* =======================================================
+========= Responsive Design (الشاشات الصغيرة - الجوال) =======
+======================================================= */
+@media (max-width: 768px) {
+    .main-header {
+        min-height: 60px;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    /* إظهار زر الشرطات الثلاث */
+    .hamburger-btn {
+        display: flex;
+    }
+
+    /* تحويل محتوى الهيدر إلى قائمة منسدلة مغلقة افتراضياً */
+    .header-content {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 100%;
+        background: rgba(15, 23, 42, 0.95); /* خلفية داكنة تحجب المحتوى فقط أثناء الفتح */
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        
+        flex-direction: column;
+        gap: 15px;
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
+    }
+
+    /* إظهار المحتوى بنعومة عند الضغط على زر القائمة */
+    .header-content.active {
+        max-height: 300px;
+        opacity: 1;
+        padding: 20px;
+    }
+}
 
 /* =======================================================
 ====================== PAGE HEADER START =================
@@ -1143,9 +1222,9 @@ button{
     display:flex;
     align-items:center;
 
-    padding:18px 24px;
+    padding:10px 15px;
 
-    min-width:320px;
+    min-width:100px;
 
     border-radius:24px;
 
@@ -1170,13 +1249,13 @@ button{
 
     position:absolute;
 
-    width:120px;
-    height:120px;
+    width:60px;
+    height:60px;
 
     background:
     rgba(255,211,105,0.15);
 
-    border-radius:50%;
+    border-radius:20%;
 
     top:-40px;
     left:-40px;
@@ -1195,16 +1274,16 @@ button{
 /* النص */
 .welcome-title{
 
-    font-size:15px;
+    font-size:9px;
 
     color:rgba(255,255,255,0.70);
 
-    margin-bottom:6px;
+    margin-bottom:0px;
 }
 
 .welcome-name{
 
-    font-size:24px;
+    font-size:9px;
 
     font-weight:800;
 
@@ -1214,147 +1293,177 @@ button{
 /* =======================================================
 ====================== PROFILE CARD ======================
 ======================================================= */
-
-.profile-card{
-
-    margin-top:10px;
+/* الحاوية الرئيسية للأزرار والبيانات */
+.profile-section-container {
+    margin-top: 10px;
+    width: 100%;
+}
+/* توحيد سلوك وحجم الأزرار الثلاثة داخل الشريط */
+.actions-header-bar {
+    display: flex;
+    flex-direction: row;          /* ترتيب أفقي */
+    flex-wrap: nowrap;             /* إجبار الأزرار على عدم النزول لسطر جديد */
+    justify-content: space-between; /* توزيع المساحة والمسافات بالتساوي */
+    align-items: center;
+    gap: 12px;                     /* مسافة ثابتة ومتناسقة بين الأزرار */
+    width: 100%;
+    margin-bottom: 15px;
+    box-sizing: border-box;
 }
 
-/* رأس البطاقة */
-.profile-header{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-
-    margin-bottom:22px;
+/* توحيد الخصائص الأفقية لكافة الأزرار */
+.actions-header-bar > button {
+    flex: 1 1 0;                   /* إعطاء مساحة أفقية متساوية تماماً لجميع الأزرار */
+    min-width: 0;                  /* منع التمدد المفاجئ وبقاء الأزرار جنب بعض */
+    height: 56px;                  /* ارتفاع أفقي مناسب وموحد */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    white-space: nowrap;           /* منع انقسام النص داخل الزر */
 }
 
-/* الأيقونة */
-.profile-icon{
-
-    width:58px;
-    height:58px;
-
-    border-radius:18px;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    font-size:26px;
-
-    background:
-    linear-gradient(
-        135deg,
-        rgba(255,211,105,0.18),
-        rgba(255,255,255,0.06)
-    );
-
-    border:
-    1px solid rgba(255,211,105,0.18);
+/* --- 1. زر بيانات المستخدم --- */
+.profile-toggle-btn {
+    justify-content: space-between !important;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 211, 105, 0.2);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
 }
 
-/* العنوان */
-.profile-title{
-
-    font-size:24px;
-
-    font-weight:800;
-
-    color:#ffffff;
+.profile-toggle-btn:hover {
+    background: rgba(255, 211, 105, 0.1);
+    border-color: rgba(255, 211, 105, 0.4);
 }
 
-/* شبكة البيانات */
-.profile-grid{
+.btn-main-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+}
 
-    display:grid;
+.profile-icon {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    background: linear-gradient(135deg, rgba(255, 211, 105, 0.18), rgba(255, 255, 255, 0.06));
+    border: 1px solid rgba(255, 211, 105, 0.18);
+}
 
-    grid-template-columns:
-    repeat(auto-fit,minmax(220px,1fr));
+.profile-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
 
-    gap:18px;
+/* --- 2. زر إنشاء تذكرة --- */
+.create-ticket-btn {
+    gap: 8px;
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #ffd369, #e6b800);
+    border: none;
+    border-radius: 16px;
+    color: #1a1a1a;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 211, 105, 0.2);
+}
+
+.create-ticket-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 211, 105, 0.35);
+    background: linear-gradient(135deg, #ffe082, #ffd369);
+}
+.ticket-icon {
+    font-size: 20px;
+}
+
+
+/* --- شبكة البيانات وتنسيقاتك الأصلية --- */
+.profile-card {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0, 1, 0, 1), opacity 0.4s ease, margin-top 0.3s ease;
+}
+
+/* عند الفتح يظهر الكارت وبينه وبين الزر هامش بسيط */
+.profile-card.active {
+    max-height: 1000px;
+    opacity: 1;
+    margin-top: 18px;
+    transition: max-height 0.6s cubic-bezier(1, 0, 1, 0), opacity 0.4s ease, margin-top 0.3s ease;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
 }
 
 /* عنصر البيانات */
-.profile-item{
-
-    position:relative;
-
-    overflow:hidden;
-
-    padding:18px;
-
-    border-radius:22px;
-
-    background:
-    linear-gradient(
+.profile-item {
+    position: relative;
+    overflow: hidden;
+    padding: 18px;
+    border-radius: 22px;
+    background: linear-gradient(
         145deg,
-        rgba(255,255,255,0.08),
-        rgba(255,255,255,0.03)
+        rgba(255, 255, 255, 0.08),
+        rgba(255, 255, 255, 0.03)
     );
-
-    border:
-    1px solid rgba(255,255,255,0.08);
-
-    transition:0.35s;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: 0.35s;
 }
 
-/* خط علوي */
-.profile-item::before{
-
-    content:"";
-
-    position:absolute;
-
-    top:0;
-    right:0;
-
-    width:100%;
-    height:4px;
-
-    background:
-    linear-gradient(
+/* خط علوي ملون */
+.profile-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(
         to left,
         #ffd369,
         transparent
     );
 }
 
-.profile-item:hover{
-
-    transform:translateY(-4px);
-
-    box-shadow:
-    0 12px 30px rgba(0,0,0,0.20);
+.profile-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.20);
 }
 
-/* اسم الحقل */
-.profile-label{
-
-    font-size:14px;
-
-    color:#ffd369;
-
-    font-weight:700;
-
-    margin-bottom:10px;
+/* اسم الحقل والقيمة */
+.profile-label {
+    font-size: 14px;
+    color: #ffd369;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
-/* القيمة */
-.profile-value{
-
-    font-size:18px;
-
-    font-weight:700;
-
-    color:#ffffff;
-
-    line-height:1.8;
+.profile-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.8;
 }
-
 /* =======================================================
 ====================== MOBILE ============================
 ======================================================= */
@@ -1370,12 +1479,12 @@ button{
 
     .welcome-name{
 
-        font-size:20px;
+        font-size:10px;
     }
 
     .profile-title{
 
-        font-size:21px;
+        font-size:10px;
     }
 
     .profile-grid{
@@ -2048,28 +2157,25 @@ font-weight:500;
 }
 
 
+/* --- 3. زر إعادة تعيين كلمة المرور --- */
 .edit-profile-btn {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: .3s;
-
-  /* تحريك الزر بمفرده لأقصى اليسار */
-  display: block;
-  margin-right: auto !important;
-  margin-left: 0 !important;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .edit-profile-btn:hover {
-  background: #1d4ed8;
-  transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 211, 105, 0.3);
+    color: #ffd369;
 }
-
 
 
 
@@ -2200,6 +2306,32 @@ font-weight:500;
     from { top: -60px; opacity: 0; }
     to { top: 20px; opacity: 1; }
 }
+
+
+
+
+/* نموذج إنشاء التذكرة - منكمش ومخفي افتراضياً */
+.create-ticket-form-card {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin-top: 0;
+    transition: max-height 0.5s cubic-bezier(0, 1, 0, 1), opacity 0.4s ease, margin-top 0.3s ease;
+}
+
+/* عند الضغط على زر إنشاء تذكرة يتم إظهاره بنعومة */
+.create-ticket-form-card.active {
+    max-height: 1200px; /* ارتفاع كافٍ لاستيعاب جميع حقول النموذج */
+    opacity: 1;
+    margin-top: 20px;
+    transition: max-height 0.6s cubic-bezier(1, 0, 1, 0), opacity 0.4s ease, margin-top 0.3s ease;
+}
+
+/* تنسيق زر إنشاء تذكرة العلوي عند تفعيله */
+.create-ticket-btn.active {
+    background: linear-gradient(135deg, #e6b800, #cca300);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+}
 </style>
 
 </head>
@@ -2207,7 +2339,13 @@ font-weight:500;
 <body>
 
 <header class="main-header">
-
+<!-- زر الشرطات الثلاث (يظهر فقط في الشاشات الصغيرة) -->
+    <button class="hamburger-btn" onclick="toggleHeaderMenu(this)" type="button" aria-label="القائمة">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="header-content" id="headerMenu">
     <!-- اللوجو على اليمين -->
     <img src="photo/logo.png" class="logo" alt="Logo">
 
@@ -2216,30 +2354,21 @@ font-weight:500;
         <h1 class="brand-title">EL saleheya EL Gadida Universty</h1>
         <p class="brand-subtitle">Ticketing system</p>
     </div>
-
+<div id="welcome"></div>
     <!-- زر تسجيل الخروج على اليسار -->
     <button class="about-link" id="logoutBtn" onclick="logout()">تسجيل الخروج</button>
+    </div>
 
 </header>
-
-<header>
-    <div id="welcome"></div>
-</header>
-
 <div class="container">
 
     <div class="card">
-<button class="edit-profile-btn"
-onclick="location.href='edituser.html'">
-
-👤   اعادة تعيين كلمة المرور
-
-</button>
         <div id="profile"></div>
-        
     </div>
 
 <div class="card">
+<!-- نموذج إنشاء التذكرة (يكون مخفياً افتراضياً) -->
+<div class="create-ticket-form-card" id="createTicketForm">
 
     <h3>إنشاء تذكرة جديدة</h3>
 
@@ -2264,6 +2393,8 @@ onclick="location.href='edituser.html'">
     <button class="btn-create" onclick="createTicket()">
         إنشاء تذكرة
     </button>
+
+</div>
 
 </div>
 
@@ -2472,7 +2603,11 @@ async function reloadTickets() {
 }
 
 
-
+function toggleTicketForm(btnElement) {
+    btnElement.classList.toggle('active');
+    const ticketForm = document.getElementById('createTicketForm');
+    ticketForm.classList.toggle('active');
+}
 
 
 document.getElementById("welcome").innerHTML =
@@ -2497,74 +2632,66 @@ document.getElementById("welcome").innerHTML =
 </div>
 `
 
-
+function toggleProfileData(btnElement) {
+    // إتاحة التناوب لزر البيانات وللكارت الخاص بالبيانات
+    btnElement.classList.toggle('active');
+    
+    const profileCard = document.getElementById('profileCard');
+    profileCard.classList.toggle('active');
+}
 document.getElementById("profile").innerHTML =
 
-`
-<div class="profile-card">
+`<div class="profile-section-container">
 
-    <div class="profile-header">
+    <!-- شريط الأزرار الرئيسي -->
+    <div class="actions-header-bar">
+        
+        <!-- زر بيانات المستخدم -->
+        <button class="profile-toggle-btn" onclick="toggleProfileData(this)" type="button">
+            <div class="btn-main-content">
+                <div class="profile-icon">👤</div>
+                <span class="profile-title">بيانات المستخدم</span>
+            </div>
+            <span class="toggle-arrow">❮</span>
+        </button>
 
-        <div class="profile-icon">
-            👤
-        </div>
+        <!-- زر إنشاء تذكرة -->
+        <button class="create-ticket-btn" id="createTicketBtn" onclick="toggleTicketForm(this)" type="button">
+            <div class="ticket-icon">🎫</div>
+            <span>إنشاء تذكرة</span>
+        </button>
 
-        <div class="profile-title">
-            بيانات المستخدم
-        </div>
+        <!-- زر إعادة تعيين كلمة المرور -->
+        <button class="edit-profile-btn" onclick="location.href='edituser.html'" type="button">
+            <span class="key-icon">🔑</span>
+            <span>إعادة تعيين كلمة المرور</span>
+        </button>
 
     </div>
 
-    <div class="profile-grid">
-
-        <div class="profile-item">
-
-            <div class="profile-label">
-                الاسم
+    <!-- بطاقة البيانات -->
+    <div class="profile-card" id="profileCard">
+        <div class="profile-grid">
+            <div class="profile-item">
+                <div class="profile-label">الاسم</div>
+                <div class="profile-value">${user.name}</div>
             </div>
 
-            <div class="profile-value">
-                ${user.name}
+            <div class="profile-item">
+                <div class="profile-label">رقم الهاتف</div>
+                <div class="profile-value">${user.phone}</div>
             </div>
 
+            <div class="profile-item">
+                <div class="profile-label">الوظيفة</div>
+                <div class="profile-value">${user.job_title}</div>
+            </div>
+
+            <div class="profile-item">
+                <div class="profile-label">الكلية</div>
+                <div class="profile-value">${user.faculty}</div>
+            </div>
         </div>
-
-        <div class="profile-item">
-
-            <div class="profile-label">
-                رقم الهاتف
-            </div>
-
-            <div class="profile-value">
-                ${user.phone}
-            </div>
-
-        </div>
-
-        <div class="profile-item">
-
-            <div class="profile-label">
-                الوظيفة
-            </div>
-
-            <div class="profile-value">
-                ${user.job_title}
-            </div>
-
-        </div>
-
-        <div class="profile-item">
-
-            <div class="profile-label">
-                الكلية
-            </div>
-
-            <div class="profile-value">
-                ${user.faculty}
-            </div>
-
-        </div>
-
     </div>
 
 </div>
@@ -2758,10 +2885,25 @@ async function createTicket() {
         }
 
         // تنظيف الحقول بعد النجاح
-        if (document.getElementById("title")) document.getElementById("title").value = "";
-        if (document.getElementById("description")) document.getElementById("description").value = "";
-        if (document.getElementById("roomNumber")) document.getElementById("roomNumber").value = "";
+    if (document.getElementById("title")) document.getElementById("title").value = "";
+    if (document.getElementById("description")) document.getElementById("description").value = "";
+    if (document.getElementById("roomNumber")) document.getElementById("roomNumber").value = "";
 
+    // 1. إخفاء كلاس نموذج التذكرة
+    const ticketForm = document.getElementById("createTicketForm");
+    const createTicketBtn = document.getElementById("createTicketBtn");
+
+    if (ticketForm) ticketForm.classList.remove("active");
+    if (createTicketBtn) createTicketBtn.classList.remove("active");
+
+    // 2. التحريك والانتقال الناعم إلى جدول التذاكر
+    const ticketsTable = document.querySelector(".tickets-table");
+    if (ticketsTable) {
+        ticketsTable.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
         window.location.reload();
 
     } catch (ex) {
@@ -3736,6 +3878,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+function toggleHeaderMenu(hamburgerBtn) {
+    // تبديل حالة زر الشرطات
+    hamburgerBtn.classList.toggle('active');
+    
+    // إظهار أو إخفاء القائمة المنسدلة للهيدر
+    const headerMenu = document.getElementById('headerMenu');
+    headerMenu.classList.toggle('active');
+}
 
 function realtime(){
 

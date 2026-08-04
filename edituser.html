@@ -295,104 +295,94 @@ header p{
 
     margin-top:6px;
 }
-.main-header{
 
-    width:100%;
-
-    min-height:85px;
-
-    padding:18px 5%;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    position:fixed;
-
-    top:0;
-    right:0;
-
-    gap:20px;
-
-    z-index:2000;
-
-    backdrop-filter:blur(18px);
-
-    background:rgba(255,255,255,0.05);
-
-    border-bottom:
-    1px solid rgba(255,255,255,0.08);
+.main-header {
+    width: 100%;
+    min-height: 85px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding: 12px 5%;
+    backdrop-filter: blur(18px);
+    background: rgba(1, 2, 61, 0.89);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 500;
+    direction: rtl; /* لضمان ترتيب العناصر: يمين (لوجو) -> وسط (عنوان) -> يسار (زر) */
 }
 
-.logo{
-    height:55px;
+/* جعل اللوجو دائري */
+.logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
 }
 
-.brand{
-
-    font-size:28px;
-    font-weight:800;
-
-    background:
-    linear-gradient(to right,#fff,#ffd369);
-
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+/* تنسيق Container النصوص في المنتصف */
+.brand-container {
+    text-align: center;
 }
 
-.about-link{
-
-    color:rgb(255, 231, 16);
-    text-decoration:none;
-
-    padding:12px 24px;
-
-    border-radius:50px;
-
-    background:
-    linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0),
-        rgba(255,255,255,0.05)
-    );
-
-    border:
-    1px solid rgb(10, 2, 2);
-
-    transition:0.4s;
-
-    font-weight:700;
+.brand-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(to right, #fdee68, #ffd369);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.about-link:hover{
+.brand-subtitle {
+    font-size: 14px;
+    color: #d9d9d9;
+    margin: 3px 0 0 0;
+    font-weight: 400;
+}
 
-    transform:translateY(-3px);
+/* زر تسجيل الخروج البيضاوي */
+.about-link {
+    color: rgb(255, 245, 245);
+    text-decoration: none;
+    padding: 10px 24px;
+    border-radius: 50px; /* شكل بيضاوي كامل */
+    background: rgba(255, 255, 255, 0.08);
+    transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+}
 
-    background:
-    linear-gradient(
-        135deg,
-        #ffd369,
-        #ffb703
-    );
-
-    color:#071739;
+.about-link:hover {
+    background: #ffd369;
+    color: #071739;
 }
 </style>
 
 </head>
 <header class="main-header">
 
-    <img src="photo/logo.png" class="logo">
+    <!-- اللوجو على اليمين -->
+    <img src="photo/logo.png" class="logo" alt="Logo">
 
-    <div class="brand">
-        SGU Ticketing
+    <!-- العنوان في المنتصف -->
+    <div class="brand-container">
+        <h1 class="brand-title">EL saleheya EL Gadida Universty</h1>
+        <p class="brand-subtitle">Ticketing system</p>
     </div>
 
-    <button class="about-link" id="backBtn" onclick="location.href='dashboard.html'">
-    ⬅ عودة
-</button>
+    <!-- زر تسجيل الخروج على اليسار -->
+    <button class="about-link" id="logoutBtn" onclick="logout()">عودة  </button>
 
 </header>
+
+<div class="container">
+  <br>
+<br><br><br>
 <body>
 
 <div class="profile-card">
@@ -800,7 +790,13 @@ document.addEventListener(
 
 );
 
+function logout() {
 
+    sessionStorage.clear();
+
+    window.location.replace("rout.html");
+
+}
 /*==================================================
             PREVENT EDIT
 ==================================================*/
