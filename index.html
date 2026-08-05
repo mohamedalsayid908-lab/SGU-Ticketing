@@ -723,6 +723,18 @@ alert("Wrong login data")
 
 }
 
+// دالة الاستماع لضغط زر Enter في أي من الحقلين
+function handleEnterKey(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        login(); // يستدعي دالة الدخول مباشرة
+    }
+}
+
+// ربط الحدث بحقلي اسم المستخدم وكلمة السر
+document.getElementById('username').addEventListener('keydown', handleEnterKey);
+document.getElementById('password').addEventListener('keydown', handleEnterKey);
+    
 </script>
 
 </body>
