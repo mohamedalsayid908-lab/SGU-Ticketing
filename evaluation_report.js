@@ -197,71 +197,70 @@ function sortTickets(list){
 //==================================================
 // حساب الفرق بالدقائق
 //==================================================
-
-function getMinutes(start,end){
+function getMinutes(start, end){
     if(!start || !end)
         return null;
 
-    let d1=new Date(start);
-    let d2=new Date(end);
+    let d1 = new Date(start);
+    let d2 = new Date(end);
 
-    return Math.round((d2-d1)/60000);
+    return Math.round((d2 - d1) / 60000);
 }
 
 //==================================================
 // تحويل الدقائق إلى نص مقروء
 //==================================================
-
 function formatMinutes(minutes){
-    if(minutes==null)
+    if(minutes == null)
         return "-";
 
-    let days=Math.floor(minutes/1440);
-    minutes%=1440;
-    let hours=Math.floor(minutes/60);
-    let mins=minutes%60;
+    let days = Math.floor(minutes / 1440);
+    minutes %= 1440;
+    let hours = Math.floor(minutes / 60);
+    let mins = minutes % 60;
 
-    let txt="";
+    let txt = "";
 
-    if(days>0)
-        txt+=days+" يوم ";
+    if(days > 0)
+        txt += days + " يوم ";
 
-    if(hours>0)
-        txt+=hours+" ساعة ";
+    if(hours > 0)
+        txt += hours + " ساعة ";
 
-    if(mins>0 || txt=="")
-        txt+=mins+" دقيقة";
+    if(mins > 0 || txt == "")
+        txt += mins + " دقيقة";
 
     return txt;
 }
 
 //==================================================
-// تقييم سرعة الحل
+// تقييم سرعة الحل (محدث بناءً على الشروط الجديدة)
 //==================================================
+function getSpeedRate(minutes, solvedTickets){
+    // إذا كان عدد التذاكر المحلولة 0، يعني لم يحل شيئاً بعد -> التقييم "لا يوجد" حتماً
+    if (solvedTickets === 0 || minutes == null || minutes <= 0) {
+        return "لا يوجد";
+    }
 
-function getSpeedRate(minutes){
-    if(minutes==null)
-        return "-";
-
-    if(minutes<=30)
+    // من دقيقة واحدة إلى 60 دقيقة
+    if(minutes <= 60)
         return "ممتاز";
 
-    if(minutes<=60)
+    // من 61 دقيقة إلى 120 دقيقة
+    if(minutes <= 120)
         return "جيد جداً";
 
-    if(minutes<=180)
+    // من 121 دقيقة إلى 380 دقيقة
+    if(minutes <= 380)
         return "جيد";
 
-    if(minutes<=360)
-        return "مقبول";
-
+    // دون ذلك (أكثر من 380 دقيقة)
     return "ضعيف";
 }
 
 //==================================================
-// كلاس لون التقييم
+// كلاس لون التقييم (محدث ليتوافق مع الحالات)
 //==================================================
-
 function getRateClass(rate){
     switch(rate){
         case "ممتاز":
@@ -272,6 +271,8 @@ function getRateClass(rate){
             return "rate-good";
         case "مقبول":
             return "rate-average";
+        case "لا يوجد":
+            return "rate-none"; // كلاس اختياري للتقييم الفارغ
         default:
             return "rate-poor";
     }
@@ -280,30 +281,29 @@ function getRateClass(rate){
 //==================================================
 // متوسط تقييم المستخدمين
 //==================================================
-
 function getRatingText(list){
-    let total=0;
-    let count=0;
+    let total = 0;
+    let count = 0;
 
     for(let t of list){
         if(t.rating?.rating){
-            total+=Number(t.rating.rating);
+            total += Number(t.rating.rating);
             count++;
         }
     }
 
-    if(count==0)
+    if(count == 0)
         return "لا يوجد";
 
-    let avg=total/count;
+    let avg = total / count;
 
-    if(avg>=4.5)
+    if(avg >= 4.5)
         return "ممتاز";
-    if(avg>=3.5)
+    if(avg >= 3.5)
         return "جيد جداً";
-    if(avg>=2.5)
+    if(avg >= 2.5)
         return "جيد";
-    if(avg>=1.5)
+    if(avg >= 1.5)
         return "مقبول";
 
     return "ضعيف";
@@ -312,38 +312,45 @@ function getRatingText(list){
 //==================================================
 // حساب إحصائيات المهندس
 //==================================================
-
 function calculateEngineerStatistics(list){
-    let totalMinutes=0;
-    let solvedTickets=0;
+    let totalMinutes = 0;
+    let solvedTickets = 0;
 
     for(let t of list){
-        if(!t.solution)
+        // التذكرة التي لا تملك حلاً فنياً (مثل التذاكر المفتوحة أو قيد التنفيذ) يتم تخطيها تماماً من الحساب
+        if(!t.solution || !t.solution.created_at)
             continue;
 
-        let minutes=getMinutes(t.created_at, t.solution.created_at);
+        let minutes = getMinutes(t.created_at, t.solution.created_at);
 
-        if(minutes==null)
+        if(minutes == null)
             continue;
 
-        t.solveMinutes=minutes;
-        totalMinutes+=minutes;
-        solvedTickets++;
+        t.solveMinutes = minutes;
+        totalMinutes += minutes; // تجميع الأوقات للتذاكر المنتهية فقط
+        solvedTickets++;         // زيادة عدد التذاكر التي تم حلها فعلياً
     }
 
-    let avgMinutes=0;
-    if(solvedTickets>0){
-        avgMinutes=Math.round(totalMinutes/solvedTickets);
+    let avgMinutes = 0;
+    let speedRate = "لا يوجد";
+
+    // تطبيق المنطق العادل: توزيع الوقت الإجمالي على عدد التذاكر التي تم حلها فقط
+    if(solvedTickets > 0){
+        avgMinutes = Math.round(totalMinutes / solvedTickets);
+        speedRate = getSpeedRate(avgMinutes, solvedTickets); // تمرير عدد التذاكر للتحقق الآمن
+    } else {
+        // إذا لم يتم حل أي تذكرة بعد، نضمن أن التقييم يخرج "لا يوجد"
+        speedRate = "لا يوجد";
+        avgMinutes = 0;
     }
 
-    return{
+    return {
         totalMinutes,
         avgMinutes,
         solvedTickets,
-        speedRate:getSpeedRate(avgMinutes)
+        speedRate: speedRate
     };
 }
-
 //==================================================
 // تنسيق التاريخ والساعة
 //==================================================
