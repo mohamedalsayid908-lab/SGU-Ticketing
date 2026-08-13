@@ -537,33 +537,25 @@ function calculateEngineerStatistics(list){
 // تنسيق التاريخ
 //==================================================
 
-function formatDate(date){
+function formatDate(date) {
+    if (!date) return "-";
 
-    if(!date)
-        return "";
+    // تحويل القيمة الحالية إلى نص لمعالجتها
+    let dateStr = String(date);
 
-    return new Date(date)
+    // إذا كان التوقيت قادماً من الخادم بدون تحديد المنطقة الزمنية (Z أو +)، نقوم بإضافتها ليتم احتساب فارق التوقيت
+    if (!dateStr.includes("Z") && !dateStr.includes("+")) {
+        dateStr += "Z";
+    }
 
-        .toLocaleString(
-
-            "ar-EG",
-
-            {
-
-                year:"numeric",
-
-                month:"2-digit",
-
-                day:"2-digit",
-
-                hour:"2-digit",
-
-                minute:"2-digit"
-
-            }
-
-        );
-
+    return new Date(dateStr).toLocaleString("ar-EG", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true // يُفضل استخدام نظام 12 ساعة لبيان (صباحاً/مساءً) بوضوح في التقارير
+    });
 }
 
 //==================================================

@@ -2236,29 +2236,22 @@ font-weight:500;
 
 <div class="card">
 <div class="create-ticket-form-card" id="createTicketForm">
-        <h3>إنشاء تذكرة جديد</h3>
+    <h3>إنشاء تذكرة جديدة</h3>
 
-        <div id="engineerBox" style="margin-bottom:10px;color:#ffffff"></div>
+    <!-- سيتم حقن النص أو القائمة المنسدلة هنا ديناميكياً -->
+    <div id="engineerBox" style="margin-bottom: 15px; color: #ffffff; display: flex; flex-direction: column; gap: 5px;"></div>
 
-        <input id="title" placeholder="عنوان التذكرة">
+    <input id="title" placeholder="عنوان التذكرة">
+    <textarea id="description" placeholder="وصف التذكرة"></textarea>
 
-        <textarea id="description" placeholder="وصف التذكرة"></textarea>
-
-        <div class="location-box">
-
-    
-    <input
-        id="roomNumber"
-        type="text"
-        placeholder="رقم الغرفة">
-
-</div>
-
-        <button class="btn-create" onclick="createTicket()">
-            إنشاء تذكرة
-        </button>
-
+    <div class="location-box">
+        <input id="roomNumber" type="text" placeholder="رقم الغرفة">
     </div>
+
+    <button class="btn-create" onclick="createTicket()">
+        إنشاء تذكرة
+    </button>
+</div>
 </div>
 
 <div id="newTicketAlert" class="new-ticket-alert" style="display:none;">
@@ -2531,57 +2524,83 @@ usersMap[u.id]=u.name
 
 let engineer=null
 
-async function loadEngineer(){
+// متغير عام للاحتفاظ بالمهندس المختار تلقائياً في حال كان وحيداً
+let singleEngineerId = null;
 
-let {data} = await supabaseClient
-.from("users")
-.select("*")
-.eq("role","it")
-.eq("faculty",user.faculty)
+async function loadEngineer() {
+    let { data } = await supabaseClient
+        .from("users")
+        .select("*")
+        .eq("role", "it")
+        .eq("faculty", user.faculty);
 
-if(data.length){
+    let engineerBox = document.getElementById("engineerBox");
+    if (!engineerBox) return;
 
-engineer=data[0]
-
-document.getElementById("engineerBox").innerHTML=
-" المهندس المسؤل: <b>"+engineer.name+"</b>"
-
-}else{
-
-document.getElementById("engineerBox").innerHTML=
-"No IT Engineer found"
-
+    if (data && data.length === 1) {
+        // حالة وجود مهندس واحد فقط: عرضه مباشرة كما كان سابقاً
+        engineer = data[0];
+        singleEngineerId = engineer.id;
+        
+        engineerBox.innerHTML = "المهندس المسؤول: <b>" + engineer.name + "</b>";
+    } 
+    else if (data && data.length > 1) {
+        // حالة وجود أكثر من مهندس: تصفير الاختيار التلقائي وبناء قائمة منسدلة مريحة للاختيار
+        singleEngineerId = null; 
+        
+        let selectHTML = `
+            <label style="font-size: 14px; margin-bottom: 5px; display: block; color: #fff;">اختر المهندس المسؤول:</label>
+            <select id="facultyEngineerSelect" style="width: 100%; height: 40px; padding: 0 10px; border-radius: 6px; border: 1px solid #ddd; background: #fff; color: #333; font-family: inherit; font-weight: bold; direction: rtl;">
+        `;
+        
+        data.forEach(eng => {
+            selectHTML += `<option value="${eng.id}">👤 ${eng.name}</option>`;
+        });
+        
+        selectHTML += `</select>`;
+        engineerBox.innerHTML = selectHTML;
+    } 
+    else {
+        // في حال عدم وجود أي مهندس
+        singleEngineerId = null;
+        engineerBox.innerHTML = "No IT Engineer found";
+    }
 }
-
-}
-
+ 
 
 async function createTicket() {
     try {
-        // قراءة البيانات المتاحة فقط (تم حذف locationCollege)
         let title = document.getElementById("title")?.value?.trim() || "";
         let description = document.getElementById("description")?.value?.trim() || "";
         let room = document.getElementById("roomNumber")?.value?.trim() || "";
 
-        // التحقق من الحقول الفارغة (تم استبعاد locationCollege)
         if (!title || !description || !room) {
             alert("يرجى إكمال جميع الحقول المطلوبة قبل إرسال التذكرة!");
-            return; // إيقاف التنفيذ
+            return; 
         }
 
-        // صيغة مكان التذكرة بناءً على رقم الغرفة (أو يمكنك تعديلها بالطريقة التي تناسبك)
         let ticketLocation = `غرفة رقم ${room}`;
 
-        // قراءة id الموظف المعني (العشوائي) بأمان
+        // تحديد المهندس المختار بناءً على الفحص الديناميكي الجديد
         let assignedEngineerId = null;
-        if (typeof engineer !== "undefined" && engineer) {
-            assignedEngineerId = engineer.id;
+        
+        let facultyEngineerSelect = document.getElementById("facultyEngineerSelect");
+        if (facultyEngineerSelect) {
+            // إذا كانت القائمة المنسدلة للمهندسين المتعددين موجودة، نأخذ القيمة المحددة منها
+            assignedEngineerId = facultyEngineerSelect.value;
+        } else if (singleEngineerId) {
+            // إذا كان هناك مهندس واحد فقط مسجل تلقائياً
+            assignedEngineerId = singleEngineerId;
         } else {
-            let engineerSelectElement = document.getElementById("engineerSelect");
-            assignedEngineerId = engineerSelectElement ? engineerSelectElement.value : null;
+            // كود احتياطي للتعامل مع أي متغيرات مهندس قديمة ومثبتة global
+            if (typeof engineer !== "undefined" && engineer) {
+                assignedEngineerId = engineer.id;
+            } else {
+                let engineerSelectElement = document.getElementById("engineerSelect");
+                assignedEngineerId = engineerSelectElement ? engineerSelectElement.value : null;
+            }
         }
 
-        // إدخال التذكرة في Supabase
         const { error } = await supabaseClient
             .from("tickets")
             .insert({
@@ -2600,25 +2619,26 @@ async function createTicket() {
 
         // تنظيف الحقول بأمان بعد النجاح
         if (document.getElementById("title")) document.getElementById("title").value = "";
-    if (document.getElementById("description")) document.getElementById("description").value = "";
-    if (document.getElementById("roomNumber")) document.getElementById("roomNumber").value = "";
+        if (document.getElementById("description")) document.getElementById("description").value = "";
+        if (document.getElementById("roomNumber")) document.getElementById("roomNumber").value = "";
 
-    // 1. إخفاء كلاس نموذج التذكرة
-    const ticketForm = document.getElementById("createTicketForm");
-    const createTicketBtn = document.getElementById("createTicketBtn");
+        // 1. إخفاء كلاس نموذج التذكرة
+        const ticketForm = document.getElementById("createTicketForm");
+        const createTicketBtn = document.getElementById("createTicketBtn");
 
-    if (ticketForm) ticketForm.classList.remove("active");
-    if (createTicketBtn) createTicketBtn.classList.remove("active");
+        if (ticketForm) ticketForm.classList.remove("active");
+        if (createTicketBtn) createTicketBtn.classList.remove("active");
 
-    // 2. التحريك والانتقال الناعم إلى جدول التذاكر
-    const ticketsTable = document.querySelector(".tickets-table");
-    if (ticketsTable) {
-        ticketsTable.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-    }
-        // تحديث الصفحة
+        // 2. التحريك والانتقال الناعم إلى جدول التذاكر
+        const ticketsTable = document.querySelector(".tickets-table");
+        if (ticketsTable) {
+            ticketsTable.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+        
+        // تحديث الصفحة لظهور التذكرة الجديدة
         window.location.reload();
 
     } catch (ex) {

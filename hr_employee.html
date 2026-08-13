@@ -2070,17 +2070,24 @@ function toggleTicket(id){
 //====================================
 
 function formatDate(date) {
-
     if (!date) return "-";
 
-    return new Date(date).toLocaleString("ar-EG", {
+    // تحويل القيمة الحالية إلى نص لمعالجتها
+    let dateStr = String(date);
+
+    // إذا كان التوقيت قادماً من الخادم بدون تحديد المنطقة الزمنية (Z أو +)، نقوم بإضافتها ليتم احتساب فارق التوقيت
+    if (!dateStr.includes("Z") && !dateStr.includes("+")) {
+        dateStr += "Z";
+    }
+
+    return new Date(dateStr).toLocaleString("ar-EG", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
         hour: "2-digit",
-        minute: "2-digit"
+        minute: "2-digit",
+        hour12: true // يُفضل استخدام نظام 12 ساعة لبيان (صباحاً/مساءً) بوضوح في التقارير
     });
-
 }
 
 //====================================

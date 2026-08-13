@@ -1100,6 +1100,241 @@ button:hover{
     }
 }
 
+/* =======================================================
+   تنسيقات زر الأيقونة العائم وأمر التكليف المباشر للآدمن
+======================================================= */
+
+/* تنسيق زر الأيقونة العائم */
+#createTicketBtn {
+    background: linear-gradient(135deg, #0d6efd, #0a58ca) !important;
+    color: white !important;
+    border: none !important;
+    width: 60px;
+    height: 60px;
+    border-radius: 50% !important;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease-in-out !important;
+    margin: 20px 0;
+}
+
+#createTicketBtn:hover {
+    transform: rotate(15deg) scale(1.05);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.6);
+}
+
+/* التبديل لحالة الزر عندما يكون الفورم مفتوحاً (تأثير اختياري) */
+#createTicketBtn.active {
+    background: linear-gradient(135deg, #dc3545, #b02a37) !important;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+    transform: rotate(135deg); /* يدور ليتحول لشكل إغلاق أو إلغاء */
+}
+
+/* كلاس كونتير نموذج التذكرة المباشرة */
+#createTicketForm {
+    background: #ffffff !important;
+    padding: 30px;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 30px;
+    direction: rtl;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* كلاس التأثير النشط عند إظهار الفورم جافا سكريبت */
+#createTicketForm.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* تنسيق الحقول النصية والقوائم داخل الفورم الجديد */
+#createTicketForm input[type="text"],
+#createTicketForm select,
+#createTicketForm textarea {
+    width: 100%;
+    height: 45px;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    padding: 0 12px;
+    font-size: 14px;
+    background: #ffffff;
+    color: #1e293b;
+    transition: all 0.3s ease;
+    font-family: "Cairo", sans-serif;
+}
+
+/* تنسيق الحقل المخصص للقراءة فقط (عنوان التقرير التلقائي) */
+#createTicketForm input[readonly] {
+    background-color: #f1f5f9 !important;
+    color: #64748b !important;
+    border-color: #e2e8f0 !important;
+    cursor: not-allowed;
+    font-weight: 600;
+}
+
+/* تأثير التركيز (Focus) على الحقول المفتوحة للكتابة */
+#createTicketForm input:not([readonly]):focus,
+#createTicketForm select:focus,
+#createTicketForm textarea:focus {
+    border-color: #0d6efd !important;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+/* تنسيق حقل الوصف والتعليق */
+#createTicketForm textarea {
+    height: 120px !important;
+    padding: 12px !important;
+    resize: none;
+}
+
+/* تحسينات الشاشات الصغيرة الاستجابية للفورم */
+@media (max-width: 768px) {
+    #createTicketForm {
+        padding: 20px;
+    }
+    
+    #createTicketForm div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important; /* تحويل الجريد لعمود واحد في الموبايل */
+        gap: 12px !important;
+    }
+}
+/* تنسيقات الجداول المحدثة */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ticket-row {
+    transition: background 0.2s ease;
+    cursor: pointer;
+}
+
+.ticket-row:hover {
+    background-color: #515b66 !important;
+}
+
+.details-row td {
+    border-top: none !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.arrow-cell span {
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+/* =======================================================
+   تنسيقات مستقلة لأزرار التقارير الدائرية الجديدة والتلميحات
+======================================================= */
+
+/* الحاوية الأساسية للأزرار الجديدة */
+.unique-admin-report-container {
+    display: flex; 
+    gap: 20px; 
+    align-items: center;
+}
+
+/* التصميم الأساسي المخصص للأيقونة الدائرية الفريدة */
+.report-action-icon-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50% !important;
+    border: none !important;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ستايل لوني خاص بأيقونة البيانات (أزرق متدرج مخصص) */
+.data-report-theme {
+    background: linear-gradient(135deg, #0d6efd, #0a58ca) !important;
+    color: white !important;
+}
+
+.data-report-theme:hover {
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+    transform: translateY(-3px) rotate(5deg);
+}
+
+/* ستايل لوني خاص بأيقونة الإحصائيات (أخضر متدرج مخصص) */
+.stats-report-theme {
+    background: linear-gradient(135deg, #198754, #146c43) !important;
+    color: white !important;
+}
+
+.stats-report-theme:hover {
+    box-shadow: 0 6px 20px rgba(25, 135, 84, 0.4);
+    transform: translateY(-3px) rotate(-5deg);
+}
+
+/* الحاوية النسبية للنص التوضيحي المفرز */
+.report-hint-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* تصميم حركة وصندوق النص التوضيحي المستقل */
+.report-hint-wrapper .report-hint-popup-text {
+    visibility: hidden;
+    width: 210px;
+    background-color: #1e293b;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 12px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 125%; /* العرض أعلى الزر */
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    opacity: 0;
+    font-size: 13px;
+    font-family: "Cairo", sans-serif;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* السهم السفلي لصندوق التوضيح الجديد */
+.report-hint-wrapper .report-hint-popup-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #1e293b transparent transparent transparent;
+}
+
+/* إظهار التلميح فور وقوف مؤشر الفأرة على الأيقونة الدائرية */
+.report-hint-wrapper:hover .report-hint-popup-text {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+@keyframes bounceIn {
+    0% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+    60% { transform: translateX(-50%) translateY(10px); opacity: 1; }
+    100% { transform: translateX(-50%) translateY(0); }
+}
 </style>
 
 </head>
@@ -1131,96 +1366,212 @@ button:hover{
 <div class="header">
 لوحة تحكم الادمن
 </div>
-
+<!-- حاوية الإشعار المنبثق التنبيهي المخصص -->
+<div id="liveNotificationBadge" onclick="window.location.reload()" style="display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 12px 25px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 9999; cursor: pointer; align-items: center; gap: 10px; font-family: 'Cairo', sans-serif; animation: bounceIn 0.5s ease;">
+    🔔 <span>هناك تحديث جديد في التذاكر! اضغط هنا للتحديث.</span>
+</div>
 <div class="container">
+<!-- =======================================================
+====================== REPORTS ==========================
+======================================================= -->
+<div class="card" style="direction: rtl;">
+    <h3 style="margin-bottom: 20px; font-size: 18px; border-right: 4px solid #0d6efd; padding-right: 10px;">تقارير الدعم الفني</h3>
+    
+    <!-- حاوية فريدة مخصصة لأيقونات التقارير الجديدة -->
+    <div class="unique-admin-report-container">
+        
+        <!-- أيقونة تقرير بيانات بطاقات الدعم -->
+        <div class="report-hint-wrapper">
+            <button class="report-action-icon-btn data-report-theme" onclick="goReports()">
+                📋
+            </button>
+            <span class="report-hint-popup-text">تقرير بيانات بطاقات الدعم</span>
+        </div>
 
+        <!-- أيقونة التقرير الإحصائي لبطاقات الدعم -->
+        <div class="report-hint-wrapper">
+            <button class="report-action-icon-btn stats-report-theme" onclick="goReports2()">
+                📊
+            </button>
+            <span class="report-hint-popup-text">التقرير الإحصائي لبطاقات الدعم</span>
+        </div>
+        <!-- أيقونة التكليف المباشر (تظهر كزر عائم أو ثابت في لوحة التحكم) -->
+<button id="createTicketBtn" onclick="toggleAdminOrderForm()" style="background: #0d6efd; color: white; border: none; width: 60px; height: 60px; border-radius: 50%; font-size: 24px; cursor: pointer; box-shadow: 0 4px 15px rgba(13,110,253,0.4); display: flex; align-items: center; justify-content: center; transition: 0.3s; margin-bottom: 20px;">
+    🚀
+</button>
+    </div>
+</div>
+
+
+<!-- نموذج التكليف المباشر (مخفي افتراضياً ويظهر عند إضافة كلاس active) -->
+<div id="createTicketForm" style="display: none; background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 30px; direction: rtl;">
+    <h3 style="color: #0d6efd; margin-top: 0; margin-bottom: 20px; font-size: 18px; border-right: 4px solid #0d6efd; padding-right: 10px;">إنشاء أمر تذكرة مباشر من الإدارة</h3>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px;">
+        <!-- العنوان معبأ تلقائياً وقابل للقراءة فقط (Read-only) -->
+        <div style="display: flex; flex-direction: column;">
+            <label style="margin-bottom: 8px; font-weight: bold; color: #444;">عنوان التذكرة</label>
+            <input type="text" id="title" value="أمر مباشر من مدير إدارة الدعم الفني" readonly style="height: 45px; border: 1px solid #dcdcdc; border-radius: 8px; padding: 0 12px; font-size: 14px; background: #f4f6f9; color: #555;">
+        </div>
+
+        <!-- اختيار المهندس المفتوح للآدمن -->
+        <div style="display: flex; flex-direction: column;">
+            <label style="margin-bottom: 8px; font-weight: bold; color: #444;">المهندس المختص</label>
+            <select id="engineerSelect" style="height: 45px; border: 1px solid #dcdcdc; border-radius: 8px; padding: 0 12px; font-size: 14px; background: white;">
+                <option value="">اختر مهندس الـ IT...</option>
+            </select>
+        </div>
+
+        <!-- رقم الغرفة -->
+        <div style="display: flex; flex-direction: column;">
+            <label style="margin-bottom: 8px; font-weight: bold; color: #444;">رقم الغرفة / المكتب</label>
+            <input type="text" id="roomNumber" placeholder="مثال: 204 أو مكتب العميد" style="height: 45px; border: 1px solid #dcdcdc; border-radius: 8px; padding: 0 12px; font-size: 14px;">
+        </div>
+    </div>
+
+    <!-- وصف المشكلة -->
+    <div style="display: flex; flex-direction: column; margin-bottom: 20px;">
+        <label style="margin-bottom: 8px; font-weight: bold; color: #444;">تفاصيل التوجيه أو وصف العطل</label>
+        <textarea id="description" placeholder="اكتب تفاصيل العطل الفني هنا..." style="height: 100px; border: 1px solid #dcdcdc; border-radius: 8px; padding: 12px; font-size: 14px; resize: none;"></textarea>
+    </div>
+
+    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" onclick="toggleAdminOrderForm()" style="background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold;">إلغاء</button>
+        <button type="button" onclick="createTicket()" style="background: #0d6efd; color: white; border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer; font-weight: bold;">إرسال التذكرة</button>
+    </div>
+</div>
+    
     <!-- =======================================================
     ====================== ENGINEERS ========================
     ======================================================= -->
-    <div class="card">
-
-        <h3>مهندسي IT</h3>
-
-        <table id="engineersTable"></table>
-
+<div class="card collapsed-card">
+    <!-- الهيدر قابل للضغط لفتح وإغلاق القسم بالكامل -->
+    <div class="card-header" onclick="toggleCard('engineersCard', this)" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding-bottom: 10px;">
+        <h3 style="margin: 0;">مهندسي IT</h3>
+        <span class="card-arrow" style="font-size: 18px; color: #0d6efd; transition: transform 0.3s;">🔽</span>
     </div>
+    
+    <!-- المحتوى المخفي افتراضياً -->
+    <div id="engineersCard" class="card-content" style="display: none; margin-top: 15px;">
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>الهاتف</th>
+                        <th>الكلية</th>
+                    </tr>
+                </thead>
+                <tbody id="engineersTable"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- =======================================================
+====================== USERS ============================
+======================================================= -->
+<div class="card collapsed-card">
+    <!-- الهيدر قابل للضغط لفتح وإغلاق القسم بالكامل -->
+    <div class="card-header" onclick="toggleCard('usersCard', this)" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding-bottom: 10px;">
+        <h3 style="margin: 0;">إدارة المستخدمين</h3>
+        <span class="card-arrow" style="font-size: 18px; color: #0d6efd; transition: transform 0.3s;">🔽</span>
+    </div>
+
+    <!-- المحتوى المخفي افتراضياً مع الفلاتر والجدول -->
+    <div id="usersCard" class="card-content" style="display: none; margin-top: 15px;">
+        <div class="filter-controls" style="margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+            <input id="searchName" placeholder="بحث بالاسم" style="height: 40px; padding: 0 10px; border: 1px solid #ddd; border-radius: 6px;">
+            <input id="searchPhone" placeholder="بحث بالهاتف" style="height: 40px; padding: 0 10px; border: 1px solid #ddd; border-radius: 6px;">
+
+            <select id="facultyFilter" style="height: 40px; padding: 0 10px; border: 1px solid #ddd; border-radius: 6px;">
+                <option value="">كل الكليات</option>
+                <option value="pharmacy">pharmacy</option>
+                <option value="physical_therapy">physical therapy</option>
+                <option value="dentistry">dentistry</option>
+                <option value="computer_science">computer science</option>
+                <option value="management">management</option>
+            </select>
+
+            <button class="search-btn" onclick="loadUsers()" style="background: #0d6efd; color: white; border: none; padding: 0 20px; border-radius: 6px; cursor: pointer;">بحث</button>
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>الهاتف</th>
+                        <th>الكلية</th>
+                        <th>الصلاحية</th>
+                    </tr>
+                </thead>
+                <tbody id="users"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
     <!-- =======================================================
-    ====================== USERS ============================
-    ======================================================= -->
-    <div class="card">
-
-        <h3>إدارة المستخدمين</h3>
-
-        <input id="searchName" placeholder="بحث بالاسم">
-
-        <input id="searchPhone" placeholder="بحث بالهاتف">
-
-        <select id="facultyFilter">
-
-            <option value="">كل الكليات</option>
-            <option value="pharmacy">pharmacy</option>
-            <option value="physical_therapy">physical therapy</option>
-            <option value="dentistry">dentistry</option>
-            <option value="computer_science">computer science</option>
-            <option value="management">management</option>
-
-        </select>
-
-        <button class="search-btn" onclick="loadUsers()">
-            بحث
-        </button>
-
-        <div id="users"></div>
-
-    </div>
-
-    <!-- =======================================================
-    ====================== OPEN TICKETS =====================
-    ======================================================= -->
-    <div class="card">
-
-        <h3>التذاكر المفتوحة</h3>
-
-        <div id="openTickets" class="tickets-container"></div>
-
-    </div>
-
-    <!-- =======================================================
-    ====================== PROGRESS TICKETS =================
-    ======================================================= -->
-    <div class="card">
-
-        <h3>التذاكر تحت العمل</h3>
-
-        <div id="progressTickets" class="tickets-container"></div>
-
-    </div>
-
-    <!-- =======================================================
-    ====================== CLOSED TICKETS ===================
-    ======================================================= -->
-    <div class="card">
-
-        <h3>التذاكر المغلقة</h3>
-
-        <div id="closedTickets" class="tickets-container"></div>
-    </div>
-
-    <!-- =======================================================
-    ====================== REPORTS ==========================
-    ======================================================= -->
-    <div class="card">
-
-        <button class="report-btn" onclick="goReports()">
-           تقرير بيانات بطاقات الدعم
-        </button>
-    </div>
+====================== OPEN TICKETS =====================
+======================================================= -->
 <div class="card">
-        <button class="report-btn" onclick="goReports2()">
-             التقرير الأحصائي لباطاقات الدعم
-        </button>
+    <h3>التذاكر المفتوحة</h3>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50px;"></th> <!-- عمود السهم -->
+                    <th>عنوان التذكرة</th>
+                    <th>الموظف</th>
+                    <th>المهندس</th>
+                    <th>الإجراء</th>
+                </tr>
+            </thead>
+            <tbody id="openTickets"></tbody>
+        </table>
+    </div>
+</div>
 
+<!-- =======================================================
+====================== PROGRESS TICKETS =================
+======================================================= -->
+<div class="card">
+    <h3>التذاكر تحت العمل</h3>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50px;"></th>
+                    <th>عنوان التذكرة</th>
+                    <th>الموظف</th>
+                    <th>المهندس</th>
+                    <th>الإجراء</th>
+                </tr>
+            </thead>
+            <tbody id="progressTickets"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- =======================================================
+====================== CLOSED TICKETS ===================
+======================================================= -->
+<div class="card">
+    <h3>التذاكر المغلقة</h3>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50px;"></th>
+                    <th>عنوان التذكرة</th>
+                    <th>الموظف</th>
+                    <th>المهندس</th>
+                    <th>الحالة</th>
+                </tr>
+            </thead>
+            <tbody id="closedTickets"></tbody>
+        </table>
     </div>
 </div>
 
@@ -1276,104 +1627,165 @@ Authorization:"Bearer "+SUPABASE_KEY
 return await res.json()
 
 }
+// متغير للاحتفاظ بأكبر معرف تذكرة عند تحميل الصفحة
+let maxTicketIdOnLoad = 0;
+
+async function initLiveNotification() {
+    try {
+        // جلب آخر تذكرة مسجلة فقط لتحديد نقطة البداية
+        let initialData = await fetchAPI(SUPABASE_URL + "tickets?order=id.desc&limit=1");
+        if (initialData && initialData.length > 0) {
+            maxTicketIdOnLoad = initialData[0].id;
+        }
+
+        // بدء الفحص الدوري كل 10 ثوانٍ في الخلفية
+        setInterval(async () => {
+            try {
+                let latestData = await fetchAPI(SUPABASE_URL + "tickets?order=id.desc&limit=1");
+                if (latestData && latestData.length > 0) {
+                    let currentLatestId = latestData[0].id;
+                    
+                    // إذا ظهرت تذكرة بمعرف أكبر، فهذا يعني وجود تذكرة جديدة تماماً
+                    if (currentLatestId > maxTicketIdOnLoad) {
+                        let badge = document.getElementById("liveNotificationBadge");
+                        if (badge) {
+                            badge.style.display = "flex";
+                        }
+                    }
+                }
+            } catch (innerErr) {
+                console.error("خطأ أثناء الفحص الدوري للتذاكر:", innerErr);
+            }
+        }, 10000); // يفحص كل 10 ثوانٍ
+
+    } catch (err) {
+        console.error("خطأ أثناء تهيئة نظام الإشعارات:", err);
+    }
+}
+
+// تشغيل نظام الإشعارات الذكي فوراً
+initLiveNotification();
+
+// دالة تحويل حالة التذكرة إدارياً إلى "تم الحل" (resolved)
+async function closeTicketDirectly(ticketId) {
+    if(!confirm("هل أنت متأكد من تحويل حالة هذه التذكرة إلى (تم الحل) إدارياً؟")) return;
+    
+    try {
+        let response = await fetch(SUPABASE_URL + `tickets?id=eq.${ticketId}`, {
+            method: "PATCH",
+            headers: {
+                apikey: SUPABASE_KEY,
+                Authorization: "Bearer " + SUPABASE_KEY,
+                "Content-Type": "application/json",
+                "Prefer": "return=minimal"
+            },
+            body: JSON.stringify({ 
+                status: "resolved" // 💡 تم التعديل هنا لتصبح الحالة "resolved" بدلاً من "closed"
+            })
+        });
+            
+        if(!response.ok) {
+            alert("حدث خطأ أثناء تحديث حالة التذكرة، يرجى التحقق من اتصال قاعدة البيانات.");
+            return;
+        }
+        
+        alert("تم تحويل حالة التذكرة إلى (تم الحل) بنجاح!");
+        
+        // تحديث الصفحة فوراً لتعكس الحالة والترتيب الجديد
+        window.location.reload();
+        
+    } catch(err) {
+        console.error("خطأ غير متوقع أثناء تحديث الحالة إلى resolved:", err);
+    }
+}
 
 async function loadEngineers(){
+    engineers = await fetchAPI(SUPABASE_URL + "users?role=eq.it");
+    let html = "";
 
-engineers=await fetchAPI(
-SUPABASE_URL+"users?role=eq.it"
-)
+    for(let e of engineers){
+        html += `
+        <tr>
+            <td style="font-weight: bold;">👤 ${e.name}</td>
+            <td>${e.phone || "لا يوجد"}</td>
+            <td>${e.faculty || "غير محدد"}</td>
+        </tr>`;
+    }
+    document.getElementById("engineersTable").innerHTML = html;
 
-let html="<tr><th>الاسم</th><th>الهاتف</th><th>الكلية</th></tr>"
-
-for(let e of engineers){
-
-html+=`<tr>
-<td>${e.name}</td>
-<td>${e.phone||""}</td>
-<td>${e.faculty||""}</td>
-</tr>`
-
-}
-
-document.getElementById("engineersTable").innerHTML=html
-
-let opt="<option value=''>كل المهندسين</option>"
-
-for(let e of engineers){
-opt+=`<option value="${e.id}">${e.name}</option>`
-}
-
-engineerReport.innerHTML=opt
-engineerStats.innerHTML=opt
-
+    // تحديث خيارات الفلاتر الأخرى
+    let opt = "<option value=''>كل المهندسين</option>";
+    for(let e of engineers){
+        opt += `<option value="${e.id}">${e.name}</option>`;
+    }
+    if(typeof engineerReport !== 'undefined') engineerReport.innerHTML = opt;
+    if(typeof engineerStats !== 'undefined') engineerStats.innerHTML = opt;
+    if(document.getElementById("directEngineerSelect")) document.getElementById("directEngineerSelect").innerHTML = opt;
 }
 
 async function loadUsers(){
+    let name = searchName.value;
+    let phone = searchPhone.value;
+    let faculty = facultyFilter.value;
 
-let name=searchName.value
-let phone=searchPhone.value
-let faculty=facultyFilter.value
+    let url = SUPABASE_URL + "users?";
+    let filters = [];
+    if(name) filters.push("name=ilike.*" + name + "*");
+    if(phone) filters.push("phone=ilike.*" + phone + "*");
+    if(faculty) filters.push("faculty=eq." + faculty);
+    url += filters.join("&");
 
-let url=SUPABASE_URL+"users?"
-let filters=[]
+    let data = await fetchAPI(url);
+    let html = "";
 
-if(name)filters.push("name=ilike.*"+name+"*")
-if(phone)filters.push("phone=ilike.*"+phone+"*")
-if(faculty)filters.push("faculty=eq."+faculty)
-
-url+=filters.join("&")
-
-let data=await fetchAPI(url)
-
-let html="<table>"
-
-html+="<tr><th>الاسم</th><th>الهاتف</th><th>الكلية</th><th>الصلاحية</th></tr>"
-
-for(let u of data){
-
-html+=`
-
-<tr>
-
-<td>${u.name}</td>
-<td>${u.phone||""}</td>
-
-<td>
-
-<select onchange="changeFaculty('${u.id}',this.value)">
-
-<option value="pharmacy" ${u.faculty=="pharmacy"?"selected":""}>pharmacy</option>
-<option value="physical_therapy" ${u.faculty=="physical_therapy"?"selected":""}>physical therapy</option>
-<option value="dentistry" ${u.faculty=="dentistry"?"selected":""}>dentistry</option>
-<option value="computer_science" ${u.faculty=="computer_science"?"selected":""}>computer science</option>
-<option value="management" ${u.faculty=="management"?"selected":""}>management</option>
-
-</select>
-
-</td>
-
-<td>
-
-<select onchange="changeRole('${u.id}',this.value)">
-
-<option value="employee" ${u.role=="employee"?"selected":""}>employee</option>
-<option value="it" ${u.role=="it"?"selected":""}>it</option>
-<option value="admin" ${u.role=="admin"?"selected":""}>admin</option>
-
-</select>
-
-</td>
-
-</tr>
-
-`
-
+    for(let u of data){
+        html += `
+        <tr>
+            <td style="font-weight: bold;">👤 ${u.name}</td>
+            <td>${u.phone || "—"}</td>
+            <td>
+                <select onchange="changeFaculty('${u.id}', this.value)" style="height:35px; border-radius:6px; padding:0 5px;">
+                    <option value="pharmacy" ${u.faculty == "pharmacy" ? "selected" : ""}>pharmacy</option>
+                    <option value="physical_therapy" ${u.faculty == "physical_therapy" ? "selected" : ""}>physical therapy</option>
+                    <option value="dentistry" ${u.faculty == "dentistry" ? "selected" : ""}>dentistry</option>
+                    <option value="computer_science" ${u.faculty == "computer_science" ? "selected" : ""}>computer science</option>
+                    <option value="management" ${u.faculty == "management" ? "selected" : ""}>management</option>
+                </select>
+            </td>
+            <td>
+                <select onchange="changeRole('${u.id}', this.value)" style="height:35px; border-radius:6px; padding:0 5px;">
+                    <option value="employee" ${u.role == "employee" ? "selected" : ""}>employee</option>
+                    <option value="it" ${u.role == "it" ? "selected" : ""}>it</option>
+                    <option value="admin" ${u.role == "admin" ? "selected" : ""}>admin</option>
+                </select>
+            </td>
+        </tr>`;
+    }
+    users.innerHTML = html;
 }
+//==================================================
+// دالة إظهار وإخفاء محتوى الكارد بالكامل (الهيدر فقط الظاهر)
+//==================================================
+function toggleCard(cardContentId, headerElement) {
+    let content = document.getElementById(cardContentId);
+    let arrow = headerElement.querySelector('.card-arrow');
 
-html+="</table>"
-
-users.innerHTML=html
-
+    if (content && arrow) {
+        if (content.style.display === "none") {
+            content.style.display = "block";
+            arrow.textContent = "🔼"; // قلب السهم للأعلى عند الفتح
+            
+            // استدعاء البيانات تلقائياً عند فتح القسم لضمان حداثة البيانات
+            if (cardContentId === 'engineersCard') {
+                loadEngineers();
+            } else if (cardContentId === 'usersCard') {
+                loadUsers();
+            }
+        } else {
+            content.style.display = "none";
+            arrow.textContent = "🔽"; // إعادة السهم للأسفل عند الغلق
+        }
+    }
 }
 
 async function changeRole(id,role){
@@ -1443,197 +1855,200 @@ loadTickets()
 
 }
 
-async function addReason(ticket){
+async function addReason(ticketId) {
+    let reasonText = prompt("يرجى إدخال السبب الفني أو تفاصيل الحل للمشكلة:");
+    if (!reasonText || !reasonText.trim()) return;
 
-let reason=prompt("اكتب السبب الفني")
+    try {
+        // إرسال السبب الفني لقاعدة البيانات عبر الـ fetch
+        let response = await fetch(SUPABASE_URL + "ticket_solution", {
+            method: "POST",
+            headers: {
+                apikey: SUPABASE_KEY,
+                Authorization: "Bearer " + SUPABASE_KEY,
+                "Content-Type": "application/json",
+                "Prefer": "return=minimal"
+            },
+            body: JSON.stringify({
+                ticket_id: ticketId,
+                solution_text: reasonText.trim()
+            })
+        });
 
-if(!reason)return
+        if (!response.ok) {
+            alert("حدث خطأ أثناء حفظ السبب الفني.");
+            return;
+        }
 
-let old=await fetchAPI(
-SUPABASE_URL+"ticket_solution?ticket_id=eq."+ticket
-)
+        alert("تم حفظ السبب الفني بنجاح!");
+        
+        // 💡 السطر السحري الناقص: تحديث الصفحة فوراً لتحديث الجداول والبيانات
+        window.location.reload();
 
-let text=reason
-
-if(old.length){
-
-text=reason+" - "+old[0].solution_text
-
-await fetch(SUPABASE_URL+"ticket_solution?ticket_id=eq."+ticket,{
-method:"PATCH",
-headers:{
-apikey:SUPABASE_KEY,
-Authorization:"Bearer "+SUPABASE_KEY,
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-solution_text:text
-})
-})
-
-}else{
-
-await fetch(SUPABASE_URL+"ticket_solution",{
-method:"POST",
-headers:{
-apikey:SUPABASE_KEY,
-Authorization:"Bearer "+SUPABASE_KEY,
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-ticket_id:ticket,
-solution_text:text
-})
-})
-
+    } catch (ex) {
+        console.error("خطأ أثناء إضافة السبب الفني:", ex);
+    }
 }
-
-alert("تم اضافة السبب الفني")
-
-}
-
 async function loadTickets(){
+    // 1. تحميل مستخدمي IT
+    let engineers = await fetchAPI(
+        SUPABASE_URL + "users?role=eq.it&select=id"
+    );
 
-// تحميل مستخدمي IT
-let engineers = await fetchAPI(
-
-    SUPABASE_URL +
-
-    "users?role=eq.it&select=id"
-
-);
-
-// تحميل التذاكر
-let data = await fetchAPI(
-
-    SUPABASE_URL +
-
-    "tickets?select=*,\
+    // 2. تحميل التذاكر مع العلاقات الكاملة
+    let data = await fetchAPI(
+        SUPABASE_URL + "tickets?select=*,\
 creator:users!tickets_created_by_fkey(name,phone),\
 engineer:users!tickets_assigned_to_fkey(id,name),\
 solution:ticket_solution(solution_text)"
+    );
 
-);
+    // استخراج معرفات مستخدمي IT
+    let itIds = engineers.map(e => e.id);
 
-// استخراج معرفات مستخدمي IT
-let itIds = engineers.map(e => e.id);
+    // الاحتفاظ فقط بالتذاكر الموجهة لـ IT
+    data = data.filter(t => itIds.includes(t.assigned_to));
 
-// الاحتفاظ فقط بالتذاكر الموجهة لـ IT
-data = data.filter(
+    let open = "";
+    let progress = "";
+    let closed = "";
 
-    t => itIds.includes(t.assigned_to)
+    // الاسم المستهدف لمنحه الصلاحية الاستثنائية
+    const specialEngineerName = "كريم يوسف حسن ابوشليح";
 
-);
+    // 3. بناء صفوف الجداول والتفاصيل ديناميكياً
+    for(let t of data){
+        let statusClass = "";
+        let statusText = "";
 
-let open=""
-let progress=""
-let closed=""
+        if(t.status == "open"){
+            statusClass = "status-open";
+            statusText = "مفتوحة";
+        }
+        else if(t.status == "in_progress"){
+            statusClass = "status-progress";
+            statusText = "قيد التنفيذ";
+        }
+        else if(t.status == "closed"){
+            statusClass = "status-closed";
+            statusText = "مغلقة";
+        }
 
-for(let t of data){
+        // بناء الصف الأساسي للجدول
+        let rowBlock = `
+        <tr class="ticket-row">
+            <td class="arrow-trigger-cell" onclick="toggleDetails(${t.id}, event)" style="cursor: pointer; text-align: center; font-size: 16px; color: #0d6efd; width: 50px;">
+                <span id="arrow-${t.id}">🔽</span>
+            </td>
+            <td style="font-weight: bold;">🎫 ${t.title}</td>
+            <td>${t.creator?.name || "غير معروف"}</td>
+            <td>${t.engineer?.name || "غير معين"}</td>
+            <td class="action-cell" style="display: flex; gap: 5px; justify-content: center; align-items: center;">
+        `;
 
-let statusClass=""
-let statusText=""
+        // فحص هل التذكرة مرتبطة بالمهندس كريم يوسف حسن ابوشليح
+        let isSpecialEng = t.engineer?.name === specialEngineerName;
 
-if(t.status=="open"){
-    statusClass="status-open"
-    statusText="مفتوحة"
+        if(t.status == "open"){
+            if(isSpecialEng) {
+                // للأدمن: القدرة على إضافة سبب فني مباشرة
+                rowBlock += `
+                <button class="reason" onclick="addReason(${t.id})" style="background:#0d6efd; color:white; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-family:inherit; font-weight:bold;">
+                    ➕ إضافة سبب فني
+                </button>
+                `;
+                // إذا كان هناك سبب فني مضاف مسبقاً، يتيح للأدمن الإغلاق
+                if(t.solution?.solution_text) {
+                    rowBlock += `
+                    <button onclick="closeTicketDirectly(${t.id})" style="background:#198754; color:white; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-family:inherit; font-weight:bold;">
+                        ✅ تم الحل
+                    </button>
+                    `;
+                }
+            } else {
+                rowBlock += `${engineerSelect(t.id)}`;
+            }
+        }
+        else if(t.status == "in_progress"){
+            rowBlock += `
+            <button class="reason" onclick="addReason(${t.id})" style="background:#0d6efd; color:white; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-family:inherit; font-weight:bold;">
+                ➕ إضافة سبب فني
+            </button>
+            `;
+            
+            // للأدمن: إذا كانت التذكرة تتبع كريم ويوجد سبب فني، يظهر زر تم الحل
+            if(isSpecialEng && t.solution?.solution_text) {
+                rowBlock += `
+                <button onclick="closeTicketDirectly(${t.id})" style="background:#198754; color:white; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-family:inherit; font-weight:bold;">
+                    ✅ تم الحل
+                </button>
+                `;
+            }
+        }
+        else if(t.status == "closed"){
+            rowBlock += `
+            <span class="ticket-status ${statusClass}" style="padding:5px 12px; border-radius:6px; font-size:12px; font-weight:bold; display:inline-block;">
+                ${statusText}
+            </span>
+            `;
+        }
+
+        rowBlock += `</td></tr>`;
+
+        // بناء صف كرت التفاصيل المخفي
+        let detailsBlock = `
+        <tr id="details-${t.id}" class="details-row" style="display: none; background: #f8fafc;">
+            <td colspan="5" style="padding: 15px; text-align: right; border-top: none;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; font-size: 14px; line-height: 1.6; color: #333;">
+                    <div><span style="font-weight:bold; color:#0d6efd;">📝 الوصف:</span> ${t.description || "لا يوجد وصف"}</div>
+                    <div><span style="font-weight:bold; color:#0d6efd;">📍 اللوكيشن:</span> ${t.location || "غير محدد"}</div>
+                    <div><span style="font-weight:bold; color:#0d6efd;">📞 رقم الهاتف:</span> ${t.creator?.phone || "غير متوفر"}</div>
+                    <div><span style="font-weight:bold; color:#0d6efd;">⚙️ السبب الفني:</span> ${t.solution?.solution_text || "لم يتم إضافة سبب فني"}</div>
+                </div>
+            </td>
+        </tr>
+        `;
+
+        // توزيع الصفوف بناءً على الحالة
+        if(t.status == "open"){
+            open += rowBlock + detailsBlock;
+        }
+        else if(t.status == "in_progress"){
+            progress += rowBlock + detailsBlock;
+        }
+        else if(t.status == "closed"){
+            closed = rowBlock + detailsBlock + closed;
+        }
+    }
+
+    // 4. حقن الأكواد داخل الجداول
+    openTickets.innerHTML = open;
+    progressTickets.innerHTML = progress;
+    closedTickets.innerHTML = closed;
 }
-else if(t.status=="in_progress"){
-    statusClass="status-progress"
-    statusText="قيد التنفيذ"
-}
-else if(t.status=="closed"){
-    statusClass="status-closed"
-    statusText="مغلقة"
-}
 
-let block = `
 
-<div class="ticket">
+//==================================================
+// دالة الـ Toggle الذكية لإظهار وإخفاء التفاصيل
+//==================================================
+function toggleDetails(ticketId, event) {
+    // حماية الأزرار والقوائم: إذا ضغط المستخدم على السيلكت (التحويل) أو زر السبب الفني، لا يتم إغلاق أو فتح السهم لضمان استقرار العمليات
+    if (event.target.tagName === 'SELECT' || event.target.tagName === 'BUTTON') {
+        return;
+    }
 
-<div class="ticket-top">
+    let detailsRow = document.getElementById(`details-${ticketId}`);
+    let arrowSpan = document.getElementById(`arrow-${ticketId}`);
 
-<div class="ticket-title">
-🎫 ${t.title}
-</div>
-
-<div class="ticket-status ${statusClass}">
-${statusText}
-</div>
-
-</div>
-
-<div class="ticket-body">
-
-<div class="ticket-item">
-<span class="label">📝 الوصف:</span>
-<span class="value">${t.description || "لا يوجد وصف"}</span>
-</div>
-
-<div class="ticket-item">
-<span class="label">📍 اللوكيشن:</span>
-<span class="value">${t.location || "غير محدد"}</span>
-</div>
-
-<div class="ticket-item">
-<span class="label">👤 الموظف:</span>
-<span class="value">${t.creator?.name || "غير معروف"}</span>
-</div>
-
-<div class="ticket-item">
-<span class="label">📞 رقم الهاتف:</span>
-<span class="value">${t.creator?.phone || "غير متوفر"}</span>
-</div>
-
-<div class="ticket-item">
-<span class="label">🛠 المهندس:</span>
-<span class="value">${t.engineer?.name || "غير معين"}</span>
-</div>
-
-<div class="ticket-item">
-<span class="label">⚙ السبب الفني:</span>
-<span class="value">${t.solution?.solution_text || "لم يتم إضافة سبب فني"}</span>
-</div>
-
-</div>
-
-<div class="ticket-actions">
-`
-
-if(t.status=="open"){
-
-block += `
-${engineerSelect(t.id)}
-`
-
-open += block + `</div></div>`
-
-}
-
-else if(t.status=="in_progress"){
-
-block += `
-<button class="reason" onclick="addReason(${t.id})">
-➕ إضافة سبب فني
-</button>
-`
-
-progress += block + `</div></div>`
-
-}
-
-else if(t.status=="closed"){
-
-closed += block + `</div></div>`
-
-}
-
-}
-
-openTickets.innerHTML=open
-progressTickets.innerHTML=progress
-closedTickets.innerHTML=closed
-
+    if (detailsRow && arrowSpan) {
+        if (detailsRow.style.display === "none") {
+            detailsRow.style.display = "table-row";
+            arrowSpan.textContent = "🔼"; // قلب السهم للأعلى عند الفتح
+        } else {
+            detailsRow.style.display = "none";
+            arrowSpan.textContent = "🔽"; // إرجاع السهم للأسفل عند الغلق
+        }
+    }
 }
 
 async function generatePDF(){
@@ -1716,6 +2131,122 @@ link.download="tickets.csv"
 link.click()
 
 }
+
+function toggleAdminOrderForm() {
+    const ticketForm = document.getElementById("createTicketForm");
+    const createTicketBtn = document.getElementById("createTicketBtn");
+
+    if (!ticketForm) return;
+
+    if (ticketForm.style.display === "none" || !ticketForm.classList.contains("active")) {
+        // إظهار النموذج وتفعيل الكلاسات
+        ticketForm.style.display = "block";
+        ticketForm.classList.add("active");
+        if (createTicketBtn) createTicketBtn.classList.add("active");
+
+        // تعبئة الـ Select بالمهندسين المتاحين فوراً من مصفوفة engineers المتوفرة في سكريبت الصفحة
+        let selectHtml = '<option value="">اختر مهندس الـ IT...</option>';
+        if (typeof engineers !== "undefined" && engineers.length > 0) {
+            engineers.forEach(e => {
+                selectHtml += `<option value="${e.id}">${e.name}</option>`;
+            });
+        }
+        let engSelect = document.getElementById("engineerSelect");
+        if (engSelect) engSelect.innerHTML = selectHtml;
+    } else {
+        // إخفاء النموذج
+        ticketForm.style.display = "none";
+        ticketForm.classList.remove("active");
+        if (createTicketBtn) createTicketBtn.classList.remove("active");
+    }
+}
+async function createTicket() {
+    try {
+        // قراءة البيانات المتاحة فقط
+        let title = document.getElementById("title")?.value?.trim() || "";
+        let description = document.getElementById("description")?.value?.trim() || "";
+        let room = document.getElementById("roomNumber")?.value?.trim() || "";
+
+        // التحقق من الحقول الفارغة
+        if (!title || !description || !room) {
+            alert("يرجى إكمال جميع الحقول المطلوبة قبل إرسال التذكرة!");
+            return; // إيقاف التنفيذ
+        }
+
+        // صيغة مكان التذكرة بناءً على رقم الغرفة
+        let ticketLocation = `غرفة رقم ${room}`;
+
+        // قراءة id المهندس المختار بأمان من القائمة المنسدلة
+        let assignedEngineerId = null;
+        let engineerSelectElement = document.getElementById("engineerSelect");
+        assignedEngineerId = engineerSelectElement ? engineerSelectElement.value : null;
+
+        if (!assignedEngineerId) {
+            alert("يرجى اختيار المهندس الفني المطلوب توجيه الأمر إليه أولاً!");
+            return;
+        }
+
+        // قراءة بيانات الآدمن بأمان من الجلسة (sessionStorage)
+        let currentAdmin = JSON.parse(sessionStorage.getItem("user")) || { id: null, faculty: "management" };
+
+        // تنفيذ الإدخال المباشر عبر fetch باستخدام رابط وتأمين الـ REST API الخاص بك
+        let response = await fetch(SUPABASE_URL + "tickets", {
+            method: "POST",
+            headers: {
+                apikey: SUPABASE_KEY,
+                Authorization: "Bearer " + SUPABASE_KEY,
+                "Content-Type": "application/json",
+                "Prefer": "return=minimal"
+            },
+            body: JSON.stringify({
+                title: title,
+                description: description,
+                location: ticketLocation,
+                created_by: currentAdmin.id,
+                faculty: currentAdmin.faculty || "management",
+                assigned_to: assignedEngineerId,
+                status: "in_progress" // التعيين المباشر "قيد التنفيذ" لمهندس محدد
+            })
+        });
+
+        if (!response.ok) {
+            alert("حدث خطأ أثناء إنشاء التذكرة، يرجى التحقق من الاتصال بقاعدة البيانات.");
+            return;
+        }
+
+        // تنظيف الحقول بأمان بعد النجاح
+        if (document.getElementById("description")) document.getElementById("description").value = "";
+        if (document.getElementById("roomNumber")) document.getElementById("roomNumber").value = "";
+
+        // إخفاء نموذج التذكرة وتعديل طريقة العرض
+        const ticketForm = document.getElementById("createTicketForm");
+        const createTicketBtn = document.getElementById("createTicketBtn");
+
+        if (ticketForm) {
+            ticketForm.classList.remove("active");
+            ticketForm.style.display = "none";
+        }
+        if (createTicketBtn) createTicketBtn.classList.remove("active");
+
+        // التحرك والانتقال الناعم إلى مكان التذاكر
+        const ticketsTable = document.querySelector(".tickets-table") || document.getElementById("openTickets");
+        if (ticketsTable) {
+            ticketsTable.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+        
+        alert("تم إرسال الأمر المباشر وبدء التنفيذ فوراً!");
+        
+        // تحديث الصفحة لظهور التذكرة مباشرة
+        window.location.reload();
+
+    } catch (ex) {
+        console.error("خطأ غير متوقع:", ex);
+    }
+}
+
 function goReports(){
 window.location.href="reports.html"
 }
