@@ -1554,9 +1554,29 @@ table {
     </div>
 </div>
 
+
+<div class="card">
+    <h3>التذاكر تم حلها (بانتظار التقييم والإغلاق)</h3>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50px;"></th>
+                    <th>عنوان التذكرة</th>
+                    <th>الموظف</th>
+                    <th>المهندس</th>
+                    <th>الإجراء</th>
+                </tr>
+            </thead>
+            <tbody id="resolvedTickets"></tbody>
+        </table>
+    </div>
+</div>
+
 <!-- =======================================================
 ====================== CLOSED TICKETS ===================
 ======================================================= -->
+
 <div class="card">
     <h3>التذاكر المغلقة</h3>
     <div class="table-responsive">
@@ -1890,143 +1910,253 @@ async function addReason(ticketId) {
     }
 }
 async function loadTickets(){
-    // 1. تحميل مستخدمي IT
-    let engineers = await fetchAPI(
-        SUPABASE_URL + "users?role=eq.it&select=id"
-    );
+    try {
+        // 1. تحميل مستخدمي IT
+        let engineers = await fetchAPI(
+            SUPABASE_URL + "users?role=eq.it&select=id"
+        );
 
-    // 2. تحميل التذاكر مع العلاقات الكاملة
-    let data = await fetchAPI(
-        SUPABASE_URL + "tickets?select=*,\
+        // 2. تحميل التذاكر بدون علاقة التقييم المعقدة لتفادي خطأ 400
+        let data = await fetchAPI(
+            SUPABASE_URL + "tickets?select=*,\
 creator:users!tickets_created_by_fkey(name,phone),\
 engineer:users!tickets_assigned_to_fkey(id,name),\
 solution:ticket_solution(solution_text)"
-    );
+        );
 
-    // استخراج معرفات مستخدمي IT
-    let itIds = engineers.map(e => e.id);
+        // 3. جلب التقييمات باسم الجدول الصحيح (ratings)
+        let ratings = await fetchAPI(
+            SUPABASE_URL + "ratings?select=ticket_id,rating,comment"
+);
 
-    // الاحتفاظ فقط بالتذاكر الموجهة لـ IT
-    data = data.filter(t => itIds.includes(t.assigned_to));
-
-    let open = "";
-    let progress = "";
-    let closed = "";
-
-    // الاسم المستهدف لمنحه الصلاحية الاستثنائية
-    const specialEngineerName = "كريم يوسف حسن ابوشليح";
-
-    // 3. بناء صفوف الجداول والتفاصيل ديناميكياً
-    for(let t of data){
-        let statusClass = "";
-        let statusText = "";
-
-        if(t.status == "open"){
-            statusClass = "status-open";
-            statusText = "مفتوحة";
+        // الحماية: التأكد من أن البيانات راجعة كمصفوفات
+        if (!Array.isArray(data)) {
+            console.error("خطأ في جلب التذاكر:", data);
+            return;
         }
-        else if(t.status == "in_progress"){
-            statusClass = "status-progress";
-            statusText = "قيد التنفيذ";
-        }
-        else if(t.status == "closed"){
-            statusClass = "status-closed";
-            statusText = "مغلقة";
-        }
+        if (!Array.isArray(ratings)) ratings = [];
 
-        // بناء الصف الأساسي للجدول
-        let rowBlock = `
-        <tr class="ticket-row">
-            <td class="arrow-trigger-cell" onclick="toggleDetails(${t.id}, event)" style="cursor: pointer; text-align: center; font-size: 16px; color: #0d6efd; width: 50px;">
-                <span id="arrow-${t.id}">🔽</span>
-            </td>
-            <td style="font-weight: bold;">🎫 ${t.title}</td>
-            <td>${t.creator?.name || "غير معروف"}</td>
-            <td>${t.engineer?.name || "غير معين"}</td>
-            <td class="action-cell" style="display: flex; gap: 5px; justify-content: center; align-items: center;">
-        `;
+        // دمج بيانات التقييم داخل كل تذكرة
+        data = data.map(t => {
+            let r = ratings.find(item => item.ticket_id === t.id);
+            return {
+                ...t,
+                rating: r || null
+            };
+        });
 
-        // فحص هل التذكرة مرتبطة بالمهندس كريم يوسف حسن ابوشليح
-        let isSpecialEng = t.engineer?.name === specialEngineerName;
+        // استخراج معرفات مستخدمي IT
+        let itIds = Array.isArray(engineers) ? engineers.map(e => e.id) : [];
 
-        if(t.status == "open"){
-            if(isSpecialEng) {
-                // للأدمن: القدرة على إضافة سبب فني مباشرة
+        // الاحتفاظ فقط بالتذاكر الموجهة لـ IT
+        data = data.filter(t => itIds.includes(t.assigned_to));
+
+        let open = "";
+        let progress = "";
+        let resolved = "";
+        let closed = "";
+
+        // الاسم المستهدف لمنحه الصلاحية الاستثنائية
+        const specialEngineerName = "كريم يوسف حسن ابوشليح";
+
+        // 4. بناء صفوف الجداول والتفاصيل ديناميكياً
+        for(let t of data){
+            let statusClass = "";
+            let statusText = "";
+
+            if(t.status == "open"){
+                statusClass = "status-open";
+                statusText = "مفتوحة";
+            }
+            else if(t.status == "in_progress"){
+                statusClass = "status-progress";
+                statusText = "قيد التنفيذ";
+            }
+            else if(t.status == "resolved"){
+                statusClass = "status-resolved";
+                statusText = "تم الحل";
+            }
+            else if(t.status == "closed"){
+                statusClass = "status-closed";
+                statusText = "مغلقة";
+            }
+
+            // بناء الصف الأساسي للجدول
+            let rowBlock = `
+            <tr class="ticket-row">
+                <td class="arrow-trigger-cell" onclick="toggleDetails(${t.id}, event)" style="cursor: pointer; text-align: center; font-size: 16px; color: #0d6efd; width: 50px;">
+                    <span id="arrow-${t.id}">🔽</span>
+                </td>
+                <td style="font-weight: bold;">🎫 ${t.title}</td>
+                <td>${t.creator?.name || "غير معروف"}</td>
+                <td>${t.engineer?.name || "غير معين"}</td>
+                <td class="action-cell" style="display: flex; gap: 5px; justify-content: center; align-items: center;">
+            `;
+
+            // فحص هل التذكرة مرتبطة بالمهندس كريم يوسف حسن ابوشليح
+            let isSpecialEng = t.engineer?.name === specialEngineerName;
+
+            if(t.status == "open"){
+                if(isSpecialEng) {
+                    rowBlock += `
+                    <button class="reason" onclick="addReason(${t.id})" style="background:#0d6efd; color:white; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-family:inherit; font-weight:bold;">
+                        ➕ إضافة سبب فني
+                    </button>
+                    `;
+                    if(t.solution?.solution_text) {
+                        rowBlock += `
+                        <button onclick="closeTicketDirectly(${t.id})" style="background:#198754; color:white; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-family:inherit; font-weight:bold;">
+                            ✅ تم الحل
+                        </button>
+                        `;
+                    }
+                } else {
+                    rowBlock += `${engineerSelect(t.id)}`;
+                }
+            }
+            else if(t.status == "in_progress"){
                 rowBlock += `
                 <button class="reason" onclick="addReason(${t.id})" style="background:#0d6efd; color:white; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-family:inherit; font-weight:bold;">
                     ➕ إضافة سبب فني
                 </button>
                 `;
-                // إذا كان هناك سبب فني مضاف مسبقاً، يتيح للأدمن الإغلاق
-                if(t.solution?.solution_text) {
+                
+                if(isSpecialEng && t.solution?.solution_text) {
                     rowBlock += `
                     <button onclick="closeTicketDirectly(${t.id})" style="background:#198754; color:white; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-family:inherit; font-weight:bold;">
                         ✅ تم الحل
                     </button>
                     `;
                 }
-            } else {
-                rowBlock += `${engineerSelect(t.id)}`;
             }
-        }
-        else if(t.status == "in_progress"){
-            rowBlock += `
-            <button class="reason" onclick="addReason(${t.id})" style="background:#0d6efd; color:white; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-family:inherit; font-weight:bold;">
-                ➕ إضافة سبب فني
-            </button>
-            `;
-            
-            // للأدمن: إذا كانت التذكرة تتبع كريم ويوجد سبب فني، يظهر زر تم الحل
-            if(isSpecialEng && t.solution?.solution_text) {
+            else if(t.status == "resolved"){
                 rowBlock += `
-                <button onclick="closeTicketDirectly(${t.id})" style="background:#198754; color:white; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-family:inherit; font-weight:bold;">
-                    ✅ تم الحل
+                <button onclick="closeAndRateTicket(${t.id})" style="background:#6c757d; color:white; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-family:inherit; font-weight:bold;">
+                    ⭐ تقييم وإغلاق التذكرة
                 </button>
                 `;
             }
-        }
-        else if(t.status == "closed"){
-            rowBlock += `
-            <span class="ticket-status ${statusClass}" style="padding:5px 12px; border-radius:6px; font-size:12px; font-weight:bold; display:inline-block;">
-                ${statusText}
-            </span>
+            else if(t.status == "closed"){
+                rowBlock += `
+                <span class="ticket-status ${statusClass}" style="padding:5px 12px; border-radius:6px; font-size:12px; font-weight:bold; display:inline-block;">
+                    ${statusText}
+                </span>
+                `;
+            }
+
+            rowBlock += `</td></tr>`;
+
+            // استخراج تفاصيل التقييم
+            let ratingText = t.rating?.rating ? `⭐ ${t.rating.rating} من 5` : "لم يتم التقييم بعد";
+            if(t.rating?.comment) ratingText += ` (${t.rating.comment})`;
+
+            // بناء صف كرت التفاصيل المخفي
+            let detailsBlock = `
+            <tr id="details-${t.id}" class="details-row" style="display: none; background: #f8fafc;">
+                <td colspan="5" style="padding: 15px; text-align: right; border-top: none;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; font-size: 14px; line-height: 1.6; color: #333;">
+                        <div><span style="font-weight:bold; color:#0d6efd;">📝 الوصف:</span> ${t.description || "لا يوجد وصف"}</div>
+                        <div><span style="font-weight:bold; color:#0d6efd;">📍 اللوكيشن:</span> ${t.location || "غير محدد"}</div>
+                        <div><span style="font-weight:bold; color:#0d6efd;">📞 رقم الهاتف:</span> ${t.creator?.phone || "غير متوفر"}</div>
+                        <div><span style="font-weight:bold; color:#0d6efd;">⚙️ السبب الفني:</span> ${t.solution?.solution_text || "لم يتم إضافة سبب فني"}</div>
+                        <div><span style="font-weight:bold; color:#0d6efd;">⭐ التقييم:</span> ${ratingText}</div>
+                    </div>
+                </td>
+            </tr>
             `;
+
+            // توزيع الصفوف بناءً على الحالة
+            if(t.status == "open"){
+                open += rowBlock + detailsBlock;
+            }
+            else if(t.status == "in_progress"){
+                progress += rowBlock + detailsBlock;
+            }
+            else if(t.status == "resolved"){
+                resolved += rowBlock + detailsBlock;
+            }
+            else if(t.status == "closed"){
+                closed = rowBlock + detailsBlock + closed;
+            }
         }
 
-        rowBlock += `</td></tr>`;
+        // 5. حقن الأكواد داخل الجداول بالأمان مع وجود العناصر
+        let openEl = document.getElementById("openTickets");
+        let progEl = document.getElementById("progressTickets");
+        let resEl = document.getElementById("resolvedTickets");
+        let closEl = document.getElementById("closedTickets");
 
-        // بناء صف كرت التفاصيل المخفي
-        let detailsBlock = `
-        <tr id="details-${t.id}" class="details-row" style="display: none; background: #f8fafc;">
-            <td colspan="5" style="padding: 15px; text-align: right; border-top: none;">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; font-size: 14px; line-height: 1.6; color: #333;">
-                    <div><span style="font-weight:bold; color:#0d6efd;">📝 الوصف:</span> ${t.description || "لا يوجد وصف"}</div>
-                    <div><span style="font-weight:bold; color:#0d6efd;">📍 اللوكيشن:</span> ${t.location || "غير محدد"}</div>
-                    <div><span style="font-weight:bold; color:#0d6efd;">📞 رقم الهاتف:</span> ${t.creator?.phone || "غير متوفر"}</div>
-                    <div><span style="font-weight:bold; color:#0d6efd;">⚙️ السبب الفني:</span> ${t.solution?.solution_text || "لم يتم إضافة سبب فني"}</div>
-                </div>
-            </td>
-        </tr>
-        `;
+        if(openEl) openEl.innerHTML = open;
+        if(progEl) progEl.innerHTML = progress;
+        if(resEl) resEl.innerHTML = resolved;
+        if(closEl) closEl.innerHTML = closed;
 
-        // توزيع الصفوف بناءً على الحالة
-        if(t.status == "open"){
-            open += rowBlock + detailsBlock;
-        }
-        else if(t.status == "in_progress"){
-            progress += rowBlock + detailsBlock;
-        }
-        else if(t.status == "closed"){
-            closed = rowBlock + detailsBlock + closed;
-        }
+    } catch (err) {
+        console.error("خطأ أثناء تحميل التذاكر:", err);
     }
-
-    // 4. حقن الأكواد داخل الجداول
-    openTickets.innerHTML = open;
-    progressTickets.innerHTML = progress;
-    closedTickets.innerHTML = closed;
 }
 
+async function closeAndRateTicket(ticketId) {
+    // 1. طلب التقييم بالنجوم من الأدمن
+    let ratingInput = prompt("ادخل التقييم الرقمي للخدمة (من 1 إلى 5):", "5");
+    if (ratingInput === null) return; // إلغاء العملية
+
+    let ratingNum = parseInt(ratingInput.trim());
+    if (isNaN(ratingNum) || ratingNum < 1 || ratingNum > 5) {
+        alert("يرجى إدخال رقم صحيح بين 1 و 5.");
+        return;
+    }
+
+    // 2. طلب ملاحظة اختيارية
+    let commentInput = prompt("أضف ملاحظة أو تعليق على التقييم (اختياري):", "");
+
+    try {
+        // أ) تسجيل التقييم في جدول ratings الصحيح
+        let rateResponse = await fetch(SUPABASE_URL + "ratings", {
+            method: "POST",
+            headers: {
+                apikey: SUPABASE_KEY,
+                Authorization: "Bearer " + SUPABASE_KEY,
+                "Content-Type": "application/json",
+                "Prefer": "return=minimal"
+            },
+            body: JSON.stringify({
+                ticket_id: ticketId,
+                rating: ratingNum,
+                comment: commentInput ? commentInput.trim() : null
+            })
+        });
+
+        if (!rateResponse.ok) {
+            console.warn("تنبيه: قد يكون هناك تقييم مسجل مسبقاً لهذه التذكرة.");
+        }
+
+        // ب) تحويل حالة التذكرة نهائياً إلى مغلقة (closed)
+        let updateResponse = await fetch(SUPABASE_URL + `tickets?id=eq.${ticketId}`, {
+            method: "PATCH",
+            headers: {
+                apikey: SUPABASE_KEY,
+                Authorization: "Bearer " + SUPABASE_KEY,
+                "Content-Type": "application/json",
+                "Prefer": "return=minimal"
+            },
+            body: JSON.stringify({
+                status: "closed"
+            })
+        });
+
+        if (!updateResponse.ok) {
+            alert("حدث خطأ أثناء إغلاق التذكرة.");
+            return;
+        }
+
+        alert("تم تقييم التذكرة وإغلاقها بنجاح!");
+        window.location.reload();
+
+    } catch (err) {
+        console.error("خطأ أثناء إغلاق وتقييم التذكرة:", err);
+    }
+}
 
 //==================================================
 // دالة الـ Toggle الذكية لإظهار وإخفاء التفاصيل
