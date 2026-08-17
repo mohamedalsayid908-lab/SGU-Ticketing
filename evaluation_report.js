@@ -237,24 +237,24 @@ function formatMinutes(minutes){
 // تقييم سرعة الحل (محدث بناءً على الشروط الجديدة)
 //==================================================
 function getSpeedRate(minutes, solvedTickets){
-    // إذا كان عدد التذاكر المحلولة 0، يعني لم يحل شيئاً بعد -> التقييم "لا يوجد" حتماً
+
     if (solvedTickets === 0 || minutes == null || minutes <= 0) {
         return "لا يوجد";
     }
 
-    // من دقيقة واحدة إلى 60 دقيقة
+
     if(minutes <= 60)
         return "ممتاز";
 
-    // من 61 دقيقة إلى 120 دقيقة
+
     if(minutes <= 120)
         return "جيد جداً";
 
-    // من 121 دقيقة إلى 380 دقيقة
+
     if(minutes <= 380)
         return "جيد";
 
-    // دون ذلك (أكثر من 380 دقيقة)
+
     return "ضعيف";
 }
 
@@ -272,7 +272,7 @@ function getRateClass(rate){
         case "مقبول":
             return "rate-average";
         case "لا يوجد":
-            return "rate-none"; // كلاس اختياري للتقييم الفارغ
+            return "rate-none"; 
         default:
             return "rate-poor";
     }
@@ -317,7 +317,7 @@ function calculateEngineerStatistics(list){
     let solvedTickets = 0;
 
     for(let t of list){
-        // التذكرة التي لا تملك حلاً فنياً (مثل التذاكر المفتوحة أو قيد التنفيذ) يتم تخطيها تماماً من الحساب
+
         if(!t.solution || !t.solution.created_at)
             continue;
 
@@ -327,19 +327,17 @@ function calculateEngineerStatistics(list){
             continue;
 
         t.solveMinutes = minutes;
-        totalMinutes += minutes; // تجميع الأوقات للتذاكر المنتهية فقط
-        solvedTickets++;         // زيادة عدد التذاكر التي تم حلها فعلياً
+        totalMinutes += minutes; 
+        solvedTickets++;        
     }
 
     let avgMinutes = 0;
     let speedRate = "لا يوجد";
 
-    // تطبيق المنطق العادل: توزيع الوقت الإجمالي على عدد التذاكر التي تم حلها فقط
     if(solvedTickets > 0){
         avgMinutes = Math.round(totalMinutes / solvedTickets);
-        speedRate = getSpeedRate(avgMinutes, solvedTickets); // تمرير عدد التذاكر للتحقق الآمن
+        speedRate = getSpeedRate(avgMinutes, solvedTickets);
     } else {
-        // إذا لم يتم حل أي تذكرة بعد، نضمن أن التقييم يخرج "لا يوجد"
         speedRate = "لا يوجد";
         avgMinutes = 0;
     }
@@ -358,10 +356,9 @@ function calculateEngineerStatistics(list){
 function formatDate(date) {
     if (!date) return "-";
 
-    // تحويل القيمة الحالية إلى نص لمعالجتها
+   
     let dateStr = String(date);
 
-    // إذا كان التوقيت قادماً من الخادم بدون تحديد المنطقة الزمنية (Z أو +)، نقوم بإضافتها ليتم احتساب فارق التوقيت
     if (!dateStr.includes("Z") && !dateStr.includes("+")) {
         dateStr += "Z";
     }
@@ -372,7 +369,7 @@ function formatDate(date) {
         day: "2-digit",
         hour: "2-digit",
         minute: "2-digit",
-        hour12: true // يُفضل استخدام نظام 12 ساعة لبيان (صباحاً/مساءً) بوضوح في التقارير
+        hour12: true 
     });
 }
 
@@ -384,15 +381,13 @@ function countStatus(list,status){
     return list.filter(t=>t.status==status).length;
 }
 
-//==================================================
-// وظيفة محاكاة تصدير ملف الـ Excel 
-//==================================================
+
 function generateExcel() {
     alert("تم تجهيز التقرير للتصدير بصيغة Excel.");
 }
 
 //==================================================
-// دالة بناء وعرض التقرير الأساسية داخل الصفحة (viewReport)
+// دالة بناء وعرض التقرير الأساسية داخل الصفحة 
 //==================================================
 
 async function viewReport(){
@@ -406,7 +401,7 @@ async function viewReport(){
 
     let html="";
 
-    // فلترة المهندسين المستهدفين بناءً على الفلتر المختار
+  
     let targetEngineers = engineers;
     if(selectedEng){
         targetEngineers = engineers.filter(e => e.id == selectedEng);
@@ -431,7 +426,7 @@ async function viewReport(){
 
         let totalPages=Math.ceil(list.length/ROWS_PER_PAGE);
 
-        // صفحات بيانات التذاكر
+  
         for(let page=0;page<totalPages;page++){
 
             let rows=list.slice(page*ROWS_PER_PAGE, (page+1)*ROWS_PER_PAGE);
@@ -448,95 +443,108 @@ async function viewReport(){
                 </div>
             `;
 
-            // بيانات المهندس تظهر في الصفحة الأولى فقط
-            if(page==0){
-                html+=`
-                <h3>بيانات المهندس</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>الاسم</th>
-                            <th>الهاتف</th>
-                            <th>الكلية</th>
-                            <th>عدد التذاكر</th>
-                            <th>متوسط زمن الحل</th>
-                            <th>تقييم السرعة</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>${engineer.name}</td>
-                            <td>${engineer.phone||""}</td>
-                            <td>${engineer.faculty||""}</td>
-                            <td>${list.length}</td>
-                            <td>${formatMinutes(stats.avgMinutes)}</td>
-                            <td>
-                                <span class="${getRateClass(stats.speedRate)}">
-                                    ${stats.speedRate}
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                `;
-            }
+       
+        const facultyTranslations = {
+            "pharmacy": "كلية الصيدلة",
+            "computer_science": "كلية الحاسبات والمعلومات",
+            "physical_therapy": "كلية العلاج الطبيعي",
+            "management": "كلية الإدارة",
+            "dentistry": "كلية طب الأسنان"
+        };
 
-            html+=`
-            <h3>تفاصيل التذاكر</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>الموظف</th>
-                        <th>الكلية</th>
-                        <th>الهاتف</th>
-                        <th>العنوان</th>
-                        <th>الوصف</th>
-                        <th>الموقع</th>
-                        <th>تاريخ الإنشاء</th>
-                        <th>تاريخ الحل</th>
-                        <th>الوقت المستغرق</th>
-                        <th>السبب الفني</th>
-                        <th>التقييم</th>
-                        <th>الحالة</th>
-                    </tr>
-                </thead>
-                <tbody>
-            `;
+     
+        if (page == 0) {          
+    
+    const facultyArabic = facultyTranslations[engineer.faculty] || engineer.faculty || "";
 
-            // السجلات داخل الصفحة الحالية
-            for(let t of rows){
-                let minutes=getMinutes(t.created_at, t.solution?.created_at);
-
-                html+=`
-                <tr>
-                    <td>${t.creator?.name||""}</td>
-                    <td>${t.creator?.faculty||""}</td>
-                    <td>${t.creator?.phone||""}</td>
-                    <td>${t.title||""}</td>
-                    <td>${t.description||""}</td>
-                    <td>${t.location||""}</td>
-                    <td>${formatDate(t.created_at)}</td>
-                    <td>${formatDate(t.solution?.created_at)}</td>
-                    <td>${formatMinutes(minutes)}</td>
-                    <td>${t.solution?.solution_text||""}</td>
-                    <td>${t.rating?.rating??"-"}</td>
-                    <td>${t.status}</td>
-                </tr>
-                `;
-            }
-
-            html+=`
-                </tbody>
-            </table>
-            <div class="page-footer">
-                <div>المهندس : <b>${engineer.name}</b></div>
-                <div>صفحة ${page+1} من ${totalPages}</div>
-            </div>
-            </div>
-            `;
+    html += `
+    <h3>بيانات المهندس</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>الاسم</th>
+                <th>الهاتف</th>
+                <th>الكلية</th>
+                <th>عدد التذاكر</th>
+                <th>متوسط زمن الحل</th>
+                <th>تقييم السرعة</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>${engineer.name}</td>
+                <td>${engineer.phone || ""}</td>
+                <td>${facultyArabic}</td>
+                <td>${list.length}</td>
+                <td>${formatMinutes(stats.avgMinutes)}</td>
+                <td>
+                    <span class="${getRateClass(stats.speedRate)}">
+                        ${stats.speedRate}
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    `;
         }
 
-        // صفحة الملخص لكل مهندس
+            html += `
+<h3>تفاصيل التذاكر</h3>
+<table>
+    <thead>
+        <tr>
+            <th>الموظف</th>
+            <th>الكلية</th>
+            <th>الهاتف</th>
+            <th>العنوان</th>
+            <th>الوصف</th>
+            <th>الموقع</th>
+            <th>تاريخ الإنشاء</th>
+            <th>تاريخ الحل</th>
+            <th>الوقت المستغرق</th>
+            <th>السبب الفني</th>
+            <th>التقييم</th>
+            <th>الحالة</th>
+        </tr>
+    </thead>
+    <tbody>
+`;
+
+
+for (let t of rows) {
+    let minutes = getMinutes(t.created_at, t.solution?.created_at);
+
+   
+    const creatorFacultyArabic = facultyTranslations[t.creator?.faculty] || t.creator?.faculty || "";
+
+    html += `
+    <tr>
+        <td>${t.creator?.name || ""}</td>
+        <td>${creatorFacultyArabic}</td>
+        <td>${t.creator?.phone || ""}</td>
+        <td>${t.title || ""}</td>
+        <td>${t.description || ""}</td>
+        <td>${t.location || ""}</td>
+        <td>${formatDate(t.created_at)}</td>
+        <td>${formatDate(t.solution?.created_at)}</td>
+        <td>${formatMinutes(minutes)}</td>
+        <td>${t.solution?.solution_text || ""}</td>
+        <td>${t.rating?.rating ?? "-"}</td>
+        <td>${t.status}</td>
+    </tr>
+    `;
+}
+
+html += `
+    </tbody>
+</table>
+<div class="page-footer">
+    <div>المهندس : <b>${engineer.name}</b></div>
+    <div>صفحة ${page + 1} من ${totalPages}</div>
+</div>
+</div>
+`;
+        }
         html+=`
         <div class="report-page">
             <div class="header-flex">
@@ -631,7 +639,7 @@ async function viewReport(){
 }
 
 //===================================================================
-// 5. دوال اختيار الحقول والطباعة الاحترافية عبر المتصفح (PDF نصوص تفاعلية)
+// 5. دوال اختيار الحقول والطباعة الاحترافية عبر المتصفح 
 //===================================================================
 
 function generatePDF() {
