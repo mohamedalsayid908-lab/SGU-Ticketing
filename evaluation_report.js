@@ -386,6 +386,20 @@ function generateExcel() {
     alert("تم تجهيز التقرير للتصدير بصيغة Excel.");
 }
 
+
+// دالة ترجمة حالة التذكرة
+function translateStatus(statusKey) {
+    const statusTranslations = {
+        "open": "مفتوحة",
+        "assigned": "تم التعيين",
+        "in_progress": "قيد التنفيذ",
+        "resolved": "تم الحل",
+        "waiting_confirmation": "في انتظار التأكيد",
+        "closed": "مغلقة"
+    };
+
+    return statusTranslations[statusKey] || statusKey || "-";
+}
 //==================================================
 // دالة بناء وعرض التقرير الأساسية داخل الصفحة 
 //==================================================
@@ -496,14 +510,14 @@ async function viewReport(){
             <th>الموظف</th>
             <th>الكلية</th>
             <th>الهاتف</th>
-            <th>العنوان</th>
-            <th>الوصف</th>
+            <th>عنوان التذكرة</th>
+            <th>وصف التذكرة</th>
             <th>الموقع</th>
             <th>تاريخ الإنشاء</th>
             <th>تاريخ الحل</th>
-            <th>الوقت المستغرق</th>
+            <th>مدة الحل</th>
             <th>السبب الفني</th>
-            <th>التقييم</th>
+            <th>تقييم مقدم التذكرة</th>
             <th>الحالة</th>
         </tr>
     </thead>
@@ -530,9 +544,9 @@ for (let t of rows) {
         <td>${formatMinutes(minutes)}</td>
         <td>${t.solution?.solution_text || ""}</td>
         <td>${t.rating?.rating ?? "-"}</td>
-        <td>${t.status}</td>
+        <td>${translateStatus(t.status)}</td>
     </tr>
-    `;
+   `;
 }
 
 html += `
@@ -550,13 +564,13 @@ html += `
             <div class="header-flex">
                 <img src="photo/logo.png" width="85" onerror="this.src='https://via.placeholder.com/85'">
                 <div class="center-title">
-                    <h2>ملخص التقرير</h2>
+                    <h2>ملخص المهندس</h2>
                     <div>${engineer.name}</div>
                 </div>
                 <div>${new Date().toLocaleDateString("ar-EG")}</div>
             </div>
             
-            <h3>الإحصائيات النهائية</h3>
+            <h3>احصائية المهندس</h3>
             <table>
                 <thead>
                     <tr>
@@ -567,7 +581,7 @@ html += `
                         <th>مغلقة</th>
                         <th>إجمالي زمن الحل</th>
                         <th>متوسط زمن الحل</th>
-                        <th>تقييم السرعة</th>
+                        <th>تقييم سرعة الحل</th>
                         <th>متوسط تقييم المستخدم</th>
                     </tr>
                 </thead>
