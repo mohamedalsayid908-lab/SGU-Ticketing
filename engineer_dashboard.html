@@ -2105,6 +2105,35 @@ loadTickets()
 )
 .subscribe()
 
+// منع القائمة المنسدلة عند الضغط بزر الفأرة الأيمن
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // منع اختصارات لوحة المفاتيح الخاصة بأدوات المطور
+    document.addEventListener('keydown', function(e) {
+        // منع F12
+        if (e.key === "F12") {
+            e.preventDefault();
+        }
+        // منع Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+            e.preventDefault();
+        }
+        // منع Ctrl+U (عرض مصدر الصفحة)
+        if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+            e.preventDefault();
+        }
+    });
+    setInterval(function() {
+        const startTime = performance.now();
+        debugger; // يوقف تنفيذ الكود إذا كانت أدوات المطور مفتوحة
+        const endTime = performance.now();
+        if (endTime - startTime > 100) {
+            // إذا اكتشف فتح F12، يتم توجيه المستخدم أو إعادة تحميل الصفحة
+            window.location.reload();
+        }
+    }, 1000);
 </script>
 
 </body>

@@ -510,14 +510,14 @@ async function viewReport(){
             <th>الموظف</th>
             <th>الكلية</th>
             <th>الهاتف</th>
-            <th>عنوان التذكرة</th>
-            <th>وصف التذكرة</th>
+            <th>العنوان</th>
+            <th>الوصف</th>
             <th>الموقع</th>
             <th>تاريخ الإنشاء</th>
             <th>تاريخ الحل</th>
-            <th>مدة الحل</th>
+            <th>الوقت المستغرق</th>
             <th>السبب الفني</th>
-            <th>تقييم مقدم التذكرة</th>
+            <th>التقييم</th>
             <th>الحالة</th>
         </tr>
     </thead>
@@ -564,13 +564,13 @@ html += `
             <div class="header-flex">
                 <img src="photo/logo.png" width="85" onerror="this.src='https://via.placeholder.com/85'">
                 <div class="center-title">
-                    <h2>ملخص المهندس</h2>
+                    <h2>ملخص التقرير</h2>
                     <div>${engineer.name}</div>
                 </div>
                 <div>${new Date().toLocaleDateString("ar-EG")}</div>
             </div>
             
-            <h3>احصائية المهندس</h3>
+            <h3>الإحصائيات النهائية</h3>
             <table>
                 <thead>
                     <tr>
@@ -581,7 +581,7 @@ html += `
                         <th>مغلقة</th>
                         <th>إجمالي زمن الحل</th>
                         <th>متوسط زمن الحل</th>
-                        <th>تقييم سرعة الحل</th>
+                        <th>تقييم السرعة</th>
                         <th>متوسط تقييم المستخدم</th>
                     </tr>
                 </thead>
@@ -790,3 +790,33 @@ function executeBrowserPrint(selectedIndices) {
     `);
     printWindow.document.close();
 }
+
+// منع القائمة المنسدلة عند الضغط بزر الفأرة الأيمن
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // منع اختصارات لوحة المفاتيح الخاصة بأدوات المطور
+    document.addEventListener('keydown', function(e) {
+        // منع F12
+        if (e.key === "F12") {
+            e.preventDefault();
+        }
+        // منع Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+            e.preventDefault();
+        }
+        // منع Ctrl+U (عرض مصدر الصفحة)
+        if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+            e.preventDefault();
+        }
+    });
+    setInterval(function() {
+        const startTime = performance.now();
+        debugger; // يوقف تنفيذ الكود إذا كانت أدوات المطور مفتوحة
+        const endTime = performance.now();
+        if (endTime - startTime > 100) {
+            // إذا اكتشف فتح F12، يتم توجيه المستخدم أو إعادة تحميل الصفحة
+            window.location.reload();
+        }
+    }, 1000);
