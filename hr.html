@@ -2332,6 +2332,40 @@ font-weight:500;
     background: linear-gradient(135deg, #e6b800, #cca300);
     box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+
+
+/* تنسيق زر طلباتي القديمة / الأرشيف */
+.btn-archive {
+    background-color: #f8f9fa;
+    color: #495057;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* تأثير التمرير (Hover) */
+.btn-archive:hover {
+    background-color: #0d6efd;
+    color: #ffffff;
+    border-color: #0d6efd;
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.25);
+    transform: translateY(-1px);
+}
+
+/* تأثير الضغط (Active) */
+.btn-archive:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
 </style>
 
 </head>
@@ -2452,7 +2486,13 @@ font-weight:500;
     </div>
 <!-- قسم تذاكر الاعتماد -->
 <div class="card my-approval-tickets-card">
-    <h3>'طلبات ' الاعتماد الخاصّة بي</h3>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h3>'طلبات ' الاعتماد الخاصّة بي</h3>
+        <!-- زر التبديل بين الطلبات الحالية والأرشيف -->
+        <button id="toggleArchiveBtn" class="btn-archive" onclick="toggleArchiveView()">
+    📁 طلباتي القديمة (المعتمدة)
+        </button>
+    </div>
     
     <div class="table-responsive">
         <table class="tickets-table">
@@ -2505,13 +2545,13 @@ font-weight:500;
 <footer class="main-footer">
 
     <div class="social">
-
-        <a href="#">F</a>
-        <a href="#">Y</a>
-        <a href="#">L</a>
-        <a href="#">W</a>
-        <a href="#">E</a>
-
+        <a href="https://www.facebook.com/share/18NjzVPKGe/">D</a>
+        <a href="https://www.facebook.com/share/18NjzVPKGe/">E</a>
+        <a href="https://www.facebook.com/share/18NjzVPKGe/">M</a>
+        <a href="https://www.facebook.com/share/18NjzVPKGe/">A</a>
+        <a href="https://www.facebook.com/share/18NjzVPKGe/">H</a>
+        <a href="https://www.facebook.com/share/18NjzVPKGe/">O</a>
+        <a href="https://www.facebook.com/share/18NjzVPKGe/">M</a>
     </div>
 
     <div class="footer-text">
@@ -3441,12 +3481,16 @@ async function deleteTicket(ticketId, status) {
 // =======================================================
 // جلب وعرض تذاكر الاعتماد الخاصة بالموظف الحالي (محدثة بالكامل)
 // =======================================================
+// متغير لتتبع الحالة الحالية (false = عرض الطلبات الحالية/النشطة والمرفوضة، true = عرض الطلبات المعتمدة والمغلقة)
+let showArchivedTickets = false;
+let cachedApprovalTickets = []; // تخزين التذاكر لتجنب إعادة الاستعلام من قاعدة البيانات عند التبديل
+
 async function loadMyApprovalTickets() {
     try {
         const tableBody = document.getElementById("approvalTicketsTableBody");
         if (!tableBody) return;
 
-        // جلب تذاكر الاعتماد للمستخدم الحالي مع تفاصيل اسم العميد المعتمد وسبب الرفض
+        // جلب جميع تذاكر المستخدم مرة واحدة وترتيبها
         const { data: tickets, error } = await supabaseClient
             .from("approval_tickets")
             .select(`
@@ -3468,50 +3512,87 @@ async function loadMyApprovalTickets() {
             return;
         }
 
-        if (!tickets || tickets.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#333;">لا توجد تذاكر اعتماد حالية.</td></tr>`;
-            return;
-        }
-
-        // بناء صفوف الجدول
-        tableBody.innerHTML = tickets.map(ticket => {
-            // 1. تحديد اسم العميد
-            const deanName = ticket.dean?.name ? `أ.د/ ${ticket.dean.name}` : "لم يحدد بعد";
-            
-            // 2. رد شؤون العاملين
-            const hrResponse = ticket.hr_response || "—";
-            
-            // 3. حالة الطلب مع إضافة سبب الرفض عند وجوده
-            let statusBadge = getStatusBadgeHTML(ticket.status);
-            if (ticket.status === 'rejected_by_dean' && ticket.rejection_reason) {
-                statusBadge += `
-                    <div style="color: #dc3545; font-size: 12px; margin-top: 5px; font-weight: bold;">
-                        سبب الرفض: ${escapeHtml(ticket.rejection_reason)}
-                    </div>`;
-            }
-
-            // 4. إمكانية الحذف (مسموحة ما لم يكتمل الطلب نهائياً من شؤون العاملين)
-            const canDelete = ticket.status !== 'completed_by_hr';
-            const deleteButtonHtml = canDelete 
-                ? `<button class="btn-delete" onclick="deleteApprovalTicket(${ticket.id})">حذف</button>` 
-                : `<span style="color:#777; font-size:12px;">غير قابل للحذف</span>`;
-
-            return `
-                <tr>
-                    <td style="color:#000; font-weight:bold;">${escapeHtml(ticket.title)}</td>
-                    <td style="color:#000;">${escapeHtml(ticket.description || '—')}</td>
-                    <td style="color:#000;">${escapeHtml(ticket.location || '—')}</td>
-                    <td style="color:#000; font-weight:500;">${escapeHtml(deanName)}</td>
-                    <td>${statusBadge}</td>
-                    <td style="color:#000;">${escapeHtml(hrResponse)}</td>
-                    <td>${deleteButtonHtml}</td>
-                </tr>
-            `;
-        }).join("");
+        // حفظ البيانات في الكاش المحلي
+        cachedApprovalTickets = tickets || [];
+        
+        // عرض الجدول بناءً على الحالة الحالية
+        renderApprovalTickets();
 
     } catch (ex) {
         console.error("خطأ في دالة loadMyApprovalTickets:", ex);
     }
+}
+
+// دالة العرض والتصفية
+function renderApprovalTickets() {
+    const tableBody = document.getElementById("approvalTicketsTableBody");
+    if (!tableBody) return;
+
+    // تصفية البيانات حسب زر التبديل:
+    // إذا كان showArchivedTickets يساوي true يُظهر المعتمدة فقط (completed_by_hr)
+    // إذا كان false يُظهر باقي الطلبات (التي لم تعتمد بعد أو تم رفضها)
+    const filteredTickets = cachedApprovalTickets.filter(ticket => {
+        if (showArchivedTickets) {
+            return ticket.status === 'completed_by_hr';
+        } else {
+            return ticket.status !== 'completed_by_hr';
+        }
+    });
+
+    if (filteredTickets.length === 0) {
+        const emptyMessage = showArchivedTickets 
+            ? "لا توجد طلبات قديمة معتمدة." 
+            : "لا توجد طلبات حالية معلقة أو مرفوضة.";
+        tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#333;">${emptyMessage}</td></tr>`;
+        return;
+    }
+
+    // بناء صفوف الجدول
+    tableBody.innerHTML = filteredTickets.map(ticket => {
+        const deanName = ticket.dean?.name ? `أ.د/ ${ticket.dean.name}` : "لم يحدد بعد";
+        const hrResponse = ticket.hr_response || "—";
+        
+        let statusBadge = getStatusBadgeHTML(ticket.status);
+        if (ticket.status === 'rejected_by_dean' && ticket.rejection_reason) {
+            statusBadge += `
+                <div style="color: #dc3545; font-size: 12px; margin-top: 5px; font-weight: bold;">
+                    سبب الرفض: ${escapeHtml(ticket.rejection_reason)}
+                </div>`;
+        }
+
+        const canDelete = ticket.status !== 'completed_by_hr';
+        const deleteButtonHtml = canDelete 
+            ? `<button class="btn-delete" onclick="deleteApprovalTicket(${ticket.id})">حذف</button>` 
+            : `<span style="color:#777; font-size:12px;">غير قابل للحذف</span>`;
+
+        return `
+            <tr>
+                <td style="color:#000; font-weight:bold;">${escapeHtml(ticket.title)}</td>
+                <td style="color:#000;">${escapeHtml(ticket.description || '—')}</td>
+                <td style="color:#000;">${escapeHtml(ticket.location || '—')}</td>
+                <td style="color:#000; font-weight:500;">${escapeHtml(deanName)}</td>
+                <td>${statusBadge}</td>
+                <td style="color:#000;">${escapeHtml(hrResponse)}</td>
+                <td>${deleteButtonHtml}</td>
+            </tr>
+        `;
+    }).join("");
+}
+
+// دالة زر التبديل
+function toggleArchiveView() {
+    showArchivedTickets = !showArchivedTickets;
+    
+    // تحديث نص الزر
+    const btn = document.getElementById("toggleArchiveBtn");
+    if (btn) {
+        btn.innerText = showArchivedTickets 
+            ? "📋 عرض الطلبات الحالية" 
+            : "📁 طلباتي القديمة (المعتمدة)";
+    }
+
+    // إعادة رسم الجدول بالبيانات المفلترة
+    renderApprovalTickets();
 }
 
 // =======================================================
