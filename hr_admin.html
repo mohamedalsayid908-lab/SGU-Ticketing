@@ -1608,6 +1608,17 @@ table {
     </div>
 
 </footer>
+
+    <!-- 2. استدعاء ملف الـ Class -->
+    <script src="MessagingSystem.js"></script>
+
+    <!-- 3. تشغيل الكلاس بمجرد فتح الصفحة -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // يتم ربطه آلياً بـ sessionStorage الخاضع للتسجيل
+            new MessagingSystem(); 
+        });
+    </script>
 <!-- =======================================================
 ======================= FOOTER END ========================
 ======================================================= -->
